@@ -10,9 +10,9 @@ The tool currently only inputs and outputs scan data in [JSON format][2].
 
 ### Requirements
 
-- [armadillo][http://arma.sourceforge.net]
-- [jsoncpp][https://github.com/open-source-parsers/jsoncpp]
-- [cmake][https://cmake.org]
+- [armadillo](http://arma.sourceforge.net)
+- [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
+- [cmake](https://cmake.org)
 
 ### Installation Process
 
