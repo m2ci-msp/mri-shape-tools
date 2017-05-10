@@ -15,7 +15,7 @@
 
 #include "optimization/matchtemplate/Energy.h"
 #include "optimization/matchtemplate/EnergyMinimizer.h"
-#include "optimization/MinimizerSettings.h"
+#include "optimization/matchtemplate/MinimizerSettings.h"
 
 int main(int argc, char* argv[]) {
 

@@ -9,7 +9,7 @@
 
 #include "optimization/fitmodel/Energy.h"
 #include "optimization/fitmodel/EnergyMinimizer.h"
-#include "optimization/MinimizerSettings.h"
+#include "optimization/fitmodel/MinimizerSettings.h"
 
 class FidelityMeasurer{
 
