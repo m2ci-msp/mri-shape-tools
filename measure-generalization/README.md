@@ -10,6 +10,7 @@ Measures how good a derived multilinear model generalizes to unknown data by exc
 
 - [ann](https://www.cs.umd.edu/~mount/ANN)
 - [armadillo](http://arma.sourceforge.net)
+- [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
 - [yaml-cpp](https://github.com/jbeder/yaml-cpp)
 - [itk](https://itk.org)
 - [cmake](https://cmake.org)
