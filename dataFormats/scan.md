@@ -52,6 +52,6 @@ The file contains a single JSON object, a map:
 
 ```
 
-[1] : https://en.wikipedia.org/wiki/Coronal_plane
-[2] : https://en.wikipedia.org/wiki/Transverse_plane
-[3] : https://en.wikipedia.org/wiki/Sagittal_plane
+[1]: https://en.wikipedia.org/wiki/Coronal_plane
+[2]: https://en.wikipedia.org/wiki/Transverse_plane
+[3]: https://en.wikipedia.org/wiki/Sagittal_plane
