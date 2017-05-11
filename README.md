@@ -3,7 +3,7 @@
 ## Introduction
 
 This repository contains the source code of the tools needed for our gradle framework that aims at deriving a multilinear tongue model from a given MRI data set.
-
+Have a look at [our paper][1] to learn more about the background.
 
 ## Installation
 
@@ -52,3 +52,5 @@ If you are using our tools, please cite, for the time being, the following paper
     url       = {http://arxiv.org/abs/1612.05005}
 }
 ```
+
+[1]: http://arxiv.org/abs/1612.05005
