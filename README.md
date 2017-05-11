@@ -36,7 +36,7 @@ cmake CMakeLists.txt -DCMAKE_INSTALL_PREFIX=$HOME/usr
 make install
 ```
 
-### License
+## License
 
 This work is licensed under the [MIT license](./LICENSE.md).
 
