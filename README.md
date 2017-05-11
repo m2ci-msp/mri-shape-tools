@@ -14,14 +14,30 @@ However, you are also able to install them all at once from the root directory.
 
 Please make sure that the following libraries and tools are available:
 
+- A C++ compiler that can handle C++11 code, *e.g.*, GCC (since version 4.8.1) or Clang (since version 3.3).
 - [ann](https://www.cs.umd.edu/~mount/ANN)
 - [armadillo](http://arma.sourceforge.net)
-- [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
 - [cmake](https://cmake.org)
+- [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
 - [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config)
 - [cairomm-1.0](https://www.cairographics.org/cairomm)
 - [itk](https://itk.org)
 - [yaml-cpp](https://github.com/jbeder/yaml-cpp)
+
+On Ubuntu, for example, you can install all dependencies by executing the following command:
+
+```sh
+apt-get install \
+    build-essential \
+    libann-dev \
+    libarmadillo-dev \
+    cmake \
+    libjsoncpp-dev \
+    pkg-config \
+    libcairomm-1.0-dev \
+    libinsighttoolkit4-dev \
+    libyaml-cpp-dev
+```
 
 ### Installation Process
 
