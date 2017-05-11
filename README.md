@@ -35,3 +35,20 @@ cmake CMakeLists.txt -DCMAKE_INSTALL_PREFIX=$HOME/usr
 ```sh
 make install
 ```
+
+### License
+
+This work is licensed under the [MIT license](./LICENSE.md).
+
+If you are using our tools, please cite, for the time being, the following paper:
+
+```bibtex
+@article{HewerWSR16,
+    author    = {Hewer, Alexander and Wuhrer, Stefanie and Steiner, Ingmar and Richmond, Korin},
+    title     = {A Multilinear Tongue Model Derived from Speech Related {MRI} Data of the Human Vocal Tract},
+    journal   = {CoRR},
+    volume    = {abs/1612.05005},
+    year      = {2016},
+    url       = {http://arxiv.org/abs/1612.05005}
+}
+```
