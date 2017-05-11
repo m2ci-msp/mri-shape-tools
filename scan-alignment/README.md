@@ -52,6 +52,7 @@ make install
 - **translationStep** : step size for discretizing the translational derivative of the energy
 - **rotationStep** : step size for discretizing the rotational derivative of the energy
 
-The remaining settings are specific to the LBFGS solver of ITK.
+The remaining settings are specific to the [LBFGS solver of ITK][2].
 
 [1]: ../dataFormats/scan.md
+[2]: https://public.kitware.com/vxl/doc/release/core/vnl/html/classvnl__lbfgsb.html

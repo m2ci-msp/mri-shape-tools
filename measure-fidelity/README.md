@@ -37,7 +37,8 @@ make install
 - **output** : mean and standard deviation of the error in JSON format
 - **priorSize** : amount the model may move away from the mean in terms of standard deviation.
 
-The remaining settings are specific to the LBFGS solver of ITK.
+The remaining settings are specific to the [LBFGS solver of ITK][3].
 
 [1]: ../dataFormats/model.md
 [2]: ../dataFormats/sampleDatabase.md
+[3]: https://public.kitware.com/vxl/doc/release/core/vnl/html/classvnl__lbfgsb.html

@@ -59,7 +59,8 @@ make install
 - **fixedNeighbors** : no nearest neighbor search is performed. If this setting is used, a one-to-one correspondence between model mesh and target vertices is assumed.
 - **useNoProjection** : deactivate the projection of the model vertex onto the normal plane of the nearest neighbor and use nearest neighbor directly.
 
-The remaining settings are specific to the LBFGS solver of ITK.
+The remaining settings are specific to the [LBFGS solver of ITK][3].
 
 [1]: https://arxiv.org/abs/1306.4478
 [2]: ../dataFormats/landmarks.md
+[3]: https://public.kitware.com/vxl/doc/release/core/vnl/html/classvnl__lbfgsb.html

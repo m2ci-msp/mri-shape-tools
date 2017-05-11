@@ -41,6 +41,7 @@ make install
 - **restrictedPhoneme** : truncate phoneme mode dimension to provided value during the evaluation of the speaker generalization
 - **minComponents** : the smallest dimension of a mode to consider during the evaluation
 
-The remaining settings are specific to the LBFGS solver of ITK.
+The remaining settings are specific to the [LBFGS solver of ITK][2].
 
 [1]: ../dataFormats/sampleDatabase.md
+[2]: https://public.kitware.com/vxl/doc/release/core/vnl/html/classvnl__lbfgsb.html
