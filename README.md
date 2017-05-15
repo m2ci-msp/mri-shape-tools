@@ -18,6 +18,7 @@ Please make sure that the following libraries and tools are available:
 - [ann](https://www.cs.umd.edu/~mount/ANN)
 - [armadillo](http://arma.sourceforge.net)
 - [cmake](https://cmake.org)
+- [gtkmm-3.0](https://www.gtkmm.org)
 - [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
 - [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config)
 - [cairomm-1.0](https://www.cairographics.org/cairomm)
@@ -34,6 +35,7 @@ apt-get install \
     cmake \
     libjsoncpp-dev \
     pkg-config \
+    libgtkmm-3.0-dev \
     libcairomm-1.0-dev \
     libinsighttoolkit4-dev \
     libyaml-cpp-dev
