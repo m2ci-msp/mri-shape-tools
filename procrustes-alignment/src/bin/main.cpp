@@ -1,9 +1,10 @@
 #include "settings.h"
 #include "Output.h"
 #include "ChangeOrigin.h"
-#include "SuzanneMapping.h"
 #include "mesh/MeshIO.h"
+
 #include "alignment/ProcrustesAlignment.h"
+#include "utility/AxisConverter.h"
 
 int main(int argc, char* argv[]) {
 
@@ -26,6 +27,7 @@ int main(int argc, char* argv[]) {
   std::vector<Mesh> aligned =
     procrustes.align_meshes(meshCollection, settings.iter);
 
+  // change origin if wanted
   if( settings.changeOrigin == true) {
 
     ChangeOrigin changeOrigin(aligned);
@@ -33,11 +35,20 @@ int main(int argc, char* argv[]) {
 
   }
 
-  if( settings.suzanneMapping == true) {
+  // apply coordinate system mapping
+  arma::vec factors{
+    settings.xFactor,
+    settings.yFactor,
+    settings.zFactor
+      };
 
-    SuzanneMapping mapping(aligned);
-    aligned = mapping.map();
+  AxisConverter converter(
+    settings.mapping,
+    factors
+    );
 
+  for(Mesh& mesh: aligned) {
+    mesh = converter.convert(mesh);
   }
 
   Output output(aligned, settings.output);

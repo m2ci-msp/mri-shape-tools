@@ -22,10 +22,15 @@ public:
   bool noScaling = false;
 
   int originIndex;
-  bool suzanneMapping = false;
   bool changeOrigin = false;
 
   int iter = 10;
+
+  std::string mapping = "XYZ";
+
+  double xFactor = 1;
+  double yFactor = 1;
+  double zFactor = 1;
 
   Settings(int argc, char* argv[]) {
 
@@ -37,7 +42,11 @@ public:
     FlagNone noRotationFlag("noRotation", this->noRotation);
     FlagNone noScalingFlag("noScaling", this->noScaling);
     FlagSingle<int> originIndexFlag("originIndex", this->originIndex, true);
-    FlagNone suzanneMappingFlag("suzanneMapping", this->suzanneMapping);
+
+    FlagSingle<std::string> mappingFlag("mapping", this->mapping, true);
+    FlagSingle<double> xFactorFlag("xFactor", this->xFactor, true);
+    FlagSingle<double> yFactorFlag("yFactor", this->yFactor, true);
+    FlagSingle<double> zFactorFlag("zFactor", this->zFactor, true);
 
     FlagsParser parser(argv[0]);
     parser.define_flag(&inputFlag);
@@ -49,7 +58,12 @@ public:
     parser.define_flag(&noRotationFlag);
     parser.define_flag(&noScalingFlag);
     parser.define_flag(&originIndexFlag);
-    parser.define_flag(&suzanneMappingFlag);
+
+    parser.define_flag(&mappingFlag);
+
+    parser.define_flag(&xFactorFlag);
+    parser.define_flag(&yFactorFlag);
+    parser.define_flag(&zFactorFlag);
 
     parser.parse_from_command_line(argc, argv);
 
