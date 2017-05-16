@@ -17,7 +17,7 @@ This tool assigns the source vertex indices to landmarks given an input mesh and
 
 - configuration, adapt the installation path if needed
 ```sh
-cmake cmake/CMakeLists.txt -DCMAKE_INSTALL_PREFIX=$HOME/usr/bin
+cmake cmake/CMakeLists.txt -DCMAKE_INSTALL_PREFIX=$HOME/usr
 ```
 - installation
 ```sh

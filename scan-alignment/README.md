@@ -22,7 +22,7 @@ The MRI scan has to be in [JSON format][1].
 
 - configuration, adapt the installation path if needed
 ```sh
-cmake cmake/CMakeLists.txt -DCMAKE_INSTALL_PREFIX=$HOME/usr/bin
+cmake cmake/CMakeLists.txt -DCMAKE_INSTALL_PREFIX=$HOME/usr
 ```
 - installation
 ```sh
