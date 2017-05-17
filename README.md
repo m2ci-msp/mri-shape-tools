@@ -41,6 +41,20 @@ apt-get install \
     libyaml-cpp-dev
 ```
 
+On OSX with [Homebrew](http://brew.sh), install the dependencies with
+
+```sh
+brew install \
+    armadillo \
+    jsoncpp \
+    ann \
+    cairomm \
+    insighttoolkit \
+    vtk \
+    gtkmm3 \
+    yaml-cpp
+```
+
 ### Installation Process
 
 In order to install all tools, perform the following steps:
