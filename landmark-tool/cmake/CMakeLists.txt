@@ -4,6 +4,12 @@ PROJECT(landmark-tool)
 SET(CMAKE_BUILD_TYPE release)
 SET(CMAKE_CXX_FLAGS_RELEASE "-O2 -std=c++11 -march=native -Wall -Wextra -pedantic")
 SET(CMAKE_C_FLAGS_RELEASE "-O2 -std=c++11 -march=native -Wall -Wextra -pedantic")
+
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  SET(CMAKE_EXE_LINKER_FLAGS "-L/usr/local/opt/gettext/lib")
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
+
 INCLUDE(ConfigureARMADILLO.cmake)
 INCLUDE(ConfigureJSONCPP.cmake)
 
