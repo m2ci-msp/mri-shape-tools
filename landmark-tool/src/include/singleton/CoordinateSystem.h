@@ -44,11 +44,11 @@ class CoordinateSystem {
       this->viewMode = 0;
 
       // coordinate access for XYZ
-      this->indices.push_back({ 0, 1, 2});
+      this->indices.push_back( {{ 0, 1, 2 }} );
       // coordinate access for ZXY
-      this->indices.push_back({ 2, 0, 1});
+      this->indices.push_back( {{ 2, 0, 1 }} );
       // coordinate access for ZYX
-      this->indices.push_back({ 2, 1, 0});
+      this->indices.push_back( {{ 2, 1, 0 }} );
 
     }
 

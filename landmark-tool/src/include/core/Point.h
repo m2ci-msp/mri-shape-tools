@@ -12,7 +12,7 @@ class Point {
 
     Point() :
       system(CoordinateSystem::get_instance()),
-      point({ 0, 0, 0}) {
+      point( {{ 0, 0, 0 }} ) {
       }
 
     Point(double x, double y, double z) :

@@ -51,7 +51,6 @@ class EventPosition {
 
     Point position;
     static std::shared_ptr<EventPosition> instance;
-    bool valid;
 
 };
 #endif
