@@ -10,8 +10,8 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 
-INCLUDE(ConfigureARMADILLO.cmake)
-INCLUDE(ConfigureJSONCPP.cmake)
+INCLUDE(../../cmake/ConfigureARMADILLO.cmake)
+INCLUDE(../../cmake/ConfigureJSONCPP.cmake)
 
 find_package(PkgConfig)
 pkg_check_modules(CAIROMM REQUIRED cairomm-1.0)

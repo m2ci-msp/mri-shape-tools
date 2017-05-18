@@ -11,9 +11,9 @@ ELSE(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   SET(CMAKE_C_FLAGS_RELEASE "-fopenmp -O2 -std=c++11 -march=native -Wall -Wextra -pedantic")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
-INCLUDE(ConfigureARMADILLO.cmake)
-INCLUDE(ConfigureJSONCPP.cmake)
-INCLUDE(ConfigureYAMLCPP.cmake)
+INCLUDE(../../cmake/ConfigureARMADILLO.cmake)
+INCLUDE(../../cmake/ConfigureJSONCPP.cmake)
+INCLUDE(../../cmake/ConfigureYAMLCPP.cmake)
 
 IF(ARMADILLO_FOUND AND JSONCPP_FOUND AND YAMLCPP_FOUND)
   SET(SRC_FILE "../src/bin/main.cpp")

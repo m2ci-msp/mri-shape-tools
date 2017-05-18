@@ -4,7 +4,7 @@ PROJECT(rigid-alignment)
 SET(CMAKE_BUILD_TYPE release)
 SET(CMAKE_CXX_FLAGS_RELEASE "-O2 -std=c++11 -march=native -Wall -Wextra -pedantic")
 SET(CMAKE_C_FLAGS_RELEASE "-O2 -std=c++11 -march=native -Wall -Wextra -pedantic")
-INCLUDE(ConfigureARMADILLO.cmake)
+INCLUDE(../../cmake/ConfigureARMADILLO.cmake)
 
 IF(ARMADILLO_FOUND)
   SET(SRC_FILE "../src/bin/main.cpp")
