@@ -49,10 +49,6 @@ class ScanIO{
       const double hy = spacings["y"].asDouble();
       const double hz = spacings["z"].asDouble();
 
-      // read extrema
-      const double min = root["minimum"].asDouble();
-      const double max = root["maximum"].asDouble();
-
       // read data
       std::vector<double> data;
       Json::Value values = root["data"];
@@ -67,8 +63,9 @@ class ScanIO{
       scanData.set_data(data)\
               .set_dimensions(nx, ny, nz)\
               .set_spacings(hx, hy, hz)\
-              .set_extrema(min,max)\
               .set_origin(orgX, orgY, orgZ);
+
+      scanData.update_extrema();
 
       return Scan(scanData);
 
@@ -116,10 +113,6 @@ class ScanIO{
       spacings["z"] = scan.data()->get_hz();
 
       root["spacings"] = spacings;
-
-      // extemas
-      root["minimum"] = scan.data()->get_min();
-      root["maximum"] = scan.data()->get_max();
 
       // add data
       Json::Value data(Json::arrayValue);

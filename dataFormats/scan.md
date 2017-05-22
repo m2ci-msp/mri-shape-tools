@@ -13,8 +13,6 @@ The file contains a single JSON object, a map:
 
 - **spacings** : the grid spacings along the three axes
 
-- **minimum** and **maximum** : the two exteme values in the data
-
 - **data** : a list containing the measured values. *f(x, y, z)* is found at index *z ny nx + x ny + y* where *nx* and *ny* represent the dimensions along the *x*- and *y*-axis respectively.
 
 ## Example
@@ -36,8 +34,6 @@ The file contains a single JSON object, a map:
         "y": 1.2,
         "z": 1.1
     },
-    "minimum": 0,
-    "maximum": 255,
     "data": [
         0,
         0,
