@@ -49,10 +49,8 @@ int main(int argc, char* argv[]) {
 
   const double scaleFactor = 1. / arma::norm( max - min );
 
-  settings.energySettings.maxDistance  *= scaleFactor * resolution.get_resolution();
-  settings.energySettings.searchRadius *= scaleFactor * resolution.get_resolution();
-
-  std::cout << settings.energySettings.maxDistance << std::endl;
+  settings.energySettings.maxDistance  *= scaleFactor;
+  settings.energySettings.searchRadius *= scaleFactor;
 
   MeshNeighbors neighbors;
 
