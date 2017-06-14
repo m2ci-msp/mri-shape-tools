@@ -32,7 +32,7 @@ class GuiDescription {
       {
         // open ui file
         builder->add_from_file(UIDIR +
-            std::string("/ui_description.glade"));
+            std::string("/ui_description_scan_crop.glade"));
       }
       catch(const Glib::FileError& ex)
       {

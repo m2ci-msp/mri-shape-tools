@@ -41,7 +41,7 @@ IF(ARMADILLO_FOUND AND JSONCPP_FOUND)
     )
 
   INSTALL (TARGETS ${PROJECT_NAME} DESTINATION bin)
-  INSTALL (FILES ../ui/ui_description.glade DESTINATION share)
+  INSTALL (FILES ../ui/ui_description_scan_crop.glade DESTINATION share)
 
 ELSE(ARMADILLO_FOUND AND JSONCPP_FOUND)
   Message("PROBLEM: One of the required libraries not found. ${PROJECT_NAME} will not be compiled.")
