@@ -14,30 +14,39 @@ int main(int argc, char* argv[]){
 
   SampleDataBase database = SampleFileReader::read_from(settings.input);
 
-  // evaluate generalization for speaker mode
-  SpeakerGeneralizationMeasurer speakerMeasurer(database);
-  speakerMeasurer.set_energy_settings(settings.energySettings);
-  speakerMeasurer.set_minimizer_settings(settings.minimizerSettings);
-  speakerMeasurer.set_min_components(settings.minComponents);
-  speakerMeasurer.set_restricted_mode(settings.restrictedPhoneme);
+  // evaluate generalization for speaker mode if we have at least two speakers
+  if( database.get_speaker_amount() > 1 ) {
 
-  ErrorDatabase speakerErrors = speakerMeasurer.measure();
+    SpeakerGeneralizationMeasurer speakerMeasurer(database);
+    speakerMeasurer.set_energy_settings(settings.energySettings);
+    speakerMeasurer.set_minimizer_settings(settings.minimizerSettings);
+    speakerMeasurer.set_min_components(settings.minComponents);
+    speakerMeasurer.set_restricted_mode(settings.restrictedPhoneme);
 
-  ErrorDatabaseWriter writer;
+    ErrorDatabase speakerErrors = speakerMeasurer.measure();
 
-  writer.write(speakerErrors, "components", settings.output + "_speaker.json");
+    ErrorDatabaseWriter writer;
 
-  // evaluate generalization for phoneme mode
-  PhonemeGeneralizationMeasurer phonemeMeasurer(database);
-  phonemeMeasurer.set_energy_settings(settings.energySettings);
-  phonemeMeasurer.set_minimizer_settings(settings.minimizerSettings);
-  phonemeMeasurer.set_min_components(settings.minComponents);
-  phonemeMeasurer.set_restricted_mode(settings.restrictedSpeaker);
+    writer.write(speakerErrors, "components", settings.output + "_speaker.json");
 
-  ErrorDatabase phonemeErrors = phonemeMeasurer.measure();
+  }
 
-  writer.write(phonemeErrors, "components", settings.output + "_phoneme.json");
+  // evaluate generalization for phoneme mode if we have at least two phonemes
+  if( database.get_phoneme_amount() > 1 ) {
 
+    PhonemeGeneralizationMeasurer phonemeMeasurer(database);
+    phonemeMeasurer.set_energy_settings(settings.energySettings);
+    phonemeMeasurer.set_minimizer_settings(settings.minimizerSettings);
+    phonemeMeasurer.set_min_components(settings.minComponents);
+    phonemeMeasurer.set_restricted_mode(settings.restrictedSpeaker);
+
+    ErrorDatabase phonemeErrors = phonemeMeasurer.measure();
+
+    ErrorDatabaseWriter writer;
+
+    writer.write(phonemeErrors, "components", settings.output + "_phoneme.json");
+
+  }
   return 0;
 
 }
