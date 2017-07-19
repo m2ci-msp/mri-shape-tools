@@ -3,7 +3,7 @@
 #include "static_initializations.h"
 #include "observer/Observatory.h"
 
-int main(int argc, char *argv[])
+int main(int, char*[])
 {
   //  Gtk::Main kit(argc, argv);
   Glib::RefPtr<Gtk::Application> app =
