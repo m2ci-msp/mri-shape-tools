@@ -34,7 +34,7 @@ public:
     this->D12 = ImageData(nx, ny, nz);
     this->D13 = ImageData(nx, ny, nz);
     this->D23 = ImageData(nx, ny, nz);
-    
+
   }
 
   /*--------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ public:
 
     update_structure_tensors();
     update_diffusion_tensors();
-    
+
   }
 
   /*--------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ public:
   ImageData D12;
   ImageData D13;
   ImageData D23;
- 
+
   /*--------------------------------------------------------------------------*/
 
 private:
@@ -75,6 +75,7 @@ private:
 
     Image smoothed(this->data);
     smoothed.smooth().gaussian(this->settings.presmoothSigma);
+    smoothed.data().mirror();
 
     for(int i = 0; i < nx; ++i) {
       for(int j = 0; j < ny; ++j) {
@@ -141,7 +142,7 @@ private:
           eigval.at(0) = ( eigval.at(0) < 0. )? 0: eigval.at(0);
           eigval.at(1) = ( eigval.at(1) < 0. )? 0: eigval.at(1);
           eigval.at(2) = ( eigval.at(2) < 0. )? 0: eigval.at(2);
-          
+
           /* apply perona-malik penaliser to the largest eigenvalue
            * -> enhance surface boundaries
            */
@@ -149,11 +150,11 @@ private:
           /* set the other eigenvalues to 1 -> smooth along surface */
           eigval.at(1) = 1.;
           eigval.at(0) = 1.;
-          
+
           // transform back
           arma::mat D = arma::zeros(3, 3);
           D.diag() = eigval;
-          
+
           const arma::mat diffusionTensor = eigvec * D * eigvec.t();
 
           D11.at(x, y, z) = diffusionTensor.at(0, 0);
@@ -162,13 +163,13 @@ private:
           D12.at(x, y, z) = diffusionTensor.at(0, 1);
           D13.at(x, y, z) = diffusionTensor.at(0, 2);
           D23.at(x, y, z) = diffusionTensor.at(1, 2);
-         
+
         } // end for z
       } // end for y
     } // end for x
 
   }
-  
+
   /*--------------------------------------------------------------------------*/
 
   const ImageData& data;
@@ -182,7 +183,7 @@ private:
   Image J12;
   Image J13;
   Image J23;
- 
+
   /*--------------------------------------------------------------------------*/
 
 };
