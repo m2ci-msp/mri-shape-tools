@@ -214,9 +214,9 @@ public:
     ) const {
 
 
-    return this->values[
+    return this->values.at(
       compute_index(bx + x, by + y, bz + z)
-      ];
+      );
 
   }
 
