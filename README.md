@@ -68,6 +68,11 @@ cmake CMakeLists.txt -DCMAKE_INSTALL_PREFIX=$HOME/usr
 make install
 ```
 
+## Documentation
+
+Documentation about the individual tools is available in their respective folders.
+The [dataFormats](./dataFormats) folder contains information about the various data formats used by our tools.
+
 ## License
 
 This work is licensed under the [MIT license](./LICENSE.md).
