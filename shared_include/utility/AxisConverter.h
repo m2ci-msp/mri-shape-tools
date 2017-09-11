@@ -2,111 +2,65 @@
 #define __AXIS_CONVERTER_H__
 
 #include <string>
-
 #include <armadillo>
 
 #include "mesh/Mesh.h"
+#include "utility/AxisAccess.h"
 
 class AxisConverter{
 
 public:
 
-  /*--------------------------------------------------------------------------*/
+  AxisConverter(
+                const std::string& specification
+                ) :
+    mapping(specification),
+    // use no scaling
+    scaling({1, 1, 1}) {
+  }
 
   AxisConverter(
-    const std::string& mapping,
-    const arma::vec& factors
-    ) : factors(factors) {
-
-    this->axisMapping = determine_axis_access(mapping);
-
-  }
-
-  /*--------------------------------------------------------------------------*/
-
-  arma::vec convert(const arma::vec& point) const {
-
-    arma::vec result = arma::zeros(3);
-
-    for( int i = 0; i < 3; ++i ) {
-
-      result(i) = this->factors.at( this->axisMapping(i) ) * point( this->axisMapping(i) );
-
+                const std::string& specification,
+                const arma::vec& scaling
+                ) :
+    mapping(specification),
+    scaling(scaling) {
     }
 
+  // map points using the chosen axis access
+  // apply a scaling to the individual coordinates if desired
+  arma::vec convert(const arma::vec& point) const {
+  
+    arma::vec result = arma::zeros(3);
+  
+    result(0) = this->scaling.at( this->mapping.x() ) * point( this->mapping.x() );
+    result(1) = this->scaling.at( this->mapping.y() ) * point( this->mapping.y() );
+    result(2) = this->scaling.at( this->mapping.z() ) * point( this->mapping.z() );
+  
     return result;
-
+  
   }
 
-  /*--------------------------------------------------------------------------*/
-
   Mesh convert(const Mesh& mesh) const {
-
+  
     Mesh result(mesh);
-
+  
     for( arma::vec& point: result.get_vertices() ){
       point = convert(point);
     }
-
+  
     for( arma::vec& normal: result.get_vertex_normals() ){
       normal = convert(normal);
     }
-
+  
     return result;
-
+  
   }
-
-  /*--------------------------------------------------------------------------*/
 
 private:
 
-  /*--------------------------------------------------------------------------*/
-
-  arma::vec determine_axis_access(const std::string& specification) const {
-
-    arma::vec result = arma::zeros(3);
-
-    if( specification == "XYZ" ) {
-
-      result(0) = 0;
-      result(1) = 1;
-      result(2) = 2;
-
-    }
-    else if ( specification == "ZXY" ) {
-
-      result(0) = 2;
-      result(1) = 0;
-      result(2) = 1;
-
-    }
-    else if ( specification == "YZX" ) {
-
-      result(0) = 1;
-      result(1) = 2;
-      result(2) = 0;
-
-    } else if ( specification == "XZY" ) {
-
-      result(0) = 0;
-      result(1) = 2;
-      result(2) = 1;
-
-    } else {
-      throw std::runtime_error("Unknown axis specification.");
-    }
-
-    return result;
-
-  }
-
-  /*--------------------------------------------------------------------------*/
-
-  arma::vec axisMapping;
-  arma::vec factors;
-
-  /*--------------------------------------------------------------------------*/
+  const AxisAccess mapping;
+  const arma::vec scaling;
 
 };
-
 #endif
