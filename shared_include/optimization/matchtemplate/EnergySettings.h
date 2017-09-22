@@ -45,11 +45,15 @@ namespace matchTemplate{
       BASIC,
       NORMAL_PLANE,
       ADAPTIVE,
-      FIXED
+      FIXED,
+      PRESET
     };
 
     // search strategy for nearest neighbor search
     SearchStrategy searchStrategy = SearchStrategy::NORMAL_PLANE;
+
+    std::vector<int> presetSource;
+    std::vector<int> presetTarget;
   };
 
 }

@@ -71,6 +71,14 @@ namespace matchTemplate{
         this->areFixed = true;
         break;
 
+      case EnergySettings::SearchStrategy::PRESET:
+        this->searchStrategy = &(this->neighborSearch.preset_correspondences());
+        this->neighborSearch.set_preset_source(this->energySettings.presetSource);
+        this->neighborSearch.set_preset_target(this->energySettings.presetTarget);
+        this->needNormals = false;
+        this->areFixed = true;
+        break;
+
       default:
         this->searchStrategy = &(this->neighborSearch.basic());
         this->needNormals = false;
