@@ -55,8 +55,6 @@ private:
   Mesh& source;
   Mesh& target;
 
-  std::vector<int> indices;
-
   /*-------------------------------------------------------------------------*/
 
 };
