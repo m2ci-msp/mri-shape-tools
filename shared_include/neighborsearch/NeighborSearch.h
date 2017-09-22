@@ -8,6 +8,7 @@
 #include "neighborsearch/NormalPlaneSearch.h"
 #include "neighborsearch/AdaptiveSearch.h"
 #include "neighborsearch/FixedCorrespondences.h"
+#include "neighborsearch/PresetCorrespondences.h"
 
 class NeighborSearch{
 
@@ -52,6 +53,11 @@ public:
       this->target
       );
 
+    this->presetCorrespondences = new PresetCorrespondences(
+      this->presetSource,
+      this->presetTarget
+      );
+
     this->valid = true;
 
   }
@@ -63,7 +69,9 @@ public:
     maxAngle(search.maxAngle),
     searchRadius(search.searchRadius),
     source(search.source),
-    target(search.target) {
+    target(search.target),
+    presetSource(search.presetSource),
+    presetTarget(search.presetTarget) {
 
     cleanup();
 
@@ -96,6 +104,12 @@ public:
       this->target
       );
 
+    this->presetCorrespondences = new PresetCorrespondences(
+      this->presetSource,
+      this->presetTarget
+      );
+
+
     if( this->target.get_vertices().size() > 0) {
       this->kdTree = new KdTree(target.get_vertices());
     }
@@ -120,6 +134,7 @@ public:
       delete this->normalPlaneSearch;
       delete this->adaptiveSearch;
       delete this->fixedCorrespondences;
+      delete this->presetCorrespondences;
 
 
       if( this->kdTree != nullptr) {
@@ -193,6 +208,27 @@ public:
 
   /*--------------------------------------------------------------------------*/
 
+  NeighborSearch& set_preset_source(const std::vector<int>& presetSource) {
+
+    this->presetSource = presetSource;
+
+    return *this;
+
+  }
+
+  /*--------------------------------------------------------------------------*/
+
+  NeighborSearch& set_preset_target(const std::vector<int>& presetTarget) {
+
+    this->presetTarget = presetTarget;
+
+    return *this;
+
+  }
+
+  /*--------------------------------------------------------------------------*/
+
+
   const BasicSearch& basic() const {
 
     return *this->basicSearch;
@@ -224,6 +260,14 @@ public:
 
   /*--------------------------------------------------------------------------*/
 
+  const PresetCorrespondences& preset_correspondences() const {
+
+    return *this->presetCorrespondences;
+
+  }
+
+  /*--------------------------------------------------------------------------*/
+
 
 private:
 
@@ -238,12 +282,17 @@ private:
   Mesh source;
   Mesh target;
 
+  // for preset neighbors
+  std::vector<int> presetSource;
+  std::vector<int> presetTarget;
+
   KdTree* kdTree;
 
   BasicSearch* basicSearch;
   NormalPlaneSearch* normalPlaneSearch;
   AdaptiveSearch* adaptiveSearch;
   FixedCorrespondences* fixedCorrespondences;
+  PresetCorrespondences* presetCorrespondences;
 
   /*--------------------------------------------------------------------------*/
 
