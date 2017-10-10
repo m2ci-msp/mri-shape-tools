@@ -73,8 +73,13 @@ private:
     // generate points on grid
     std::vector<arma::vec> samplePoints;
 
-    for(double x = this->minX; x <= this->maxX; x += spacingX) {
-      for(double y = this->minY; y <= this->maxY; y += spacingY) {
+    for(int i = 0; i < samplesX + 1; ++i) {
+
+      const double x = this->minX + spacingX * i;
+
+      for(int j = 0; j < samplesY + 1; ++j) {
+
+	const double y = this->minY + spacingY * j;
 
 	const arma::vec samplePoint({x, y, 0});
 	samplePoints.push_back(samplePoint);
