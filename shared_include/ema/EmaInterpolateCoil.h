@@ -34,6 +34,14 @@ public:
   
     // get values at participating frames
     const arma::vec& left = this->coilPositions.at(integerPart);
+  
+    // skip interpolation if sub integer part is 0
+    if( subIntegerPart == 0 ) {
+  
+    return left;
+  
+    }
+  
     const arma::vec& right = this->coilPositions.at(integerPart + 1);
   
     // interpolate
@@ -46,7 +54,7 @@ private:
   double convert_to_frame(const double& timeStamp) const {
   
     const double& startTime = *( this->timeStamps.begin() );
-    const double& endTime = *( this->timeStamps.end() );
+    const double& endTime = *( this->timeStamps.end() - 1 );
   
     const double totalDuration = endTime - startTime;
   
