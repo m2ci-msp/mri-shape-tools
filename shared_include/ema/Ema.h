@@ -7,6 +7,7 @@
 #include "ema/EmaWriter.h"
 #include "ema/EmaTransform.h"
 #include "ema/EmaInterpolate.h"
+#include "ema/EmaResample.h"
 
 class Ema{
 
@@ -20,7 +21,8 @@ class Ema{
     emaReader(emaData),
     emaWriter(emaData),
     emaTransform(emaData),
-    emaInterpolate(emaData) {
+    emaInterpolate(emaData),
+    emaResample(emaData) {
     
     }
 
@@ -33,6 +35,8 @@ class Ema{
   EmaTransform& transform() { return this->emaTransform; }
 
   EmaInterpolate& interpolate() { return this->emaInterpolate; }
+
+  EmaResample& resample() { return this->emaResample; }
 
  private:
 
@@ -47,6 +51,8 @@ class Ema{
   EmaTransform emaTransform;
 
   EmaInterpolate emaInterpolate;
+
+  EmaResample emaResample;
 
 };
 #endif
