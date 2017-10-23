@@ -1,6 +1,6 @@
 #include "mesh/MeshIO.h"
 
-#include "EmaPoints.h"
+#include "ema/Ema.h"
 
 #include "PalateContour.h"
 #include "settings.h"
@@ -9,16 +9,27 @@ int main(int argc, char* argv[]) {
 
   Settings settings(argc, argv);
 
-  EmaPoints points;
+  Ema ema;
+  std::vector<arma::vec> points;
 
-  points.set_scale(settings.scale);
-  points.set_channels(settings.channels);
+  for(const std::string& fileName: settings.input) {
 
-  for(const std::string& fileName: settings.input ) {
-    points.add_points_from_file(fileName);
+    ema.read().from(fileName);
+
+    for(const std::string& channel: settings.channels) {
+
+      ema.transform().coil(channel).scale(settings.scale);
+
+      for(const arma::vec point: ema.access().coil(channel).position() ) {
+
+        points.push_back(point);
+
+      }
+    }
+
   }
 
-  PalateContour contour(points.get_points(), settings.axisAccess);
+  PalateContour contour(points, settings.axisAccess);
 
   Mesh result;
 
