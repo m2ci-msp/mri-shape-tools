@@ -12,7 +12,12 @@ public:
   
   }
 
+  // return reference to EmaCoil object for given ID
+  EmaCoil& coil(const std::string& id) {
   
+    return this->emaData.emaCoils.at(id);
+  
+  }
 
   // return reference to vector containing all coil IDs
   const std::vector<std::string>& coil_ids() const {
