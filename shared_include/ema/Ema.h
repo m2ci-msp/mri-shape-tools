@@ -6,6 +6,7 @@
 #include "ema/EmaReader.h"
 #include "ema/EmaWriter.h"
 #include "ema/EmaTransform.h"
+#include "ema/EmaInterpolate.h"
 
 class Ema{
 
@@ -18,7 +19,8 @@ class Ema{
   emaAccess(emaData),
     emaReader(emaData),
     emaWriter(emaData),
-    emaTransform(emaData) {
+    emaTransform(emaData),
+    emaInterpolate(emaData) {
     
     }
 
@@ -29,6 +31,8 @@ class Ema{
   EmaWriter& write() { return this->emaWriter; }
 
   EmaTransform& transform() { return this->emaTransform; }
+
+  EmaInterpolate& interpolate() { return this->emaInterpolate; }
 
  private:
 
@@ -41,6 +45,8 @@ class Ema{
   EmaWriter emaWriter;
 
   EmaTransform emaTransform;
+
+  EmaInterpolate emaInterpolate;
 
 };
 #endif
