@@ -28,8 +28,8 @@ public:
     Json::Value jsonEmaData(Json::objectValue);
   
     jsonEmaData["channels"] = build_coils(this->emaData.emaCoils);
-    jsonEmaData["timestamps"] = build_time_stamps(this->emaData.timeStamps);
-    jsonEmaData["samplingFrequency"] = build_sampling_frequency(this->emaData.samplingFrequency);
+    jsonEmaData["timestamps"] = build_time_stamps(this->emaData.emaInfoData.timeStamps);
+    jsonEmaData["samplingFrequency"] = build_sampling_frequency(this->emaData.emaInfoData.samplingFrequency);
   
     Json::StyledStreamWriter writer;
     writer.write(outFile, jsonEmaData);
@@ -41,11 +41,13 @@ public:
 private:
 
   // builds JSON array containing the serialized positional data
-  Json::Value build_positions(const std::vector<arma::vec>& positions) const {
+  Json::Value build_positions(const EmaCoil& emaCoil ) const {
   
     Json::Value jsonPositions(Json::arrayValue);
   
-    for(const arma::vec& position: positions) {
+    for(int i = 0; i < emaCoil.info().sample_amount(); ++i) {
+  
+      const arma::vec& position = emaCoil.access().position(i);
   
       jsonPositions.append(position[0]);
       jsonPositions.append(position[1]);
@@ -57,12 +59,59 @@ private:
   
   }
 
+  // builds JSON array containing the serialized euler angle data
+  Json::Value build_euler_angles(const EmaCoil& emaCoil ) const {
+  
+    Json::Value jsonEulerAngles(Json::arrayValue);
+  
+    for(int i = 0; i < emaCoil.info().sample_amount(); ++i) {
+  
+      const arma::vec& eulerAngle = emaCoil.access().euler_angle(i);
+  
+      jsonEulerAngles.append(eulerAngle[0]);
+      jsonEulerAngles.append(eulerAngle[1]);
+  
+    }
+  
+    return jsonEulerAngles;
+  
+  }
+
+  // builds JSON array containing the rms values
+  Json::Value build_rms_values(const EmaCoil& emaCoil ) const {
+  
+    Json::Value jsonRmsValues(Json::arrayValue);
+  
+    for(int i = 0; i < emaCoil.info().sample_amount(); ++i) {
+  
+      const double rmsValue = emaCoil.access().rms_value(i);
+  
+      jsonRmsValues.append(rmsValue);
+  
+    }
+  
+    return jsonRmsValues;
+  
+  }
+
   // constructs JSON object representing a given coil
   Json::Value build_coil(const EmaCoil& emaCoil) const {
   
     Json::Value jsonCoil(Json::objectValue);
   
-    jsonCoil["position"] = build_positions( emaCoil.const_position() );
+    jsonCoil["position"] = build_positions(emaCoil);
+  
+    if( emaCoil.info().euler_angles_present() ) {
+  
+      jsonCoil["eulerAngles"] = build_euler_angles(emaCoil);
+  
+    }
+  
+    if( emaCoil.info().rms_values_present() ) {
+  
+      jsonCoil["RMS"] = build_rms_values(emaCoil);
+  
+    }
   
     return jsonCoil;
   

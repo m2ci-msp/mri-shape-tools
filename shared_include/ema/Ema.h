@@ -1,58 +1,60 @@
 #ifndef __EMA_H__
-#define __EMA_H__
+  #define __EMA_H__
 
-#include "ema/EmaData.h"
-#include "ema/EmaAccess.h"
-#include "ema/EmaReader.h"
-#include "ema/EmaWriter.h"
-#include "ema/EmaTransform.h"
-#include "ema/EmaInterpolate.h"
-#include "ema/EmaResample.h"
+  #include "ema/EmaData.h"
+  #include "ema/EmaInfo.h"
+  #include "ema/EmaReader.h"
+  #include "ema/EmaWriter.h"
+  #include "ema/EmaResample.h"
 
-class Ema{
+  class Ema{
 
- public:
+  public:
 
-  // the constructor ensures that all corresponding objects store
-  // a reference to the emaData member
- Ema() :
+    // the constructor ensures that all corresponding objects store
+    // a reference to the emaData member
+    Ema() :
     
-  emaAccess(emaData),
-    emaReader(emaData),
-    emaWriter(emaData),
-    emaTransform(emaData),
-    emaInterpolate(emaData),
-    emaResample(emaData) {
+      emaInfo(emaData.emaInfoData),
+      emaReader(emaData),
+      emaWriter(emaData),
+      emaResample(emaData) {
     
-    }
-
-  EmaAccess& access() { return this->emaAccess; }
+      }
     
-  EmaReader& read() { return this->emaReader; }
+    // copy constructor -> make sure that we have no references to the original
+    // object
+    Ema(const Ema& other) :
     
-  EmaWriter& write() { return this->emaWriter; }
-
-  EmaTransform& transform() { return this->emaTransform; }
-
-  EmaInterpolate& interpolate() { return this->emaInterpolate; }
-
-  EmaResample& resample() { return this->emaResample; }
-
- private:
-
-  EmaData emaData;
+      emaData(other.emaData),
+      emaInfo(emaData.emaInfoData),
+      emaReader(emaData),
+      emaWriter(emaData),
+      emaResample(emaData) {
     
-  EmaAccess emaAccess;
+      }
+
+    EmaCoil& coil(const std::string& coilId) { return this->emaData.emaCoils.at(coilId); }
     
-  EmaReader emaReader;
+    EmaInfo& info() { return this->emaInfo; }
     
-  EmaWriter emaWriter;
+    EmaReader& read() { return this->emaReader; }
+    
+    EmaWriter& write() { return this->emaWriter; }
+    
+    EmaResample& resample() { return this->emaResample; }
 
-  EmaTransform emaTransform;
+  private:
 
-  EmaInterpolate emaInterpolate;
+    EmaData emaData;
+    
+    EmaInfo emaInfo;
+    
+    EmaReader emaReader;
+    
+    EmaWriter emaWriter;
+    
+    EmaResample emaResample;
 
-  EmaResample emaResample;
-
-};
+  };
 #endif

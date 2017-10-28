@@ -18,11 +18,11 @@ int main(int argc, char* argv[]) {
 
     for(const std::string& channel: settings.channels) {
 
-      ema.transform().coil(channel).scale(settings.scale);
+      ema.coil(channel).transform().scale(settings.scale);
 
-      for(const arma::vec point: ema.access().coil(channel).position() ) {
+      for(int i = 0; i < ema.info().sample_amount(); ++i) {
 
-        points.push_back(point);
+        points.push_back(ema.coil(channel).access().position(i));
 
       }
     }
