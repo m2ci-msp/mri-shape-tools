@@ -11,16 +11,18 @@ class ImageCalculus{
 
 public:
 
+  // constructor that initializes the ImageData reference
+  // and creates the ImageAccess object
   ImageCalculus(ImageData& imageData) :
     imageData(imageData),
     imageAccess(ImageAccess(imageData)) {
   }
 
-  double derivative_x(
-                      const int& x,
-                      const int& y,
-                      const int& z
-                      ) const {
+  double dx(
+            const int& x,
+            const int& y,
+            const int& z
+            ) const {
   
     const double& left  = this->imageAccess.at_grid(x    , y, z);
     const double& right = this->imageAccess.at_grid(x + 1, y, z);
@@ -30,12 +32,12 @@ public:
     return (right - left) / hx;
   
   }
-
-  double derivative_y(
-                      const int& x,
-                      const int& y,
-                      const int& z
-                      ) const {
+  
+  double dy(
+            const int& x,
+            const int& y,
+            const int& z
+            ) const {
   
     const double& lower = this->imageAccess.at_grid(x, y    , z);
     const double& upper = this->imageAccess.at_grid(x, y + 1, z);
@@ -45,12 +47,12 @@ public:
     return (upper - lower) / hy;
   
   }
-
-  double derivative_z(
-                      const int& x,
-                      const int& y,
-                      const int& z
-                      ) const {
+  
+  double dz(
+            const int& x,
+            const int& y,
+            const int& z
+            ) const {
   
     const double& back  = this->imageAccess.at_grid(x, y, z    );
     const double& front = this->imageAccess.at_grid(x, y, z + 1);
@@ -61,11 +63,11 @@ public:
   
   }
 
-  double derivative_xx(
-                       const int& x,
-                       const int& y,
-                       const int& z
-                       ) const {
+  double dxx(
+             const int& x,
+             const int& y,
+             const int& z
+             ) const {
   
     const double& left   = this->imageAccess.at_grid(x-1, y, z);
     const double& center = this->imageAccess.at_grid(x  , y, z);
@@ -76,12 +78,12 @@ public:
     return ( left + 2 * center + right ) / ( pow( hx, 2 ) );
   
   }
-
-  double derivative_yy(
-                       const int& x,
-                       const int& y,
-                       const int& z
-                       ) const {
+  
+  double dyy(
+             const int& x,
+             const int& y,
+             const int& z
+             ) const {
   
     const double& lower  = this->imageAccess.at_grid(x, y-1, z);
     const double& center = this->imageAccess.at_grid(x, y  , z);
@@ -92,12 +94,12 @@ public:
     return ( lower + 2 * center + upper ) / ( pow( hy, 2 ) );
   
   }
-
-  double derivative_zz(
-                       const int& x,
-                       const int& y,
-                       const int& z
-                       ) const {
+  
+  double dzz(
+             const int& x,
+             const int& y,
+             const int& z
+             ) const {
   
     const double& back   = this->imageAccess.at_grid(x, y, z-1);
     const double& center = this->imageAccess.at_grid(x, y  , z);
@@ -116,9 +118,9 @@ public:
                    ) const {
   
     return
-      derivative_xx(x, y, z) +
-      derivative_yy(x, y, z) +
-      derivative_zz(x, y, z);
+      dxx(x, y, z) +
+      dyy(x, y, z) +
+      dzz(x, y, z);
   
   }
 
@@ -129,9 +131,9 @@ public:
                      ) const {
   
     return arma::vec({
-        derivative_x(x, y, z ),
-          derivative_y(x, y, z ),
-          derivative_z(x, y, z )
+        dx(x, y, z ),
+          dy(x, y, z ),
+          dz(x, y, z )
           });
   
   }

@@ -7,7 +7,23 @@ class ImageCoordinate{
 
 public:
 
+  // constructor that initializes the ImageData reference
   ImageCoordinate(const ImageData& imageData) : imageData(imageData) {
+  }
+
+   void from_grid(
+                 const int& gridX,
+                 const int& gridY,
+                 const int& gridZ,
+                 double& x,
+                 double& y,
+                 double& z
+                 ) const {
+  
+    x = gridX * this->imageData.hx + this->imageData.orgX;
+    y = gridY * this->imageData.hy + this->imageData.orgY;
+    z = gridZ * this->imageData.hz + this->imageData.orgZ;
+  
   }
 
   // int result
@@ -44,22 +60,7 @@ public:
   
   }
 
-  void from_grid(
-                 const int& gridX,
-                 const int& gridY,
-                 const int& gridZ,
-                 double& x,
-                 double& y,
-                 double& z
-                 ) {
-  
-    x = gridX * this->imageData.hx + this->imageData.orgX;
-    y = gridY * this->imageData.hy + this->imageData.orgY;
-    z = gridZ * this->imageData.hz + this->imageData.orgZ;
-  
-  }
-
-  private:
+private:
 
   const ImageData& imageData;
 

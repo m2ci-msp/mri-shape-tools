@@ -1,18 +1,20 @@
 #ifndef __IMAGE_ARITHMETIC_H__
 #define __IMAGE_ARITHMETIC_H__
 
-#include "ImageAccess.h"
-#include "ImageData.h"
-#include "ImageInfo.h"
+#include <stdexcept>
+
+#include "image/ImageData.h"
+#include "image/ImageAccess.h"
+#include "image/ImageInfo.h"
 
 class ImageArithmetic{
 
 public:
 
+  // constructor that initializes the ImageAccess object
   ImageArithmetic(ImageData& imageData) :
-    imageData(imageData),
-    imageAccess(imageData) {
-  }
+    imageAccess(ImageAccess(imageData)) {
+  } 
 
   void plus(const ImageAccess& otherAccess, const ImageInfo& otherInfo ) {
   
@@ -33,7 +35,7 @@ public:
     }
   
   }
-  
+
   void minus(const ImageAccess& otherAccess, const ImageInfo& otherInfo) {
   
     verify_compatibility(otherInfo);
@@ -56,7 +58,7 @@ public:
 
 private:
 
-  void verify_compatibility(const ImageInfo& otherInfo) {
+  void verify_compatibility(const ImageInfo& otherInfo) const  {
   
     if(
        otherInfo.get_nx() != this->imageData.nx ||
@@ -68,10 +70,6 @@ private:
     }
   
   }
-
-  ImageData& imageData;
-
-  ImageAccess imageAccess;
 
 };
 
