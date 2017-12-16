@@ -7,29 +7,30 @@ class ImageInfo{
 
 public:
 
-    // constructor
-    ImageInfo(const ImageData& imageData) : imageData(imageData) {
-    }
+  // constructor that initializes the ImageData reference
+  ImageInfo(const ImageData& imageData) : imageData(imageData) {
+  }
 
-    int get_nx() const { return this->imageData.nx; }
-    int get_ny() const { return this->imageData.ny; }
-    int get_nz() const { return this->imageData.nz; }
+  
 
-    int get_bx() const { return this->imageData.bx; }
-    int get_by() const { return this->imageData.by; }
-    int get_bz() const { return this->imageData.bz; }
+  // getters for boundary sizes
+  const int& get_bx() const { return this->imageData.bx; }
+  const int& get_by() const { return this->imageData.by; }
+  const int& get_bz() const { return this->imageData.bz; }
 
-    double get_hx() const { return this->imageData.hx; }
-    double get_hy() const { return this->imageData.hy; }
-    double get_hz() const { return this->imageData.hz; }
+  // getters for grid spacings
+  const double& get_hx() const { return this->imageData.hx; }
+  const double& get_hy() const { return this->imageData.hy; }
+  const double& get_hz() const { return this->imageData.hz; }
 
-    double get_org_x() const { return this->imageData.orgX; }
-    double get_org_y() const { return this->imageData.orgY; }
-    double get_org_z() const { return this->imageData.orgZ; }
+  // getters for image origin
+  const double& get_origin_x() const { return this->imageData.orgX; }
+  const double& get_origin_y() const { return this->imageData.orgY; }
+  const double& get_origin_z() const { return this->imageData.orgZ; }
 
 private:
 
-    const ImageData& imageData;
+  const ImageData& imageData;
 
-};
+  };
 #endif

@@ -11,12 +11,14 @@ class ImageMorphology{
 
 public:
 
+   // Sets the reference to the ImageData object and also initializes
+   // ImageAccess and ImageArithmetic members
   ImageMorphology(
                   ImageData& imageData
                   ) :
     imageData(imageData),
-    imageAccess(ImageAccess(imageData)),
-    imageArithmetic(ImageArithmetic(imageData)) {
+    imageAccess(ImageAccess(imageData)) {
+  
   }
 
   void dilation(
@@ -48,8 +50,8 @@ public:
   }
 
   void erosion(
-                const int& radius
-                ) {
+               const int& radius
+               ) {
   
     // make copy of original data
     ImageData originalData = this->imageData;
@@ -110,10 +112,9 @@ public:
   
     for(size_t i = 0; i < this->imageData.values.size(); ++i) {
   
-        this->imageData.values[i] = dilatedData.values[i] - this->imageData.values[i];
+      this->imageData.values[i] = dilatedData.values[i] - this->imageData.values[i];
   
     }
-  
   
   }
 
@@ -129,7 +130,7 @@ public:
   
     for(size_t i = 0; i < this->imageData.values.size(); ++i) {
   
-        this->imageData.values[i] = originalData.values[i] - this->imageData.values[i];
+      this->imageData.values[i] = originalData.values[i] - this->imageData.values[i];
   
     }
   
@@ -146,7 +147,7 @@ public:
   
     for(size_t i = 0; i < this->imageData.values.size(); ++i) {
   
-        this->imageData.values[i] = this->imageData.values[i] - originalData.values[i];
+      this->imageData.values[i] = this->imageData.values[i] - originalData.values[i];
   
     }
   
@@ -158,7 +159,7 @@ private:
     MINIMUM,
     MAXIMUM
   };
-  
+
   // find extremum in given neighborhood centered at provided grid position
   double find(
               Extremum type,
@@ -198,11 +199,7 @@ private:
   }
 
   ImageData& imageData;
-
   ImageAccess imageAccess;
 
-  ImageArithmetic imageArithmetic;
-
 };
-
 #endif

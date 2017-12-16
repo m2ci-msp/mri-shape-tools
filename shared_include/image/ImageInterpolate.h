@@ -7,7 +7,9 @@ class ImageInterpolate{
 
 public:
 
-  ImageInterpolate(const ImageAccess& imageAccess) : imageAccess(imageAccess) {
+  // constructor that initializes ImageAccess object
+  ImageInterpolate(ImageData& imageData) :
+    imageAccess(ImageAccess(imageData)) {
   }
 
   double at_grid(
@@ -58,9 +60,9 @@ public:
   
   }
 
-private:
+  private:
 
-  const ImageAccess& imageAccess;
+  const ImageAccess imageAccess;
 
 };
 
