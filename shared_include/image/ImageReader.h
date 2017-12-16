@@ -37,9 +37,9 @@ public:
 
     // read origin
     Json::Value origin = root["origin"];
-    this->imageData.orgX = origin["x"].asDouble();
-    this->imageData.orgY = origin["y"].asDouble();
-    this->imageData.orgZ = origin["z"].asDouble();
+    this->imageData.originX = origin["x"].asDouble();
+    this->imageData.originY = origin["y"].asDouble();
+    this->imageData.originZ = origin["z"].asDouble();
 
     // read dimensions
     Json::Value dimensions = root["dimensions"];

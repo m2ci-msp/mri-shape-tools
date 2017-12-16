@@ -10,7 +10,7 @@ class ImageCreate{
 public:
 
   // constructor that initializes the ImageData reference
-  ImageCreate(const ImageData& imageData) : imageData(imageData) {
+  ImageCreate(ImageData& imageData) : imageData(imageData) {
   }
 
   ImageCreate& with_dimension(const int& nx, 
@@ -151,6 +151,11 @@ private:
     }
 
   ImageData& imageData;
+
+  bool dimensionSet = false;
+  bool boundarySet = false;
+  bool gridSpacingSet = false;
+  bool originSet = false;
 
   // dimension settings
   int nx;

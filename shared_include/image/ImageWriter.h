@@ -44,9 +44,9 @@ public:
 
     // origin of scan
     Json::Value origin(Json::objectValue);
-    origin["x"] = copy.orgX;
-    origin["y"] = copy.orgY;
-    origin["z"] = copy.orgZ;
+    origin["x"] = copy.originX;
+    origin["y"] = copy.originY;
+    origin["z"] = copy.originZ;
 
     root["origin"] = origin;
 

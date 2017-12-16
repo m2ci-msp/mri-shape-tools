@@ -36,7 +36,7 @@ public:
     const int& ny = this->imageData.ny;
     const int& nz = this->imageData.nz;
 
-    this->imageMirror.mirror();
+    this->imageMirror.all();
 
     // create image copy
     ImageData copyData = this->imageData;

@@ -20,9 +20,9 @@ public:
                  double& z
                  ) const {
   
-    x = gridX * this->imageData.hx + this->imageData.orgX;
-    y = gridY * this->imageData.hy + this->imageData.orgY;
-    z = gridZ * this->imageData.hz + this->imageData.orgZ;
+    x = gridX * this->imageData.hx + this->imageData.originX;
+    y = gridY * this->imageData.hy + this->imageData.originY;
+    z = gridZ * this->imageData.hz + this->imageData.originZ;
   
   }
 
@@ -37,9 +37,9 @@ public:
                int& gridZ
                ) {
   
-    gridX = (x - this->imageData.orgX ) / this->imageData.hx;
-    gridY = (y - this->imageData.orgY ) / this->imageData.hy;
-    gridZ = (z - this->imageData.orgZ ) / this->imageData.hz;
+    gridX = (x - this->imageData.originX ) / this->imageData.hx;
+    gridY = (y - this->imageData.originY ) / this->imageData.hy;
+    gridZ = (z - this->imageData.originZ ) / this->imageData.hz;
   
   }
   
@@ -54,9 +54,9 @@ public:
                double& gridZ
                ) {
   
-    gridX = (x - this->imageData.orgX ) / this->imageData.hx;
-    gridY = (y - this->imageData.orgY ) / this->imageData.hy;
-    gridZ = (z - this->imageData.orgZ ) / this->imageData.hz;
+    gridX = (x - this->imageData.originX ) / this->imageData.hx;
+    gridY = (y - this->imageData.originY ) / this->imageData.hy;
+    gridZ = (z - this->imageData.originZ ) / this->imageData.hz;
   
   }
 

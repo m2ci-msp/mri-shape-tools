@@ -13,6 +13,7 @@ public:
 
   // constructor that initializes the ImageAccess object
   ImageArithmetic(ImageData& imageData) :
+    imageData(imageData),
     imageAccess(ImageAccess(imageData)) {
   } 
 
@@ -70,6 +71,9 @@ private:
     }
   
   }
+
+  const ImageData& imageData;
+  ImageAccess imageAccess;
 
 };
 

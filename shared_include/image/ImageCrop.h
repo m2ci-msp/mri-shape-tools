@@ -36,24 +36,18 @@ public:
     const int nzNew = maxZ - minZ + 1;
   
     // compute new origin
-    const double orgXNew = this->imageData.orgX + minX * this->imageData.hx;
-    const double orgYNew = this->imageData.orgY + minY * this->imageData.hy;
-    const double orgZNew = this->imageData.orgZ + minZ * this->imageData.hz;
+    const double originXNew = this->imageData.originX + minX * this->imageData.hx;
+    const double originYNew = this->imageData.originY + minY * this->imageData.hy;
+    const double originZNew = this->imageData.originZ + minZ * this->imageData.hz;
   
     ImageData croppedData;
   
-    ImageCreate(croppedData).empty_image(
-                                     nxNew, nyNew, nzNew,
-                                     // use zero boundary sizes
-                                     0, 0, 0,
-                                     // grid spacings of original
-                                     this->imageData.hx,
-                                     this->imageData.hy,
-                                     this->imageData.hz,
-                                     // new origin
-                                     orgXNew, orgYNew, orgZNew
-                                     );
-  
+    ImageCreate(croppedData).with_dimension(nxNew, nyNew, nzNew)
+                            .with_boundary(0, 0, 0)
+                            .with_grid_spacing(this->imageData.hx, this->imageData.hy, this->imageData.hz)
+                            .with_origin(originXNew, originYNew, originZNew)
+                            .empty_image();
+
     ImageAccess cropped(croppedData);
   
     for(int i = minX; i <= maxX; ++i) {
