@@ -50,7 +50,7 @@ public:
     GaussianFilter(copyData, this->settings.presmoothSigma).apply();
 
     // mirror boundaries
-    ImageMirror(copyData).mirror();
+    ImageMirror(copyData).all();
 
     // create object for performing calculus operations
     ImageCalculus copy(copyData);
@@ -97,13 +97,13 @@ private:
 
   void init_structure_tensors() {
 
-    ImageCreate(this->J11Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->J22Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->J33Data).empty_image(this->nx, this->ny, this->nz);
+    ImageCreate(this->J11Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->J22Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->J33Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
 
-    ImageCreate(this->J12Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->J13Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->J23Data).empty_image(this->nx, this->ny, this->nz);
+    ImageCreate(this->J12Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->J13Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->J23Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
 
   }
 

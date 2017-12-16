@@ -192,29 +192,29 @@ private:
 
   void init_stencils() {
 
-    ImageCreate(this->X0Y0Z0Data).empty_image(this->nx, this->ny, this->nz);
+    ImageCreate(this->X0Y0Z0Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
 
-    ImageCreate(this->XMYMZ0Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->XMYPZ0Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->XPYMZ0Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->XPYPZ0Data).empty_image(this->nx, this->ny, this->nz);
+    ImageCreate(this->XMYMZ0Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->XMYPZ0Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->XPYMZ0Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->XPYPZ0Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
 
-    ImageCreate(this->XMY0ZMData).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->XMY0ZPData).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->XPY0ZMData).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->XPY0ZPData).empty_image(this->nx, this->ny, this->nz);
+    ImageCreate(this->XMY0ZMData).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->XMY0ZPData).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->XPY0ZMData).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->XPY0ZPData).with_dimension(this->nx, this->ny, this->nz).empty_image();
 
-    ImageCreate(this->X0YMZMData).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->X0YMZPData).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->X0YPZMData).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->X0YPZPData).empty_image(this->nx, this->ny, this->nz);
+    ImageCreate(this->X0YMZMData).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->X0YMZPData).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->X0YPZMData).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->X0YPZPData).with_dimension(this->nx, this->ny, this->nz).empty_image();
 
-    ImageCreate(this->XMY0Z0Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->XPY0Z0Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->X0YMZ0Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->X0YPZ0Data).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->X0Y0ZMData).empty_image(this->nx, this->ny, this->nz);
-    ImageCreate(this->X0Y0ZPData).empty_image(this->nx, this->ny, this->nz);
+    ImageCreate(this->XMY0Z0Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->XPY0Z0Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->X0YMZ0Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->X0YPZ0Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->X0Y0ZMData).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->X0Y0ZPData).with_dimension(this->nx, this->ny, this->nz).empty_image();
 
   }
 

@@ -11,7 +11,10 @@ public:
   ImageInfo(const ImageData& imageData) : imageData(imageData) {
   }
 
-  
+  // getters for resolution
+  const int& get_nx() const { return this->imageData.nx; }
+  const int& get_ny() const { return this->imageData.ny; }
+  const int& get_nz() const { return this->imageData.nz; }
 
   // getters for boundary sizes
   const int& get_bx() const { return this->imageData.bx; }
@@ -24,9 +27,9 @@ public:
   const double& get_hz() const { return this->imageData.hz; }
 
   // getters for image origin
-  const double& get_origin_x() const { return this->imageData.orgX; }
-  const double& get_origin_y() const { return this->imageData.orgY; }
-  const double& get_origin_z() const { return this->imageData.orgZ; }
+  const double& get_origin_x() const { return this->imageData.originX; }
+  const double& get_origin_y() const { return this->imageData.originY; }
+  const double& get_origin_z() const { return this->imageData.originZ; }
 
 private:
 

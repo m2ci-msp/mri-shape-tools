@@ -50,7 +50,7 @@ private:
 
     const int& bx = this->imageData.bx;
 
-    this->imageMirror.mirror_x();
+    this->imageMirror.x();
 
     for(int z = 0; z < nz; ++z) {
 
@@ -82,7 +82,7 @@ private:
 
     const int& by = this->imageData.by;
 
-    this->imageMirror.mirror_y();
+    this->imageMirror.y();
 
     for(int z = 0; z < nz; ++z) {
       for(int x = 0; x < nx; ++x) {
@@ -113,7 +113,7 @@ private:
 
     const int& bz = this->imageData.bz;
 
-    this->imageMirror.mirror_z();
+    this->imageMirror.z();
 
     for(int x = 0; x < nx; ++x) {
       for(int y = 0; y < ny; ++y) {
