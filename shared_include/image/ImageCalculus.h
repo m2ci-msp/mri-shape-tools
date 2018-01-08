@@ -150,7 +150,29 @@ public:
   
   }
 
-private:
+  arma::mat region_structure_tensor(
+                                    const int& x,
+                                    const int& y,
+                                    const int& z,
+                                    const int& radius
+                                    ) {
+
+    arma::mat result = arma::zeros(3, 3);
+
+    for(int i = -radius; i <= radius; ++i) {
+      for(int j = -radius; j <= radius; ++j) {
+        for(int k = -radius; k <= radius; ++k) {
+
+          result += structure_tensor(x + radius, y + radius, z + radius);
+        }
+      }
+    }
+
+    return result / pow(2 * radius + 1, 2);
+
+  }
+
+  private:
 
   ImageData& imageData;
 
