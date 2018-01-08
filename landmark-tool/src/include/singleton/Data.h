@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "scan/Scan.h"
+#include "image/Image.h"
 
 #include "singleton/GuiDescription.h"
 #include "core/ImageStack.h"
@@ -67,13 +67,13 @@ class Data {
 
     /*----------------------------------------------------------------------*/
 
-    void set_scan(const Scan& scanData) {
+    void set_scan(const Image& scanData) {
       this->scan = scanData;
     }
 
     /*----------------------------------------------------------------------*/
 
-    const Scan& get_scan() const {
+    const Image& get_scan() const {
       return this->scan;
     }
 
@@ -102,6 +102,7 @@ class Data {
     static std::shared_ptr<Data> instance;
     int viewMode;
 
-    Scan scan;
+    Image scan;
+
 };
 #endif

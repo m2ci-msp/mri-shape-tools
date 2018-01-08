@@ -4,14 +4,15 @@
 #include "action/Action.h"
 #include "core/ImageStack.h"
 
-#include "scan/Scan.h"
-#include "scan/ScanIO.h"
+#include "image/Image.h"
 
 class ProcessScan : public Action {
 
   public:
-    ProcessScan(const std::string& path) : 
-      scan(ScanIO::read_from(path)) {
+  ProcessScan(const std::string& path) {
+
+      this->scan.read().from(path);
+
     }
 
     /*----------------------------------------------------------------------*/
@@ -20,8 +21,8 @@ class ProcessScan : public Action {
 
       // scale scan values to the interval [0, 255] and enhance contrast
       // discard 0.25% of darkest and brightest colors
-      this->scan.transform()->discard_values(0.25, 0.25);
-      this->scan.transform()->scale_values(0, 255);
+      this->scan.values().discard(0.25, 0.25);
+      this->scan.values().scale(0, 255);
 
       Data::get_instance()->set_image_stack(get_image_stack());
       Data::get_instance()->set_scan(scan);
@@ -31,7 +32,7 @@ class ProcessScan : public Action {
     /*----------------------------------------------------------------------*/
 
   private:
-    Scan scan;
+    Image scan;
 
     /*----------------------------------------------------------------------*/
 
@@ -40,13 +41,12 @@ class ProcessScan : public Action {
 
         std::vector<Cairo::RefPtr<Cairo::ImageSurface> > slices;
 
-        for(int i = 0; i < this->scan.data()->get_nz(); ++i) {
+        for(int i = 0; i < this->scan.info().get_nz(); ++i) {
           slices.push_back( create_image_from_slice(i) );
         }
 
         std::shared_ptr<ImageStack> stack =
           std::make_shared<ImageStack>(slices);
-
 
         return stack;
 
@@ -59,8 +59,8 @@ class ProcessScan : public Action {
       create_image_from_slice( const int& slice ) {
 
       // get dimensions of image
-      const int columns = this->scan.data()->get_nx();
-      const int rows = this->scan.data()->get_ny();
+      const int columns = this->scan.info().get_nx();
+      const int rows = this->scan.info().get_ny();
 
       // create new cairo image surface
       Cairo::RefPtr<Cairo::ImageSurface> cairoImage = 
@@ -77,7 +77,7 @@ class ProcessScan : public Action {
         for( int j = 0; j < rows; ++j) {
 
           // get color at the current voxel
-          double currentColor = this->scan.access()->get_value_index(i, j, slice);
+          double currentColor = this->scan.access().at_grid(i, j, slice);
 
           // get data for current pixels
           unsigned char *p = data + stride * j + i * channelAmount;
