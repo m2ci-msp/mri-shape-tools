@@ -66,7 +66,7 @@ public:
   
      to enhance the contrast.
   */
-  void discard_values(
+  void discard(
     // percentage of darkest colors to discard
     const double& lower,
     // percentage of brightest colors to discard
