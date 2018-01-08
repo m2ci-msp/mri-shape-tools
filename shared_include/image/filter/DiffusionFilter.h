@@ -26,7 +26,7 @@ public:
     stencils(diffusionTensors) {
 
     // reset boundary size
-    this->imageBoundary.change_boundary(1, 1, 1);
+    this->imageBoundary.change(1, 1, 1);
 
   }
 

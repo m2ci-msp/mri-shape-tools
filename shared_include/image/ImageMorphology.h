@@ -30,7 +30,7 @@ public:
     ImageAccess originalAccess(originalData);
   
     // adapt boundary and mirror
-    ImageBoundary(originalData).change_boundary(radius, radius, radius);
+    ImageBoundary(originalData).change(radius, radius, radius);
     ImageMirror(originalData).all();
   
     const int& nx = this->imageData.nx;
@@ -58,7 +58,7 @@ public:
     ImageAccess originalAccess(originalData);
   
     // adapt boundary and mirror
-    ImageBoundary(originalData).change_boundary(radius, radius, radius);
+    ImageBoundary(originalData).change(radius, radius, radius);
     ImageMirror(originalData).all();
   
     const int& nx = this->imageData.nx;

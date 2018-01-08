@@ -18,7 +18,7 @@ public:
 
     // create image data without boundary information
     ImageData copy = this->imageData;
-    ImageBoundary(copy).change_boundary(0, 0, 0);
+    ImageBoundary(copy).change(0, 0, 0);
 
     // try to open file
     std::ofstream outFile(fileName);

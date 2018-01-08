@@ -15,11 +15,11 @@ public:
     imageAccess(ImageAccess(imageData)) {
   }
 
-  void change_boundary(
-                       const int& bx,
-                       const int& by,
-                       const int& bz
-                       ) {
+  void change(
+              const int& bx,
+              const int& by,
+              const int& bz
+              ) {
   
     // check if update is needed
     if( bx == this->imageData.bx && by == this->imageData.by && bz == this->imageData.bz ) {
@@ -60,7 +60,7 @@ public:
   
   }
 
-  private:
+private:
 
   ImageData& imageData;
   ImageAccess imageAccess;
