@@ -1,7 +1,7 @@
 #ifndef __CREATE_POINT_CLOUD_H__
 #define __CREATE_POINT_CLOUD_H__
 
-#include "scan/Scan.h"
+#include "image/Image.h"
 #include "mesh/Mesh.h"
 
 class CreatePointCloud{
@@ -10,7 +10,7 @@ class CreatePointCloud{
 
     /*----------------------------------------------------------------------*/
 
-    CreatePointCloud(const Scan& scan) :
+    CreatePointCloud(Image& scan) :
 
       scan(scan) {
 
@@ -46,18 +46,23 @@ class CreatePointCloud{
       std::vector<arma::vec> vertices;
       std::vector<arma::vec> normals;
 
-      const int nx = this->scan.data()->get_nx();
-      const int ny = this->scan.data()->get_ny();
-      const int nz = this->scan.data()->get_nz();
+      const int nx = this->scan.info().get_nx();
+      const int ny = this->scan.info().get_ny();
+      const int nz = this->scan.info().get_nz();
 
-      const double hx = this->scan.data()->get_hx();
-      const double hy = this->scan.data()->get_hy();
-      const double hz = this->scan.data()->get_hz();
+      const double hx = this->scan.info().get_hx();
+      const double hy = this->scan.info().get_hy();
+      const double hz = this->scan.info().get_hz();
+
+      const int boundary = this->radius + 1;
+
+      this->scan.boundary().change(boundary, boundary, boundary);
+      this->scan.mirror().all();
 
       const arma::vec origin({
-          this->scan.data()->get_org_x() * hx,
-          this->scan.data()->get_org_y() * hy,
-          this->scan.data()->get_org_z() * hz
+          this->scan.info().get_origin_x(),
+          this->scan.info().get_origin_y(),
+          this->scan.info().get_origin_z()
           });
 
       // iterate over all voxels
@@ -97,7 +102,7 @@ class CreatePointCloud{
 
     /* heuristic for surface point:
      * point itself belongs to surface class ( value 255 )
-     * one of its 26 neighbors does not belong to the surface class
+     * one of its 6 neighbors does not belong to the surface class
      */
     bool is_surface_point(
         const int& x,
@@ -105,34 +110,20 @@ class CreatePointCloud{
         const int& z
         ) const {
 
-      if( this->scan.access()->get_value_index(x, y, z) != 255 ) {
+      if( this->scan.access().at_grid(x, y, z) != 255 ) {
+
         return false;
+
       }
 
       return (
-        this->scan.access()->get_value_index_neumann( x - 1, y, z) != 255 ||
-        this->scan.access()->get_value_index_neumann( x + 1, y, z) != 255 ||
-        this->scan.access()->get_value_index_neumann( x    , y - 1, z) != 255 ||
-        this->scan.access()->get_value_index_neumann( x    , y + 1, z) != 255 ||
-        this->scan.access()->get_value_index_neumann( x    , y, z - 1) != 255 ||
-        this->scan.access()->get_value_index_neumann( x    , y, z + 1) != 255
+              this->scan.access().at_grid( x - 1, y    , z    ) != 255 ||
+              this->scan.access().at_grid( x + 1, y    , z    ) != 255 ||
+              this->scan.access().at_grid( x    , y - 1, z    ) != 255 ||
+              this->scan.access().at_grid( x    , y + 1, z    ) != 255 ||
+              this->scan.access().at_grid( x    , y    , z - 1) != 255 ||
+              this->scan.access().at_grid( x    , y    , z + 1) != 255
         );
-
-
-      /*
-      for( int i = -1; i <= 1; ++i) {
-        for( int j = -1; j <= 1; ++j) {
-          for( int k = -1; k <= 1; ++k) {
-            if( this->scan.access()->get_value_index_neumann(
-                  x + i, y + j, z + k) != 255  ) {
-              return true;
-            }
-          }
-        }
-      }
-      */
-
-      // return false;
 
     }
 
@@ -171,14 +162,19 @@ class CreatePointCloud{
 
       // output gradient at current voxel if radius is 0
       if( radius == 0 ) {
-        arma::vec central = this->scan.analysis()->compute_gradient(x, y, z);
+
+        arma::vec central = this->scan.calculus().gradient(x, y, z);
         return arma::normalise(central);
+
       }
 
       // derive subspace of local principal gradient directions
       const arma::mat structureTensor =
-        this->scan.analysis()->compute_region_structure_tensor(
+
+        this->scan.calculus().region_structure_tensor(
+
           x, y, z, this->radius
+
           );
 
       // perform eigenvalue decomposition to extract most dominant direction
@@ -203,7 +199,7 @@ class CreatePointCloud{
         const int& z
         ) const {
 
-      const double target = this->scan.access()->get_value_index_neumann(
+      const double target = this->scan.access().at_grid(
           x + 2 * direction(0),
           y + 2 * direction(1),
           z + 2 * direction(2)
@@ -215,7 +211,7 @@ class CreatePointCloud{
 
     /*----------------------------------------------------------------------*/
 
-    const Scan& scan;
+    Image& scan;
 
     // flag indicating of the normals should be flipped
     bool flip;
