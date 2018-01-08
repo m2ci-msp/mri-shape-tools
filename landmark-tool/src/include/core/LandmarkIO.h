@@ -32,9 +32,9 @@ class LandmarkIO {
       }
 
       // get origin of scan
-      const double orgX = Data::get_instance()->get_scan().data()->get_org_x();
-      const double orgY = Data::get_instance()->get_scan().data()->get_org_y();
-      const double orgZ = Data::get_instance()->get_scan().data()->get_org_z();
+      const double orgX = Data::get_instance()->get_scan().info().get_origin_x() / Data::get_instance()->get_scan().info().get_hx();
+      const double orgY = Data::get_instance()->get_scan().info().get_origin_y() / Data::get_instance()->get_scan().info().get_hy();
+      const double orgZ = Data::get_instance()->get_scan().info().get_origin_z() / Data::get_instance()->get_scan().info().get_hz();
 
       Json::Value root;
       Json::Reader reader;
@@ -92,9 +92,10 @@ class LandmarkIO {
       }
 
       // get origin of scan
-      const double orgX = Data::get_instance()->get_scan().data()->get_org_x();
-      const double orgY = Data::get_instance()->get_scan().data()->get_org_y();
-      const double orgZ = Data::get_instance()->get_scan().data()->get_org_z();
+      const double orgX = Data::get_instance()->get_scan().info().get_origin_x() / Data::get_instance()->get_scan().info().get_hx();
+      const double orgY = Data::get_instance()->get_scan().info().get_origin_y() / Data::get_instance()->get_scan().info().get_hy();
+      const double orgZ = Data::get_instance()->get_scan().info().get_origin_z() / Data::get_instance()->get_scan().info().get_hz();
+
 
       // create root node of json file
       Json::Value root(Json::arrayValue);
