@@ -90,7 +90,7 @@ public:
   ImageExtrema& extrema() { return this->imageExtrema; }
   ImageFilter& filter() { return this->imageFilter; }
   ImageHistogram& histogram() { return this->imageHistogram; }
-  ImageInfo& info() { return this->imageInfo; }
+  const ImageInfo& info() const { return this->imageInfo; }
   ImageInterpolate& interpolate() { return this->imageInterpolate; }
   ImageMirror& mirror() { return this->imageMirror; }
   ImageMorphology& morphology() { return this->imageMorphology; }
