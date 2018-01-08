@@ -2,15 +2,16 @@
 #include <vector>
 
 #include "settings.h"
-#include "scan/ScanIO.h"
+#include "image/Image.h"
 
 int main(int argc, char* argv[]) {
 
   Settings settings(argc, argv);
 
-  auto input = ScanIO::read_from(settings.inputScan);
+  Image input;
+  input.read().from(settings.inputScan);
 
-  input.transform()->crop(
+  input.crop().to(
       settings.min.at(0),
       settings.min.at(1),
       settings.min.at(2),
@@ -19,7 +20,7 @@ int main(int argc, char* argv[]) {
       settings.max.at(2)
       );
 
-  ScanIO::write_to(settings.outputScan, input);
+  input.write().to(settings.outputScan);
 
   return 0;
 
