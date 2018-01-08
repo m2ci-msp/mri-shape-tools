@@ -104,8 +104,6 @@ private:
       this->energy.data().sourceProfiles, targetProfiles
       );
 
-
-    
   }
 
   /*--------------------------------------------------------------------------*/

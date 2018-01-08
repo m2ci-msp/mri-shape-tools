@@ -4,7 +4,7 @@
 #include "settings.h"
 #include "mesh/MeshIO.h"
 #include "mesh/ProfileMesh.h"
-#include "scan/ScanIO.h"
+#include "image/Image.h"
 
 #include "EnergyData.h"
 #include "Energy.h"
@@ -15,8 +15,12 @@ int main(int argc, char* argv[]) {
   Settings settings(argc, argv);
 
   Mesh sourceMesh = MeshIO::read(settings.sourceMesh);
-  Scan sourceScan = ScanIO::read_from(settings.sourceScan);
-  Scan targetScan = ScanIO::read_from(settings.targetScan);
+
+  Image sourceScan;
+  Image targetScan;
+
+  sourceScan.read().from(settings.sourceScan);
+  targetScan.read().from(settings.targetScan);
 
   ProfileMesh sourceProfileMesh(sourceMesh, sourceScan);
 

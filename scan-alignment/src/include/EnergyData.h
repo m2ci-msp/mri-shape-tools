@@ -7,7 +7,7 @@
 #include <armadillo>
 
 #include "mesh/Mesh.h"
-#include "scan/Scan.h"
+#include "image/Image.h"
 
 class EnergyData{
 
@@ -18,7 +18,7 @@ public:
   EnergyData(
     const Mesh& sourceMesh,
     const std::vector<arma::vec>& sourceProfiles,
-    const Scan& targetScan
+    const Image& targetScan
     ):
     sourceMesh(sourceMesh), sourceProfiles(sourceProfiles),
     targetScan(targetScan) {
@@ -31,7 +31,7 @@ public:
 
   Mesh sourceMesh;
   std::vector<arma::vec> sourceProfiles;
-  Scan targetScan;
+  Image targetScan;
 
   vnl_vector<double> transformation;
   
