@@ -181,7 +181,7 @@ private:
         this->imageData.bz < this->radius
       ) {
 
-      this->imageBoundary.change_boundary(radius, radius, radius);
+      this->imageBoundary.change(radius, radius, radius);
 
     }
 

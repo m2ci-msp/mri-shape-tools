@@ -2,6 +2,7 @@
 #define __IMAGE_ACCESS_H__
 
 #include "image/ImageData.h"
+#include "image/ImageCoordinate.h"
 
 class ImageAccess{
 
@@ -38,6 +39,27 @@ public:
   
     return this->imageData.values.at( compute_index(bx + x, by + y, bz + z) );
   
+  }
+
+  double& at_coordinate(const double& x, const double& y, const double& z) {
+
+    int i, j, k;
+
+    ImageCoordinate(this->imageData).to_grid(x, y, z, i, j, k);
+
+    return at_grid(i, j, k);
+
+  }
+
+  // const version
+  const double& at_coordinate(const double& x, const double& y, const double& z) const {
+
+    int i, j, k;
+
+    ImageCoordinate(this->imageData).to_grid(x, y, z, i, j, k);
+
+    return at_grid(i, j, k);
+
   }
 
   double& at_grid_raw(

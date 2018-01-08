@@ -16,7 +16,7 @@ public:
     imageData(imageData), imageCopy(imageData), iterations(iterations) {
 
     // remove boundary in copy
-    ImageBoundary(imageCopy).change_boundary(0, 0, 0);
+    ImageBoundary(imageCopy).change(0, 0, 0);
 
   }
 
