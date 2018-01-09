@@ -54,7 +54,7 @@ public:
       for(int j = minY; j <= maxY; ++j) {
         for(int k = minZ; k <= maxZ; ++k) {
   
-          cropped.at_grid(i, j, k) = this->imageAccess.at_grid(i, j, k);
+          cropped.at_grid(i - minX, j - minY, k - minZ) = this->imageAccess.at_grid(i, j, k);
   
         }
       }
