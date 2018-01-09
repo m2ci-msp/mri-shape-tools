@@ -73,13 +73,13 @@ private:
 
   void init_diffusion_tensors() {
 
-    ImageCreate(this->D11Data).with_dimension(this->nx, this->ny, this->nz);
-    ImageCreate(this->D22Data).with_dimension(this->nx, this->ny, this->nz);
-    ImageCreate(this->D33Data).with_dimension(this->nx, this->ny, this->nz);
+    ImageCreate(this->D11Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->D22Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->D33Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
 
-    ImageCreate(this->D12Data).with_dimension(this->nx, this->ny, this->nz);
-    ImageCreate(this->D13Data).with_dimension(this->nx, this->ny, this->nz);
-    ImageCreate(this->D23Data).with_dimension(this->nx, this->ny, this->nz);
+    ImageCreate(this->D12Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->D13Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
+    ImageCreate(this->D23Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
 
   }
 
