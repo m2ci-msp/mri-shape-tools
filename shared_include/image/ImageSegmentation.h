@@ -21,7 +21,7 @@ public:
       Otsu(this->imageData).apply();
   }
 
-  void cascaded_otsu(const double& iterations) {
+  void cascaded_otsu(const int& iterations) {
       CascadedOtsu(this->imageData, iterations).apply();
   }
 
