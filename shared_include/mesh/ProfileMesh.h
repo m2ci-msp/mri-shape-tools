@@ -52,7 +52,8 @@ public:
   void compute_profiles() {
 
     // change boundary of scan and mirror
-    const double size = this->offset + this->length;
+    const double size = 2 * ( this->offset + this->length );
+
     this->scan.boundary().change(size, size, size);
 
     this->scan.mirror().all();
