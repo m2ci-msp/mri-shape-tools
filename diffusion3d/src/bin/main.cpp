@@ -10,14 +10,12 @@ int main(int argc, char* argv[]) {
   scan.read().from(settings.inputScan);
   scan.values().scale(0, 255);
 
-  const double stepSize = 0.125;
-
   scan.filter().diffusion(
-                          settings.diffusionSettings.timeSteps,
-                          stepSize,
-                          settings.diffusionSettings.contrastLambda,
-                          settings.diffusionSettings.integrationRho,
-                          settings.diffusionSettings.presmoothSigma
+                          settings.timeSteps,
+                          settings.stepSize,
+                          settings.contrastLambda,
+                          settings.integrationRho,
+                          settings.presmoothSigma
                           );
 
   scan.write().to(settings.outputScan);
