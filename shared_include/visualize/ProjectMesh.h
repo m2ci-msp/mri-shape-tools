@@ -15,12 +15,6 @@ public:
 
     this->max = this->scan.extrema().get_max();
 
-    this->scanOrigin = arma::vec( {
-        scan.info().get_origin_x(),
-          scan.info().get_origin_y(),
-          scan.info().get_origin_z()
-          });
-
   }
 
   /*------------------------------------------------------------------------*/
@@ -84,7 +78,7 @@ private:
 
       // sample point on edge and shift to origin of scan
       arma::vec coordinate =
-        start + i * sampleDistance * direction - this->scanOrigin;
+        start + i * sampleDistance * direction;
 
       // set voxel color to maximum at computed coordinate
       this->scan.access().at_coordinate(coordinate(0), coordinate(1), coordinate(2) ) = this->max;
@@ -100,8 +94,6 @@ private:
 
   double max;
   double sampleAmount;
-
-  arma::vec scanOrigin;
 
   /*------------------------------------------------------------------------*/
 

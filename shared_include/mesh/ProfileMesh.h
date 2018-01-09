@@ -27,13 +27,6 @@ public:
       this->vertexNormals = estimator.compute();
     }
 
-    // get origin of scan
-    const double orgX = scan.info().get_origin_x();
-    const double orgY = scan.info().get_origin_y();
-    const double orgZ = scan.info().get_origin_z();
-
-    this->origin = arma::vec{orgX, orgY, orgZ};
-
   }
 
   /*-----------------------------------------------------------------------*/
@@ -98,9 +91,7 @@ private:
 
     for(int i = 0; i < this->length; ++i) {
 
-      // make sure to map the coordinate to the local coordinate system
-      // of the scan
-      const arma::vec position = vertex + (i + offset) * normal - this->origin;
+      const arma::vec position = vertex + (i + offset) * normal;
 
       result(i) =
 
@@ -115,8 +106,6 @@ private:
 
   std::vector<arma::vec> profiles;
   Image& scan;
-
-  arma::vec origin;
 
   int length;
   double offset;
