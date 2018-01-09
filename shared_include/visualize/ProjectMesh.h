@@ -1,6 +1,8 @@
 #ifndef __PROJECT_MESH_H__
 #define __PROJECT_MESH_H__
 
+#include <stdexcept>
+
 #include <armadillo>
 
 #include "mesh/Mesh.h"
@@ -76,12 +78,20 @@ private:
     // sample edge
     for(int i = 0; i <= this->sampleAmount; ++i) {
 
-      // sample point on edge and shift to origin of scan
+      // sample point on edge
       arma::vec coordinate =
         start + i * sampleDistance * direction;
 
-      // set voxel color to maximum at computed coordinate
-      this->scan.access().at_coordinate(coordinate(0), coordinate(1), coordinate(2) ) = this->max;
+      try{
+
+        this->scan.access().at_coordinate(coordinate(0), coordinate(1), coordinate(2) ) = this->max;
+
+      }
+      catch (std::out_of_range exception) {
+
+        std::cerr << "Warning: attempt to draw at invalid position." << std::endl;
+
+      }
 
     } // end for
 
