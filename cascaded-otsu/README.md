@@ -36,7 +36,7 @@ make install
 - **cascadeAmount** : amount of iterations to perform
 - **source** : input MRI scan
 - **output** : segmented scan
-- **cloud** : output name for point cloud. Supported output formats: OBj and PLY.
+- **cloud** : output name for point cloud. Supported output formats: OBJ and PLY.
 - **flip** : flip the output normals in the point cloud.
 
 [1]: https://en.wikipedia.org/wiki/Otsu%27s_method
