@@ -158,17 +158,20 @@ public:
                                     ) {
 
     arma::mat result = arma::zeros(3, 3);
+    double count = 0;
 
     for(int i = -radius; i <= radius; ++i) {
       for(int j = -radius; j <= radius; ++j) {
         for(int k = -radius; k <= radius; ++k) {
 
-          result += structure_tensor(x + radius, y + radius, z + radius);
+          result += structure_tensor(x + i, y + j, z + k);
+          ++count;
+
         }
       }
     }
 
-    return result / pow(2 * radius + 1, 2);
+    return result / count;
 
   }
 
