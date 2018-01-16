@@ -1,17 +1,16 @@
-#ifndef __PROCESS_SCAN_H__
-#define __PROCESS_SCAN_H__
+#ifndef __PROCESS_SEGMENTATION_H__
+#define __PROCESS_SEGMENTATION_H__
 
-#include "action/Action.h"
+#include "action/ProcessScan.h"
 #include "core/ImageStack.h"
 
 #include "image/Image.h"
 
-class ProcessScan : public Action {
+class ProcessSegmentation : public ProcessScan {
 
   public:
-  ProcessScan(const std::string& path) {
 
-      this->scan.read().from(path);
+    ProcessSegmentation(const std::string& path) : ProcessScan(path) {
 
     }
 
@@ -19,39 +18,9 @@ class ProcessScan : public Action {
 
     virtual void execute() {
 
-      // scale scan values to the interval [0, 255] and enhance contrast
-      // discard 0.25% of darkest and brightest colors
-      this->scan.values().discard(0.25, 0.25);
-      this->scan.values().scale(0, 255);
-
-      Data::get_instance()->set_image_stack(get_image_stack());
-      Data::get_instance()->set_scan(scan);
+      Data::get_instance()->set_segmentation_stack(get_image_stack());
 
     }
-
-    /*----------------------------------------------------------------------*/
-
-  protected:
-    Image scan;
-
-    /*----------------------------------------------------------------------*/
-
-    std::shared_ptr<ImageStack>
-      get_image_stack() {
-
-        std::vector<Cairo::RefPtr<Cairo::ImageSurface> > slices;
-
-        for(int i = 0; i < this->scan.info().get_nz(); ++i) {
-          slices.push_back( create_image_from_slice(i) );
-        }
-
-        std::shared_ptr<ImageStack> stack =
-          std::make_shared<ImageStack>(slices);
-
-        return stack;
-
-      }
-
 
     /*----------------------------------------------------------------------*/
 
@@ -86,9 +55,9 @@ class ProcessScan : public Action {
           p[3] = 255;
 
           // set color
-          p[2] = currentColor;
-          p[1] = currentColor;
-          p[0] = currentColor;
+          p[2] = (currentColor == 255)? 255: 0;
+          p[1] = 0;
+          p[0] = (currentColor == 0)? 255: 0;
         }
       }
 
@@ -101,5 +70,6 @@ class ProcessScan : public Action {
     }
 
     /*----------------------------------------------------------------------*/
+
 };
 #endif

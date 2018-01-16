@@ -26,14 +26,30 @@
 #include "observer/AddLandmarksDialogObserver.h"
 #include "observer/ErrorMessageDialogObserver.h"
 #include "observer/MainWindowObserver.h"
+#include "observer/AddSegmentationDialogObserver.h"
+#include "observer/AddSegmentationButtonObserver.h"
+#include "observer/AlphaObserver.h"
+#include "observer/SegmentationObserver.h"
 #include "core/Landmark.h"
 #include "core/IdPool.h"
 
 template<> std::shared_ptr<OpenScanButtonObserver>
 Observatory<OpenScanButtonObserver>::observer = nullptr;
 
+template<> std::shared_ptr<AddSegmentationButtonObserver>
+Observatory<AddSegmentationButtonObserver>::observer = nullptr;
+
 template<> std::shared_ptr<OpenScanDialogObserver>
 Observatory<OpenScanDialogObserver>::observer = nullptr;
+
+template<> std::shared_ptr<AddSegmentationDialogObserver>
+Observatory<AddSegmentationDialogObserver>::observer = nullptr;
+
+template<> std::shared_ptr<AlphaObserver>
+Observatory<AlphaObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SegmentationObserver>
+Observatory<SegmentationObserver>::observer = nullptr;
 
 template<> std::shared_ptr<ImageStackObserver>
 Observatory<ImageStackObserver>::observer = nullptr;

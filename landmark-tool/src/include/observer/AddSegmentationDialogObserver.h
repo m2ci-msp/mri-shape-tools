@@ -1,37 +1,34 @@
-#ifndef __OPEN_SCAN_DIALOG_OBSERVER_H__
-#define __OPEN_SCAN_DIALOG_OBSERVER_H__
+#ifndef __ADD_SEGMENTATION_DIALOG_OBSERVER_H__
+#define __ADD_SEGMENTATION_DIALOG_OBSERVER_H__
 
 #include <gtkmm/filechooserdialog.h>
 
 #include "singleton/GuiDescription.h"
-#include "action/ProcessScan.h"
-#include "action/ClearLandmarks.h"
+#include "action/ProcessSegmentation.h"
 #include "action/ShowErrorMessage.h"
-#include "action/ShowFileInTitle.h"
-#include "action/ShowMoreActions.h"
-#include "action/HideSegmentationFrame.h"
+#include "action/ShowSegmentationFrame.h"
 
 /** Class that watches the open image stack dialog */
-class OpenScanDialogObserver {
+class AddSegmentationDialogObserver {
   public:
-    OpenScanDialogObserver() { 
+    AddSegmentationDialogObserver() { 
 
       // query GUI description for builder
       Glib::RefPtr<Gtk::Builder> builder =
         GuiDescription::get_instance()->get_builder();
 
       // get the ui element
-      builder->get_widget("openScanDialog", this->dialog);
+      builder->get_widget("addSegmentationDialog", this->dialog);
 
       // connect handler
       this->responseHandler = this->dialog->signal_response().connect(
           sigc::mem_fun(*this,
-            &OpenScanDialogObserver::response_occured));
+            &AddSegmentationDialogObserver::response_occured));
     }
 
     /*----------------------------------------------------------------------*/
 
-    ~OpenScanDialogObserver() {
+    ~AddSegmentationDialogObserver() {
       this->responseHandler.disconnect();
     }
     /*----------------------------------------------------------------------*/
@@ -45,20 +42,11 @@ class OpenScanDialogObserver {
           {
             try{
               // try to build a image stack from the provided scan
-              ProcessScan action(this->dialog->get_filename());
+              ProcessSegmentation  action(this->dialog->get_filename());
               action.execute();
 
-              ShowFileInTitle show(this->dialog->get_filename());
+              ShowSegmentationFrame show;
               show.execute();
-
-              ClearLandmarks clear;
-              clear.execute();
-
-              ShowMoreActions showActions;
-              showActions.execute();
-
-              HideSegmentationFrame hide;
-              hide.execute();
 
             }
             catch (const std::exception& e) {
