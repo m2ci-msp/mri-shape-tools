@@ -32,9 +32,27 @@ class Data {
 
     /*----------------------------------------------------------------------*/
 
+    Cairo::RefPtr<Cairo::ImageSurface> get_segmentation_slice(int index) const {
+
+      auto slices = this->segmentationRepresentations.at(this->viewMode);
+      return slices.at(index);
+
+    }
+
+    /*----------------------------------------------------------------------*/
+
     bool stack_present() const {
       return this->stack != nullptr;
     }
+
+    /*----------------------------------------------------------------------*/
+
+    bool segmentation_stack_present() const {
+
+      return this->segmentation_stack != nullptr;
+
+    }
+
     /*----------------------------------------------------------------------*/
 
     void set_view_mode(int mode) {
@@ -61,11 +79,28 @@ class Data {
       this->imageRepresentations[1] = stack->get_zx_slices();
       this->imageRepresentations[2] = stack->get_zy_slices();
 
+      this->segmentation_stack = nullptr;
+
       // emit signal that the image stack was set
       this->image_stack_set.emit();
     }
 
     /*----------------------------------------------------------------------*/
+
+    void set_segmentation_stack(const std::shared_ptr<ImageStack>& stack) {
+
+      this->segmentation_stack = stack;
+
+      this->segmentationRepresentations[0] = stack->get_xy_slices();
+      this->segmentationRepresentations[1] = stack->get_zx_slices();
+      this->segmentationRepresentations[2] = stack->get_zy_slices();
+
+      // emit signal that the segmentation stack was set
+      this->segmentation_stack_set.emit();
+    }
+
+    /*----------------------------------------------------------------------*/
+
 
     void set_scan(const Image& scanData) {
       this->scan = scanData;
@@ -81,6 +116,7 @@ class Data {
     /** signal that is emitted if the image stack was set */
     sigc::signal<void> image_stack_set;
 
+    sigc::signal<void> segmentation_stack_set;
 
     /*----------------------------------------------------------------------*/
 
@@ -95,7 +131,11 @@ class Data {
     std::unordered_map<int, std::vector<Cairo::RefPtr<Cairo::ImageSurface> > >
       imageRepresentations;
 
+    std::unordered_map<int, std::vector<Cairo::RefPtr<Cairo::ImageSurface> > >
+      segmentationRepresentations;
+
     std::shared_ptr<ImageStack> stack;
+    std::shared_ptr<ImageStack> segmentation_stack;
 
     Point dimensions;
 

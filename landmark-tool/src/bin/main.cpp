@@ -19,7 +19,11 @@ int main(int, char*[])
 
   // register observers
   Observatory<OpenScanButtonObserver>::create();
+  Observatory<AddSegmentationButtonObserver>::create();
   Observatory<OpenScanDialogObserver>::create();
+  Observatory<AddSegmentationDialogObserver>::create();
+  Observatory<AlphaObserver>::create();
+  Observatory<SegmentationObserver>::create();
   Observatory<ImageStackObserver>::create();
   Observatory<DrawingAreaObserver>::create();
   Observatory<ScrollbarObserver>::create();
