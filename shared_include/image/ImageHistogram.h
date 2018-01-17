@@ -36,7 +36,7 @@ private:
     const int& ny = this->imageData.ny;
     const int& nz = this->imageData.nz;
 
-    this->histogram.resize(255, 0);
+    this->histogram.resize(256, 0);
 
     for(int i = 0; i < nx; ++i) {
       for(int j = 0; j < ny; ++j) {
