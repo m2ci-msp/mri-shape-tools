@@ -42,7 +42,7 @@ public:
     const int lower = options["lower"].asInt();
     const int upper = options["upper"].asInt();
 
-    image.values().discard_values(lower, upper);
+    image.values().discard(lower, upper);
 
   }
 
