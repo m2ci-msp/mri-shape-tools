@@ -4,7 +4,7 @@
 #include <gtkmm/filechooserdialog.h>
 
 #include "singleton/GuiDescription.h"
-#include "action/ProcessSegmentation.h"
+#include "action/OpenSegmentation.h"
 #include "action/ShowErrorMessage.h"
 #include "action/ShowSegmentationFrame.h"
 
@@ -42,7 +42,7 @@ class AddSegmentationDialogObserver {
           {
             try{
               // try to build a image stack from the provided scan
-              ProcessSegmentation  action(this->dialog->get_filename());
+              OpenSegmentation  action(this->dialog->get_filename());
               action.execute();
 
               ShowSegmentationFrame show;
