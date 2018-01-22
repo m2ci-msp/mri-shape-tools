@@ -3,6 +3,7 @@
 
 #include <json/json.h>
 
+#include "singleton/LandmarkPool.h"
 #include "Handler.h"
 #include "image/Image.h"
 
@@ -19,6 +20,7 @@ public:
     if      (type == "threshold") { threshold(image, options); }
     else if (type == "otsu" ) { otsu(image); }
     else if (type == "cascaded otsu" ) { cascaded_otsu(image, options); }
+    else if (type == "with landmarks" ) { with_landmarks(image); }
 
   }
 
@@ -43,5 +45,35 @@ public:
     image.segment().cascaded_otsu(iterations);
 
   }
+
+  void with_landmarks(Image& image) {
+
+    std::vector<arma::vec> landmarks = build_landmarks();
+
+    image.segment().with_landmarks(landmarks);
+
+  }
+
+private:
+
+  std::vector<arma::vec> build_landmarks() {
+
+    std::vector<arma::vec> landmarks;
+
+    for(
+        const auto& mark: LandmarkPool::get_instance()->get_all_landmarks()) {
+
+      landmarks.push_back({
+          mark->get_position().get_canonical_x(),
+          mark->get_position().get_canonical_y(),
+          mark->get_position().get_canonical_z()
+            });
+
+    }
+
+    return landmarks;
+
+  }
+
 };
 #endif
