@@ -102,14 +102,34 @@ class Data {
     /*----------------------------------------------------------------------*/
 
 
-    void set_scan(const Image& scanData) {
-      this->scan = scanData;
+    void set_original_image(const Image& image) {
+
+      this->originalImage = image;
+
     }
 
     /*----------------------------------------------------------------------*/
 
-    const Image& get_scan() const {
-      return this->scan;
+    const Image& get_original_image() const {
+
+      return this->originalImage;
+
+    }
+
+    /*----------------------------------------------------------------------*/
+
+    void set_current_image(const Image& image) {
+
+      this->currentImage = image;
+
+    }
+
+    /*----------------------------------------------------------------------*/
+
+    const Image& get_current_image() const {
+
+      return this->currentImage;
+
     }
 
     /*----------------------------------------------------------------------*/
@@ -142,7 +162,9 @@ class Data {
     static std::shared_ptr<Data> instance;
     int viewMode;
 
-    Image scan;
+    Image currentImage;
+
+    Image originalImage;
 
 };
 #endif

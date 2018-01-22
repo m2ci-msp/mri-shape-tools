@@ -30,6 +30,7 @@
 #include "observer/AddSegmentationButtonObserver.h"
 #include "observer/AlphaObserver.h"
 #include "observer/SegmentationObserver.h"
+#include "observer/ApplyFiltersButtonObserver.h"
 #include "core/Landmark.h"
 #include "core/IdPool.h"
 
@@ -95,6 +96,9 @@ Observatory<ErrorMessageDialogObserver>::observer = nullptr;
 
 template<> std::shared_ptr<MainWindowObserver>
 Observatory<MainWindowObserver>::observer = nullptr;
+
+template<> std::shared_ptr<ApplyFiltersButtonObserver>
+Observatory<ApplyFiltersButtonObserver>::observer = nullptr;
 
 template<> IdPool<Landmark>* IdPool<Landmark>::instance = nullptr; 
 
