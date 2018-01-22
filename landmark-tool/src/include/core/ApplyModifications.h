@@ -13,6 +13,7 @@
 #include "HistogramHandler.h"
 #include "ValuesHandler.h"
 #include "SegmentHandler.h"
+#include "EdgeHandler.h"
 
 class ApplyModifications{
 
@@ -26,6 +27,7 @@ class ApplyModifications{
     this->handlers["histogram"] = new HistogramHandler();
     this->handlers["values"] = new ValuesHandler();
     this->handlers["segment"] = new SegmentHandler();
+    this->handlers["edge"] = new EdgeHandler();
     
   }
 
