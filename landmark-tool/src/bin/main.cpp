@@ -39,6 +39,7 @@ int main(int, char*[])
   Observatory<AddLandmarksDialogObserver>::create();
   Observatory<ErrorMessageDialogObserver>::create();
   Observatory<MainWindowObserver>::create();
+  Observatory<ApplyFiltersButtonObserver>::create();
 
   // show main window
   return app->run(*window);

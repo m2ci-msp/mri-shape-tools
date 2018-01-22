@@ -23,7 +23,9 @@ class OpenScan : public Action {
 
     ImageStackBuilder builder;
     Data::get_instance()->set_image_stack(builder.build_from(this->image));
-    Data::get_instance()->set_scan(this->image);
+
+    Data::get_instance()->set_original_image(this->image);
+    Data::get_instance()->set_current_image(this->image);
 
   }
 
