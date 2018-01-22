@@ -20,6 +20,7 @@
 #include "ImageSegmentation.h"
 #include "ImageValues.h"
 #include "ImageWriter.h"
+#include "ImageStatistics.h"
 
 class Image{
 
@@ -44,7 +45,8 @@ public:
     imageReader(imageData),
     imageSegmentation(imageData),
     imageValues(imageData),
-    imageWriter(imageData) {
+    imageWriter(imageData),
+    imageStatistics(imageData) {
   }
 
   // copy constructor
@@ -67,7 +69,8 @@ public:
     imageReader(imageData),
     imageSegmentation(imageData),
     imageValues(imageData),
-    imageWriter(imageData) {
+    imageWriter(imageData),
+    imageStatistics(imageData) {
   }
 
   // assignment operator
@@ -98,6 +101,7 @@ public:
   ImageSegmentation& segment() { return this->imageSegmentation; }
   ImageValues& values() { return this->imageValues; }
   ImageWriter& write() { return this->imageWriter; }
+  ImageStatistics& statistics() { return this->imageStatistics; }
 
 private:
 
@@ -120,6 +124,7 @@ private:
   ImageSegmentation imageSegmentation;
   ImageValues imageValues;
   ImageWriter imageWriter;
+  ImageStatistics imageStatistics;
 
 };
 
