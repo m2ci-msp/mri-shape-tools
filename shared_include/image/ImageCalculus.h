@@ -75,7 +75,7 @@ public:
   
     const double& hx = this->imageData.hx;
   
-    return ( left + 2 * center + right ) / ( pow( hx, 2 ) );
+    return ( left - 2 * center + right ) / ( pow( hx, 2 ) );
   
   }
   
@@ -91,7 +91,7 @@ public:
   
     const double& hy = this->imageData.hy;
   
-    return ( lower + 2 * center + upper ) / ( pow( hy, 2 ) );
+    return ( lower - 2 * center + upper ) / ( pow( hy, 2 ) );
   
   }
   
@@ -107,7 +107,7 @@ public:
   
     const double& hz = this->imageData.hz;
   
-    return ( back + 2 * center + front ) / ( pow( hz, 2 ) );
+    return ( back - 2 * center + front ) / ( pow( hz, 2 ) );
   
   }
 
