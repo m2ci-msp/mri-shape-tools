@@ -40,6 +40,7 @@ int main(int, char*[])
   Observatory<ErrorMessageDialogObserver>::create();
   Observatory<MainWindowObserver>::create();
   Observatory<ApplyFiltersButtonObserver>::create();
+  Observatory<ResetImageButtonObserver>::create();
 
   // show main window
   return app->run(*window);
