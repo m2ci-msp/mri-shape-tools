@@ -21,6 +21,7 @@
 #include "ImageValues.h"
 #include "ImageWriter.h"
 #include "ImageStatistics.h"
+#include "ImageEdge.h"
 
 class Image{
 
@@ -46,7 +47,8 @@ public:
     imageSegmentation(imageData),
     imageValues(imageData),
     imageWriter(imageData),
-    imageStatistics(imageData) {
+    imageStatistics(imageData),
+    imageEdge(imageData) {
   }
 
   // copy constructor
@@ -70,7 +72,8 @@ public:
     imageSegmentation(imageData),
     imageValues(imageData),
     imageWriter(imageData),
-    imageStatistics(imageData) {
+    imageStatistics(imageData),
+    imageEdge(imageData) {
   }
 
   // assignment operator
@@ -102,6 +105,7 @@ public:
   ImageValues& values() { return this->imageValues; }
   ImageWriter& write() { return this->imageWriter; }
   ImageStatistics& statistics() { return this->imageStatistics; }
+  ImageEdge& edge() { return this->imageEdge; }
 
 private:
 
@@ -125,6 +129,7 @@ private:
   ImageValues imageValues;
   ImageWriter imageWriter;
   ImageStatistics imageStatistics;
+  ImageEdge imageEdge;
 
 };
 
