@@ -127,7 +127,7 @@ class ImageStackBuilder{
           pXY[2] = pZY[2] = pZX[2] = compute_red_component(color);
 
           // no transparency
-          pXY[3] = pZY[2] = pZX[2] = 255;
+          pXY[3] = pZY[3] = pZX[3] = 255;
 
         } // end for y
       } // end for x
