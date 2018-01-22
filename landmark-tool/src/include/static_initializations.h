@@ -31,6 +31,7 @@
 #include "observer/AlphaObserver.h"
 #include "observer/SegmentationObserver.h"
 #include "observer/ApplyFiltersButtonObserver.h"
+#include "observer/ResetImageButtonObserver.h"
 #include "core/Landmark.h"
 #include "core/IdPool.h"
 
@@ -99,6 +100,9 @@ Observatory<MainWindowObserver>::observer = nullptr;
 
 template<> std::shared_ptr<ApplyFiltersButtonObserver>
 Observatory<ApplyFiltersButtonObserver>::observer = nullptr;
+
+template<> std::shared_ptr<ResetImageButtonObserver>
+Observatory<ResetImageButtonObserver>::observer = nullptr;
 
 template<> IdPool<Landmark>* IdPool<Landmark>::instance = nullptr; 
 
