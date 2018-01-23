@@ -4,6 +4,7 @@
 #include "image/ImageData.h"
 #include "image/edge/LaplacianZeroCrossings.h"
 #include "image/edge/GradientMagnitude.h"
+#include "image/edge/LargestEigenvalueStructureTensor.h"
 
 class ImageEdge{
 
@@ -21,6 +22,12 @@ public:
   void gradient_magnitude() {
 
     GradientMagnitude(this->imageData).apply();
+
+  }
+
+  void largest_eigenvalue_structure_tensor(const double& radius) {
+
+    LargestEigenvalueStructureTensor(this->imageData, radius).apply();
 
   }
 
