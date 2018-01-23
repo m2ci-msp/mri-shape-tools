@@ -18,6 +18,7 @@ public:
 
     if      (type == "laplacian zero crossings") { laplacian_zero_crossings(image); }
     else if (type == "gradient magnitude") { gradient_magnitude(image); }
+    else if (type == "largest eigenvalue structure tensor") { largest_eigenvalue_structure_tensor(image, options); }
 
   }
 
@@ -30,6 +31,14 @@ public:
   void gradient_magnitude(Image& image) {
 
     image.edge().gradient_magnitude();
+
+  }
+
+  void largest_eigenvalue_structure_tensor(Image& image, Json::Value& options) {
+
+    const double radius = options["radius"].asDouble();
+
+    image.edge().largest_eigenvalue_structure_tensor(radius);
 
   }
 
