@@ -13,6 +13,12 @@ class SegmentationStackBuilder : public ImageStackBuilder {
 
   }
 
+  virtual unsigned char compute_green_component(const double&) const {
+
+    return 0;
+
+  }
+
   virtual unsigned char compute_red_component(const double& color) const {
 
     return ( color == 255 )? 255 : 0;
