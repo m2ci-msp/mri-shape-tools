@@ -1,5 +1,5 @@
 #include "settings.h"
-#include "ApplyModifications.h"
+#include "image-modify/ApplyModifications.h"
 
 int main(int argc, char* argv[]) {
 
