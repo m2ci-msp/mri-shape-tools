@@ -5,7 +5,7 @@
 #include "core/ImageStackBuilder.h"
 #include "singleton/Data.h"
 #include "singleton/GuiDescription.h"
-#include "core/ApplyModifications.h"
+#include "image-modify/ApplyModifications.h"
 
 class ApplyFilters : public Action {
 
