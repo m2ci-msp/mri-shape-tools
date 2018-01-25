@@ -3,13 +3,13 @@
 
 #include <json/json.h>
 
-#include "action/Action.h"
+#include "action/FilterAction.h"
 #include "core/ImageStackBuilder.h"
 #include "singleton/Data.h"
 #include "singleton/GuiDescription.h"
 #include "image-modify/ApplyModifications.h"
 
-class ApplyFilters : public Action {
+class ApplyFilters : public FilterAction {
 
 public:
   /*----------------------------------------------------------------------*/
@@ -32,7 +32,7 @@ public:
 
     Image image = Data::get_instance()->get_current_image();
 
-    std::string modifiedText = add_landmarks_if_needed(filtersText->get_text());
+    std::string modifiedText = Json::FastWriter().write( add_landmarks_if_needed(filtersText->get_text()) );
 
     ApplyModifications(image).apply(modifiedText);
 
@@ -46,45 +46,6 @@ public:
   /*----------------------------------------------------------------------*/
 
 private:
-
-  std::string add_landmarks_if_needed(const std::string& originalString) const {
-
-    Json::Value description;
-    Json::Reader reader;
-
-    reader.parse(originalString, description);
-
-    for(Json::Value& entry: description) {
-
-      const std::string action = entry["action"].asString();
-      Json::Value& options = entry["options"];
-
-      if( action == "segment" && options["type"].asString() == "with landmarks") {
-
-        Json::Value landmarks(Json::arrayValue);
-
-        for(const auto& mark: LandmarkPool::get_instance()->get_all_landmarks() ) {
-
-          Json::Value landmark(Json::objectValue);
-
-          landmark["x"] = Json::Value(mark->get_position().get_canonical_x());
-          landmark["y"] = Json::Value(mark->get_position().get_canonical_y());
-          landmark["z"] = Json::Value(mark->get_position().get_canonical_z());
-
-          landmarks.append(landmark);
-
-        }
-
-        options["landmarks"] = landmarks;
-
-      }
-
-
-    }
-
-    return Json::FastWriter().write(description);
-
-  }
 
   Glib::RefPtr<Gtk::TextBuffer> filtersText;
 

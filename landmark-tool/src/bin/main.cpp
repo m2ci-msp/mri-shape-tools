@@ -35,6 +35,8 @@ int main(int, char*[])
   Observatory<LandmarkTreeViewObserver>::create();
   Observatory<SaveLandmarksButtonObserver>::create();
   Observatory<SaveLandmarksDialogObserver>::create();
+  Observatory<SaveSegmentationButtonObserver>::create();
+  Observatory<SaveSegmentationDialogObserver>::create();
   Observatory<AddLandmarksButtonObserver>::create();
   Observatory<AddLandmarksDialogObserver>::create();
   Observatory<ErrorMessageDialogObserver>::create();
