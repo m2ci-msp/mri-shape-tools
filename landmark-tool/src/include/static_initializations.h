@@ -22,6 +22,8 @@
 #include "observer/LandmarkTreeViewObserver.h"
 #include "observer/SaveLandmarksButtonObserver.h"
 #include "observer/SaveLandmarksDialogObserver.h"
+#include "observer/SaveSegmentationButtonObserver.h"
+#include "observer/SaveSegmentationDialogObserver.h"
 #include "observer/AddLandmarksButtonObserver.h"
 #include "observer/AddLandmarksDialogObserver.h"
 #include "observer/ErrorMessageDialogObserver.h"
@@ -84,8 +86,14 @@ Observatory<LandmarkTreeViewObserver>::observer = nullptr;
 template<> std::shared_ptr<SaveLandmarksButtonObserver>
 Observatory<SaveLandmarksButtonObserver>::observer = nullptr;
 
+template<> std::shared_ptr<SaveSegmentationButtonObserver>
+Observatory<SaveSegmentationButtonObserver>::observer = nullptr;
+
 template<> std::shared_ptr<SaveLandmarksDialogObserver>
 Observatory<SaveLandmarksDialogObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SaveSegmentationDialogObserver>
+Observatory<SaveSegmentationDialogObserver>::observer = nullptr;
 
 template<> std::shared_ptr<AddLandmarksButtonObserver>
 Observatory<AddLandmarksButtonObserver>::observer = nullptr;
