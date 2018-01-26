@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "settings.h"
 #include "image/Image.h"
 #include "image-modify/ApplyModifications.h"
@@ -13,7 +15,13 @@ int main(int argc, char* argv[]) {
 
   source.read().from(settings.source);
 
-  ApplyModifications(source).apply(settings.specifications);
+  std::ifstream inFile(settings.specifications);
+
+  std::stringstream buffer;
+  buffer << inFile.rdbuf();
+  inFile.close();
+
+  ApplyModifications(source).apply(buffer.str());
 
   source.write().to(settings.output);
 
