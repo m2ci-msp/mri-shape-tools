@@ -51,13 +51,6 @@ public:
 
   void compute_profiles() {
 
-    // change boundary of scan and mirror
-    const double size = 2 * ( this->offset + this->length );
-
-    this->scan.boundary().change(size, size, size);
-
-    this->scan.mirror().all();
-
     for(size_t id = 0; id < this->vertices.size(); ++id) {
 
       const arma::vec& vertex = this->vertices.at(id);
@@ -96,7 +89,7 @@ private:
 
       result(i) =
 
-        this->scan.access().at_coordinate( position(0), position(1), position(2) );
+        this->scan.neumann_access().at_coordinate( position(0), position(1), position(2) );
 
     }
 
