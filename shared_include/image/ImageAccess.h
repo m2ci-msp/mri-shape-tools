@@ -12,7 +12,7 @@ public:
   ImageAccess(ImageData& imageData) : imageData(imageData) {
   }
 
-  double& at_grid(
+  virtual double& at_grid(
                   const int& x,
                   const int& y,
                   const int& z
@@ -27,7 +27,7 @@ public:
   }
   
   // const version
-  const double& at_grid(
+  virtual const double& at_grid(
                         const int& x,
                         const int& y,
                         const int& z
@@ -173,7 +173,7 @@ public:
   
   }
 
-private:
+protected:
 
   int compute_index(
                     const int& x,

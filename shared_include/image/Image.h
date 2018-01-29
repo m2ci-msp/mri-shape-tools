@@ -2,6 +2,7 @@
 #define __IMAGE_H__
 
 #include "ImageAccess.h"
+#include "ImageNeumannAccess.h"
 #include "ImageArithmetic.h"
 #include "ImageCalculus.h"
 #include "ImageCrop.h"
@@ -30,6 +31,7 @@ public:
   // default constructor
   Image() :
     imageAccess(imageData),
+    imageNeumannAccess(imageData),
     imageArithmetic(imageData),
     imageBoundary(imageData),
     imageCalculus(imageData),
@@ -55,6 +57,7 @@ public:
   Image(const Image& other) :
     imageData(other.imageData),
     imageAccess(imageData),
+    imageNeumannAccess(imageData),
     imageArithmetic(imageData),
     imageBoundary(imageData),
     imageCalculus(imageData),
@@ -87,6 +90,7 @@ public:
 
   // getters for all members except for data
   ImageAccess& access() { return this->imageAccess; }
+  ImageNeumannAccess& neumann_access() { return this->imageNeumannAccess; }
   ImageArithmetic& arithmetic() { return this->imageArithmetic; }
   ImageBoundary& boundary() { return this->imageBoundary; }
   ImageCalculus& calculus() { return this->imageCalculus; }
@@ -111,6 +115,7 @@ private:
 
   ImageData imageData;
   ImageAccess imageAccess;
+  ImageNeumannAccess imageNeumannAccess;
   ImageArithmetic imageArithmetic;
   ImageBoundary imageBoundary;
   ImageCalculus imageCalculus;
