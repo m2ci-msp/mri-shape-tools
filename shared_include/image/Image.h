@@ -23,6 +23,7 @@
 #include "ImageWriter.h"
 #include "ImageStatistics.h"
 #include "ImageEdge.h"
+#include "ImageInterpolateSlice.h"
 
 class Image{
 
@@ -50,7 +51,8 @@ public:
     imageValues(imageData),
     imageWriter(imageData),
     imageStatistics(imageData),
-    imageEdge(imageData) {
+    imageEdge(imageData),
+    imageInterpolateSlice(imageData) {
   }
 
   // copy constructor
@@ -76,7 +78,8 @@ public:
     imageValues(imageData),
     imageWriter(imageData),
     imageStatistics(imageData),
-    imageEdge(imageData) {
+    imageEdge(imageData),
+    imageInterpolateSlice(imageData) {
   }
 
   // assignment operator
@@ -110,6 +113,7 @@ public:
   ImageWriter& write() { return this->imageWriter; }
   ImageStatistics& statistics() { return this->imageStatistics; }
   ImageEdge& edge() { return this->imageEdge; }
+  ImageInterpolateSlice& interpolate_slice() { return this->imageInterpolateSlice; }
 
 private:
 
@@ -135,6 +139,7 @@ private:
   ImageWriter imageWriter;
   ImageStatistics imageStatistics;
   ImageEdge imageEdge;
+  ImageInterpolateSlice imageInterpolateSlice;
 
 };
 
