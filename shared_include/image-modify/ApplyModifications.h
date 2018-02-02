@@ -14,6 +14,7 @@
 #include "ValuesHandler.h"
 #include "SegmentHandler.h"
 #include "EdgeHandler.h"
+#include "InterpolateSliceHandler.h"
 
 class ApplyModifications{
 
@@ -28,6 +29,7 @@ class ApplyModifications{
     this->handlers["values"] = new ValuesHandler();
     this->handlers["segment"] = new SegmentHandler();
     this->handlers["edge"] = new EdgeHandler();
+    this->handlers["interpolateSlice"] = new InterpolateSliceHandler();
     
   }
 
