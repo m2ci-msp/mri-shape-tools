@@ -53,7 +53,7 @@ public:
 
         } // end for k
 
-        imageAccess.at_grid(i, j, (int) position) = originalInterpolate.at_grid(i, j, position);
+        imageAccess.at_grid(i, j, (int) position + 1) = originalInterpolate.at_grid(i, j, position);
 
         for(int k = (int) position + 2; k < nz + 1; ++k) {
 
@@ -93,7 +93,7 @@ public:
 
         } // end for j
 
-        imageAccess.at_grid(i, (int) position, k) = originalInterpolate.at_grid(i, position, k);
+        imageAccess.at_grid(i, (int) position + 1, k) = originalInterpolate.at_grid(i, position, k);
 
         for(int j = (int) position + 2; j < ny + 1; ++j) {
 
