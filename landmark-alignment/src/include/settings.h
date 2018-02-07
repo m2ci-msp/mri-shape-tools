@@ -2,6 +2,7 @@
 #define __SETTINGS_H__
 
 #include "flags/FlagSingle.h"
+#include "flags/FlagList.h"
 #include "flags/FlagNone.h"
 #include "flags/FlagsParser.h"
 
@@ -10,6 +11,7 @@
 class Settings {
 
   public:
+
     bool noScaling = false;
     bool noRotation = false;
     bool noTranslation = false;
@@ -18,11 +20,14 @@ class Settings {
     std::string landmarks;
     std::string output;
 
+    std::vector<std::string> subset;
+
     Settings(int argc, char* argv[]) {
 
       FlagSingle<std::string> sourceFlag("source", this->source);
       FlagSingle<std::string> landmarksFlag("landmarks", this->landmarks);
       FlagSingle<std::string> outputFlag("output", this->output);
+      FlagList<std::string> subsetFlag("subset", this->subset, true);
       FlagNone noScalingFlag ("noScaling", this->noScaling);
       FlagNone noRotationFlag ("noRotation", this->noRotation);
       FlagNone noTranslationFlag ("noTranslation", this->noTranslation);
@@ -31,6 +36,7 @@ class Settings {
       parser.define_flag(&sourceFlag);
       parser.define_flag(&landmarksFlag);
       parser.define_flag(&outputFlag);
+      parser.define_flag(&subsetFlag);
       parser.define_flag(&noScalingFlag);
       parser.define_flag(&noRotationFlag);
       parser.define_flag(&noTranslationFlag);
