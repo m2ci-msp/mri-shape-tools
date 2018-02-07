@@ -47,12 +47,9 @@ class MainWindowObserver {
           toggle(Mode::MOVE_LANDMARK);
           break;
 
-        case GDK_KEY_F2:
-          toggle(Mode::EDIT_NORMAL);
-          break;
-
         default:
           break;
+
       }
 
       return false;
