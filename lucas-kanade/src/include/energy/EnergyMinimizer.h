@@ -95,7 +95,7 @@ namespace lucasKanade{
         upperBounds[i] =   DBL_MAX;
       }
 
-      this->energyFunction = new EnergyFunction(energy, this->energyTerms);
+      this->energyFunction = new EnergyFunction(energy);
       this->minimizer = new vnl_lbfgsb(*this->energyFunction);
 
       this->minimizer->set_cost_function_convergence_factor(
