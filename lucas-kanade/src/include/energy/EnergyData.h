@@ -8,7 +8,7 @@
 
 #include "image/Image.h"
 
-#include "energy/Transformation.h"
+#include "matrix/Transformation.h"
 #include "energy/TransformationEnum.h"
 
 namespace lucasKanade{
@@ -51,7 +51,7 @@ namespace lucasKanade{
                const Image& templateImage,
                const Image& target,
                const arma::vec& center,
-               const int& radius
+               const arma::vec& radius
                )
 
       : templateImage(templateImage), target(target), center(center) {
@@ -70,15 +70,15 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
-    void compute_region_of_interest(const arma::vec& center, const int& radius) {
+    void compute_region_of_interest(const arma::vec& center, const arma::vec& radius) {
 
-      this->minX = center(0) - radius;
-      this->minY = center(1) - radius;
-      this->minZ = center(2) - radius;
+      this->minX = center(0) - radius(0);
+      this->minY = center(1) - radius(1);
+      this->minZ = center(2) - radius(2);
 
-      this->maxX = center(0) + radius;
-      this->maxY = center(1) + radius;
-      this->maxZ = center(2) + radius;
+      this->maxX = center(0) + radius(0);
+      this->maxY = center(1) + radius(1);
+      this->maxZ = center(2) + radius(2);
 
     }
 

@@ -1,15 +1,16 @@
 #ifndef __SETTINGS_H__
 #define __SETTINGS_H__
 
+#include <string>
+#include <armadillo>
+
 #include "flags/FlagSingle.h"
 #include "flags/FlagsParser.h"
-#include "flags/FlagFixedList.h"
 #include "flags/FlagNone.h"
 
 #include "energy/EnergySettings.h"
 #include "energy/MinimizerSettings.h"
 
-#include <string>
 
 class Settings {
 
@@ -21,21 +22,28 @@ public:
   std::string output;
 
   arma::vec center;
-  int radius;
+  arma::vec radius;
 
   lucasKanade::MinimizerSettings minimizerSettings;
   lucasKanade::EnergySettings energySettings;
 
   Settings(int argc, char* argv[]) {
 
-    std::vector<double> centerList;
+    double centerX, centerY, centerZ;
+    double radiusX, radiusY, radiusZ;
 
     // input and output
     FlagSingle<std::string> targetFlag("target", this->target);
     FlagSingle<std::string> sourceFlag("source", this->source);
     FlagSingle<std::string> outputFlag("output", this->output);
-    FlagFixedList<double> centerFlag("center", centerList, 3);
-    FlagSingle<int> radiusFlag("radius", this->radius);
+
+    FlagSingle<double> centerXFlag("centerX", centerX);
+    FlagSingle<double> centerYFlag("centerY", centerY);
+    FlagSingle<double> centerZFlag("centerZ", centerZ);
+
+    FlagSingle<double> radiusXFlag("radiusX", radiusX);
+    FlagSingle<double> radiusYFlag("radiusY", radiusY);
+    FlagSingle<double> radiusZFlag("radiusZ", radiusZ);
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -64,8 +72,12 @@ public:
     parser.define_flag(&sourceFlag);
     parser.define_flag(&outputFlag);
 
-    parser.define_flag(&centerFlag);
-    parser.define_flag(&radiusFlag);
+    parser.define_flag(&centerXFlag);
+    parser.define_flag(&centerYFlag);
+    parser.define_flag(&centerZFlag);
+    parser.define_flag(&radiusXFlag);
+    parser.define_flag(&radiusYFlag);
+    parser.define_flag(&radiusZFlag);
 
     // minimizer settings
     parser.define_flag(&iterationAmountFlag);
@@ -75,7 +87,8 @@ public:
 
     parser.parse_from_command_line(argc, argv);
 
-    this->center = arma::vec({centerList.at(0), centerList.at(1), centerList.at(2)});
+    this->center = arma::vec({centerX, centerY, centerZ});
+    this->radius = arma::vec({radiusX, radiusY, radiusZ});
 
   }
 
