@@ -146,7 +146,9 @@ namespace lucasKanade{
 
             const arma::vec imageGradient = compute_image_gradient(transformedLocation);
 
-            this->energyDerivedData.imageGradientTimesJacobian.push_back(imageGradient.t() * J);
+            const arma::mat result = (imageGradient.t() * J);
+
+            this->energyDerivedData.imageGradientTimesJacobian.push_back(result.row(0).t());
 
             ++index;
 

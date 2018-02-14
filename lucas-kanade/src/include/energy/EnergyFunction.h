@@ -84,7 +84,9 @@ namespace lucasKanade{
 
         energy += pow(difference, 2);
 
-        arma::vec localGradient = 2 * J.t() * difference;
+        const arma::mat tmp = 2 * J.t() * difference;
+
+        const arma::vec localGradient = tmp.row(0).t();
 
         for(int j = 0; j < transformationAmount; ++j) {
 
