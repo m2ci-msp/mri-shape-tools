@@ -27,6 +27,8 @@ namespace lucasKanade{
         new EnergyDerivedDataUpdate(
           this->energyData, this->energyDerivedData, this->energySettings);
 
+      this->energyDerivedData.transformation.resize(energyData.transformationAmount, 0);
+
     }
 
     /*--------------------------------------------------------------------------*/
