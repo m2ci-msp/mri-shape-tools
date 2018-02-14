@@ -4,7 +4,7 @@
 #include <armadillo>
 #include <vnl/vnl_vector.h>
 
-#include "energy/Transformation.h"
+#include "matrix/Transformation.h"
 #include "energy/TransformationEnum.h"
 
 namespace lucasKanade{

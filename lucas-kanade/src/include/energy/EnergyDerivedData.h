@@ -5,7 +5,7 @@
 
 #include <armadillo>
 
-#include "energy/Transformation.h"
+#include "matrix/Transformation.h"
 
 namespace lucasKanade{
 
