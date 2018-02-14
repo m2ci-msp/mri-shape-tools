@@ -82,9 +82,9 @@ namespace lucasKanade{
 
         const double difference = warpedImage.at(i) - templateImage.at(i) + arma::dot(J.t(), increment);
 
-        energy += pow(difference, 2);
+        energy += psi(pow(difference, 2));
 
-        const arma::mat tmp = 2 * J.t() * difference;
+        const arma::mat tmp = psi_derivative(pow(difference, 2)) * 2 * J.t() * difference;
 
         const arma::vec localGradient = tmp.row(0).t();
 
@@ -99,6 +99,20 @@ namespace lucasKanade{
     }
 
     /*--------------------------------------------------------------------------*/
+
+    // robust penalizer
+    double psi(const double& x) const {
+
+      return sqrt(x + 0.000001);
+
+    }
+
+    double psi_derivative(const double& x) const {
+
+      return 1 / ( 2 * sqrt(x + 0.000001) );
+
+    }
+
 
     Energy& energy;
 
