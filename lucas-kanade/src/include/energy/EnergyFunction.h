@@ -26,7 +26,7 @@ namespace lucasKanade{
     /*--------------------------------------------------------------------------*/
 
     virtual void compute(
-                         const vnl_vector<double>& x, double *f, vnl_vector<double>* g){
+                         const vnl_vector<double>&, double *f, vnl_vector<double>* g){
 
       // make sure that energy and gradient are reset to 0
       *f = 0;
@@ -49,34 +49,34 @@ namespace lucasKanade{
 
       const int& transformationAmount = this->energy.data().transformationAmount;
 
-      const int& voxelAmount = this->energy.data().voxelAmount;
+      const int voxelAmount = this->energy.derived_data().templateImage.size();
 
       const std::vector<double>& warpedImage = this->energy.derived_data().warpedImage;
 
-      const std::vector<double>& validLocation = this->energy.derived_data().validLocation;
+      const std::vector<bool>& validLocation = this->energy.derived_data().validLocation;
 
       const std::vector<double>& templateImage = this->energy.derived_data().templateImage;
 
-      const std::vector<arma::mat>& imageGradientTimesJacobian = this->energy.derived_data().imageGradientTimesJacobian;
+      const std::vector<arma::vec>& imageGradientTimesJacobian = this->energy.derived_data().imageGradientTimesJacobian;
 
       for(int i = 0; i < voxelAmount; ++i ) {
 
         // skip if we don't have valid data for the current location
-        if( validLocation.at(i) == 0) {
+        if( validLocation.at(i) == false) {
 
           continue;
 
         }
 
-        const arma::vec& J = imageGradientTimesJacobian.at(index);
+        const arma::vec& J = imageGradientTimesJacobian.at(i);
 
         const arma::vec increment( {
-            this->energyData.transformation[TX],
-              this->energyData.transformation[TY],
-              this->energyData.transformation[TZ],
-              this->energyData.transformation[ALPHA],
-              this->energyData.transformation[BETA],
-              this->energyData.transformation[GAMMA]
+            this->energy.data().transformation[TX],
+              this->energy.data().transformation[TY],
+              this->energy.data().transformation[TZ],
+              this->energy.data().transformation[ALPHA],
+              this->energy.data().transformation[BETA],
+              this->energy.data().transformation[GAMMA]
               }
           );
 
