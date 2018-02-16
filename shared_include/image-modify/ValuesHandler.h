@@ -19,6 +19,7 @@ public:
     if      (type == "scale") { scale(image, options); }
     else if (type == "normalize" ) { normalize(image); }
     else if( type == "discard" ) { discard(image, options); }
+    else if( type == "add" ) { add(image, options); }
 
   }
 
@@ -43,6 +44,28 @@ public:
     const int upper = options["upper"].asInt();
 
     image.values().discard(lower, upper);
+
+  }
+
+  void add(Image& image, Json::Value& options) {
+
+    Json::Value nullValue;
+
+    const int& nx = image.info().get_nx();
+    const int& ny = image.info().get_ny();
+    const int& nz = image.info().get_nz();
+
+    const int minX = ( options["minX"] == nullValue)? 0: options["minX"].asInt();
+    const int minY = ( options["minY"] == nullValue)? 0: options["minY"].asInt();
+    const int minZ = ( options["minZ"] == nullValue)? 0: options["minZ"].asInt();
+
+    const int maxX = ( options["maxX"] == nullValue)? nx: options["maxX"].asInt();
+    const int maxY = ( options["maxY"] == nullValue)? ny: options["maxY"].asInt();
+    const int maxZ = ( options["maxZ"] == nullValue)? nz: options["maxZ"].asInt();
+
+    const double value = options["value"].asDouble();
+
+    image.values().add(value, minX, minY, minZ, maxX, maxY, maxZ);
 
   }
 

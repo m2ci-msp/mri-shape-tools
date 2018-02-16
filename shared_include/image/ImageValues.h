@@ -43,6 +43,27 @@ public:
   
   }
 
+  // adds a value to all gray values in a specified sub image
+  void add(const double& value,
+           const int& minX,
+           const int& minY,
+           const int& minZ,
+           const int& maxX,
+           const int& maxY,
+           const int& maxZ) {
+
+    for(int i = minX; i < maxX; ++i) {
+      for(int j = minY; j < maxY; ++j) {
+        for(int k = minZ; k < maxZ; ++k) {
+
+          this->imageAccess.at_grid(i, j, k) += value;
+
+        }
+      }
+    }
+
+  }
+
   void normalize() {
   
     scale(0, 1);
