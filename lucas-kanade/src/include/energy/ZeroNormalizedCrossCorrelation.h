@@ -8,14 +8,21 @@
 #include "energy/TransformationEnum.h"
 #include "energy/ITKWrapper.h"
 
+// TODO:
+// move candidates for refactoring outside of class
+
 namespace lucasKanade{
 
   class ZNCC{
 
   private:
 
+    // the mean color of the current deformed template
     double mean;
+
+    // derivative of the mean
     arma::vec meanDerivative;
+
     EnergyDerivedData& energyDerivedData;
 
     std::vector<arma::vec> transformedLocations;
@@ -24,10 +31,13 @@ namespace lucasKanade{
 
   public:
 
-
   private:
+
     /*--------------------------------------------------------------------------*/
 
+    // compute transformed locations that are used later on to compute the warped
+    // image
+    // TODO: candidate for moving outside of the class
     void compute_transformed_locations() {
 
       this->transformedLocations.clear();
@@ -47,6 +57,8 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // mark transformed locations as invalid that are outside the image bounds
+    // TODO: candidate for moving outside of class
     void compute_location_validity() {
 
       this->energyDerivedData.validLocation.clear();
@@ -68,6 +80,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // TODO: candidate for moving outside of class
     void compute_image_gradient_times_jacobian() {
 
       this->energyDerivedData.imageGradientTimesJacobian.clear();
@@ -107,6 +120,8 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // compute the jacobian of the transformation matrix
+    // TODO: candidate for moving outside of class
     arma::mat compute_jacobian(const double& x, const double& y, const double& z) const {
 
       const arma::vec p({ x, y, z });
@@ -134,6 +149,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // TODO: candidate for moving outside of class
     arma::vec compute_image_gradient(const arma::vec& p) const {
 
       // interpolate values
@@ -150,6 +166,8 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // compute the warped image: this is the current deformed template
+    // TODO: candidate for moving outside of class
     void compute_warped_image() {
 
       this->energyDerivedData.warpedImage.clear();
@@ -187,6 +205,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // use the current motion increment to deform the warped image
     void compute_modified_image() {
 
       this->modifiedImage.clear();
@@ -220,6 +239,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // compute the mean color in the modified image
     void compute_mean() {
 
       this->mean = 0;
@@ -244,6 +264,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // compute derivative of mean with respect to increment
     void compute_mean_derivative() {
 
       this->meanDerivative = arma::zeros(this->energyData.transformationAmount);
@@ -268,8 +289,8 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // subtract the mean from each color of the modified image
     void compute_centered_values() {
-
 
       this->centeredValues.clear();
 
@@ -290,6 +311,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // compute the derivative of each centered value with respect to increment
     void compute_centered_values_derivatives() {
 
       this->centeredValuesDerivatives.clear();
@@ -316,6 +338,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // compute derivative of squared version of the centered values
     void compute_squared_centered_values_derivatives() {
 
       this->squaredCenteredValuesDerivatives.clear();
@@ -330,7 +353,7 @@ namespace lucasKanade{
         }
 
         this->squaredCenteredValuesDerivatives.push_back(
-                                                         2. * this->centeredValuesDerivatives.at(i) *
+                                                         2. * this->centeredValuesDerivatives.at(i).t() *
                                                          this->centeredValues.at(i)
                                                          );
 
@@ -341,9 +364,10 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
-    void compute_standard_deviation_centered_values() {
+    // compute the standard deviation of modified image
+    void compute_standard_deviation() {
 
-      this->standardDeviationCenteredValues = 0.;
+      this->standardDeviation = 0.;
 
       int count = 0;
 
@@ -355,18 +379,19 @@ namespace lucasKanade{
 
         }
 
-        this->standardDeviationCenteredValues += pow(this->centeredValues.at(i), 2.);
+        this->standardDeviation += pow(this->centeredValues.at(i), 2.);
         ++count;
 
       }
 
-      this->standardDeviationCenteredValues = sqrt( 1. / count * standardDeviationCenteredValues);
+      this->standardDeviation = sqrt( 1. / count * standardDeviationCenteredValues);
 
     }
 
     /*--------------------------------------------------------------------------*/
 
-    void compute_standard_deviation_centered_values_derivative() {
+    // compute derivative of standard deviation with respect to increment
+    void compute_standard_deviation_derivative() {
 
       this->standardDeviationDerivative = arma::zeros(this->energyData.transformationAmount);
 
@@ -388,6 +413,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // normalize values by dividing by standard deviation
     void compute_normalized_values() {
 
       this->normalizedValues.clear();
@@ -401,7 +427,7 @@ namespace lucasKanade{
 
         }
 
-        this->normalizedValues.push_back(this->centeredValues / this->standardDeviationCenteredValues);
+        this->normalizedValues.push_back(this->centeredValues.at(i) / this->standardDeviation);
 
       }
 
@@ -409,6 +435,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    // take derivative of normalized values with respect to increment
     void compute_normalized_values_derivatives() {
 
       this->normalizedValuesDerivatives.clear();
@@ -426,10 +453,9 @@ namespace lucasKanade{
         this->normalizedValuesDerivatives.push_back(
 
                                                     ( this->centeredValuesDerivatives.at(i) * this->standardDeviationCenteredValues - this->centeredValues.at(i) * this->standardDeviationDerivative ) /
-                                                    pow(this->standardDeviationCenteredValues, 2 )
+                                                    pow(this->standardDeviation, 2 )
 
                                                     );
-
 
       }
 
