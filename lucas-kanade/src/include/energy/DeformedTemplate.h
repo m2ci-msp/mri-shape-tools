@@ -18,19 +18,12 @@ namespace lucasKanade{
     // these are the undeformed voxel coordinates of the subimage that is used as template
     const std::vector<arma::vec> originalLocations;
 
-    const Image& originalImage;
-
-    // derivatives of the original image
-    Image imageX;
-    Image imageY;
-    Image imageZ;
+    Image originalImage;
 
     // values depending on the current transformation matrix
     std::vector<arma::vec> transformedLocations;
 
     std::vector<bool> locationValid;
-
-    std::vector<arma::mat> imageGradientTimesJacobian;
 
     std::vector<double> warpedImage;
 
@@ -55,8 +48,6 @@ namespace lucasKanade{
                   const std::vector<arma::vec>& originalLocations
                   ) : originalImage(originalImage), originalLocations(originalLocations) {
 
-      compute_image_derivatives();
-
     }
 
     /*--------------------------------------------------------------------------*/
@@ -68,8 +59,6 @@ namespace lucasKanade{
       compute_transformed_locations();
 
       compute_location_validity();
-
-      compute_image_gradient_times_jacobian();
 
       compute_warped_image();
 
