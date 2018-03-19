@@ -5,11 +5,32 @@
 
 class ImageInterpolate{
 
+private:
+
+  ImageData& imageData;
+  const ImageAccess imageAccess;
+
+
 public:
 
   // constructor that initializes ImageAccess object
   ImageInterpolate(ImageData& imageData) :
+    imageData(imageData),
     imageAccess(ImageAccess(imageData)) {
+  }
+
+  double at_coordinate(
+                       const double& x,
+                       const double& y,
+                       const double& z
+                       ) const {
+
+    return at_grid(
+                   x / this->imageData.hx,
+                   y / this->imageData.hy,
+                   z / this->imageData.hz
+                   );
+
   }
 
   double at_grid(
@@ -59,10 +80,6 @@ public:
     return result;
   
   }
-
-  private:
-
-  const ImageAccess imageAccess;
 
 };
 
