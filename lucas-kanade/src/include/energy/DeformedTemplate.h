@@ -52,7 +52,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
-    void update_warped_image(const Transformation& transformation) {
+    void compute(const Transformation& transformation) {
 
       this->transformationMatrix = transformation;
 
