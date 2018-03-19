@@ -61,8 +61,9 @@ public:
       this->profiles.push_back(profile);
 
     }
+
   }
-    
+
   /*-----------------------------------------------------------------------*/
 
   std::vector<arma::vec> get_profiles() const {
