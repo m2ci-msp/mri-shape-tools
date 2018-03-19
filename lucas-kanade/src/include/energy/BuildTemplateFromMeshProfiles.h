@@ -6,6 +6,7 @@
 
 #include <armadillo>
 
+#include "image/Image.h"
 #include "mesh/Mesh.h"
 #include "mesh/NormalEstimation.h"
 #include "matrix/Transformation.h"
@@ -16,12 +17,12 @@ namespace lucasKanade{
 
   private:
 
-    const Mesh mesh;
+    Mesh mesh;
     const Image image;
     const double offset;
     const double length;
 
-    Transformation matrix;
+    Transformation transformation;
 
     std::vector<arma::vec> locations;
 
@@ -49,12 +50,6 @@ namespace lucasKanade{
 
     const std::vector<arma::vec>& get_locations() const {
 
-      if( this->isBuilt == false) {
-
-        throw std::logic_error("Template information was not built.");
-
-      }
-
       return this->locations;
 
     }
@@ -62,12 +57,6 @@ namespace lucasKanade{
     /*-------------------------------------------------------------------------*/
 
     const Transformation& get_transformation() const {
-
-      if( this->isBuilt == false) {
-
-        throw std::logic_error("Template information was not built.");
-
-      }
 
       return this->transformation;
 
@@ -97,7 +86,8 @@ namespace lucasKanade{
 
       }
 
-      std::unique( this->locations.begin(), this->locations.end() );
+      // TODO: only use unique coordinates
+      // std::unique( this->locations.begin(), this->locations.end() );
 
     }
 
@@ -105,7 +95,7 @@ namespace lucasKanade{
 
     void compute_rotation_center() {
 
-      this->matrix.set_origin( this->mesh.get_center() );
+      this->transformation.set_origin( this->mesh.get_center() );
 
     }
 
