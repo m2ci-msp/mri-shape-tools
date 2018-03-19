@@ -138,10 +138,10 @@ namespace lucasKanade{
 
         const arma::vec& transformedLocation = this->transformedLocations[i];
 
-        const double warped = this->originalImage.interpolate().at_grid(transformedLocation(0),
-                                                                        transformedLocation(1),
-                                                                        transformedLocation(2)
-                                                                        );
+        const double warped = this->originalImage.interpolate().at_coordinate(transformedLocation(0),
+                                                                              transformedLocation(1),
+                                                                              transformedLocation(2)
+                                                                              );
         this->warpedImage.push_back(warped);
 
       } // end for i

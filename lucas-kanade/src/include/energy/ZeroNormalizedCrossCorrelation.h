@@ -8,21 +8,30 @@
 #include "energy/TransformationEnum.h"
 #include "energy/ITKWrapper.h"
 
-// TODO:
-// move candidates for refactoring outside of class
-
 namespace lucasKanade{
 
   class ZNCC{
 
   private:
 
+    // derived data
+    int transformationAmount;
+    int voxelAmount;
+
+    // input
+    const std::vector<bool> locationValid;
+    const std::vector<double> incrementallyDeformedTemplate;
+    const std::vector<arma::vec> imageGradientTimesJacobian;
+    const std::vector<arma::vec> originalNormalizedValues;
+
+    // immediate results
     // the mean color of the current deformed template
     double mean;
 
     // derivative of the mean
     arma::vec meanDerivative;
 
+    // values centered to the mean
     std::vector<double> centeredValues;
 
     std::vector<arma::vec> centeredValuesDerivatives;
@@ -34,11 +43,27 @@ namespace lucasKanade{
     std::vector<double> normalizedValues;
     std::vector<arma::vec> normalizedValuesDerivatives;
 
+    // output
     double correlation;
 
     arma::vec correlationDerivative;
 
   public:
+
+    ZNCC(const std::vector<bool>& locationValid,
+         const std::vector<double>& incrementallyDeformedTemplate,
+         const std::vector<arma::vec>& imageGradientTimesJacobian,
+         const std::vector<arma::vec>& originalNormalizedValues) :
+
+      locationValid(locationValid),
+      incrementallyDeformedTemplate(incrementallyDeformedTemplate),
+      imageGradientTimesJacobian(imageGradientTimesJacobian),
+      originalNormalizedValues(originalNormalizedValues) {
+
+      this->transformationAmount = 6;
+      this->vortexAmount = this->locationValid.size();
+
+    }
 
   private:
 
@@ -199,6 +224,8 @@ namespace lucasKanade{
 
       this->standardDeviationDerivative = arma::zeros(this->transformationAmount);
 
+      int count = 0;
+
       for(int i = 0; i < this->voxelAmount; ++i) {
 
         if(this->locationValid[i] == false) {
@@ -208,10 +235,12 @@ namespace lucasKanade{
         }
 
         this->standardDeviationDerivative += this->squaredCenteredValuesDerivatives[i];
+        ++count;
 
       }
 
-      this->standardDeviationDerivative *= 0.5 / this->standardDeviationCenteredValues;
+      this->standardDeviationDerivative /= count;
+      this->standardDeviationDerivative *= 0.5 / this->standardDeviation;
 
     }
 
