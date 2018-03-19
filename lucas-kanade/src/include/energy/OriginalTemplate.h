@@ -16,8 +16,14 @@ namespace lucasKanade{
     const std::vector<arma::vec> locations;
     Image image;
 
-    std::vector<double> normalizedValues;
+    double mean;
+    double standardDeviation;
 
+    std::vector<double> values;
+
+    std::vector<double> centeredValues;
+
+    std::vector<double> normalizedValues;
 
   public:
 
