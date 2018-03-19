@@ -1,7 +1,12 @@
 #ifndef __INCREMENTALLY_DEFORMED_TEMPLATE_H_
 #define __INCREMENTALLY_DEFORMED_TEMPLATE_H_
 
+#include <vector>
+
 #include <armadillo>
+
+#include "image/Image.h"
+#include "matrix/Transformation.h"
 
 namespace lucasKanade{
 
@@ -10,7 +15,9 @@ namespace lucasKanade{
   private:
 
     // input
-    Image orignalImage;
+    Image originalImage;
+
+    const std::vector<arma::vec>& originalLocations;
 
     const std::vector<arma::vec>& transformedLocations;
 
@@ -18,16 +25,19 @@ namespace lucasKanade{
 
     const std::vector<double>& deformedTemplate;
 
+    Transformation transformationMatrix;
+
+    arma::vec increment;
+
     // immediate results
     Image imageX;
     Image imageY;
     Image imageZ;
 
-
     std::vector<arma::mat> imageGradientTimesJacobian;
 
     // output
-    std::vector<double>& incrementallyDeformedTemplate;
+    std::vector<double> incrementallyDeformedTemplate;
 
   public:
 
@@ -35,18 +45,32 @@ namespace lucasKanade{
 
     IncrementallyDeformedTemplate(
                                   const Image& originalImage,
+                                  const std::vector<arma::vec>& originalLocations,
                                   const std::vector<arma::vec>& transformedLocations,
                                   const std::vector<bool>& locationValid,
-                                  const std::vector<double>& deformedTemplate
+                                  const std::vector<double>& deformedTemplate,
+                                  const Transformation& transformationMatrix
                                   ) : originalImage(originalImage),
+                                      originalLocations(originalLocations),
                                       transformedLocations(transformedLocations),
                                       locationValid(locationValid),
-                                      deformedTemplate(deformedTemplate) {
+                                      deformedTemplate(deformedTemplate),
+                                      transformationMatrix(transformationMatrix) {
       compute_image_derivatives();
 
     }
 
     /*--------------------------------------------------------------------------*/
+
+    void compute(const arma::vec& increment) {
+
+      this->increment = increment;
+
+      compute_image_gradient_times_jacobian();
+
+      compute_incrementally_deformed_template();
+
+    }
 
   private:
 
@@ -147,7 +171,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
-    arma::vec compute_image_gradient(const arma::vec& p) const {
+    arma::vec compute_image_gradient(const arma::vec& p) {
 
       // interpolate values
       const double dx = this->imageX.interpolate().at_grid(p(0), p(1), p(2));
@@ -164,22 +188,22 @@ namespace lucasKanade{
     /*--------------------------------------------------------------------------*/
 
     // use the current transformation increment to deform the warped image
-    void compute_increment_warped_image() {
+    void compute_incrementally_deformed_template() {
 
-      this->incrementWarpedImage.clear();
+      this->incrementallyDeformedTemplate.clear();
 
-      for(size_t i = 0; i < this->warpedImage.size(); ++i) {
+      for(size_t i = 0; i < this->deformedTemplate.size(); ++i) {
 
         if(this->locationValid[i] == false) {
 
-          this->incrementWarpedImage.push_back(0);
+          this->incrementallyDeformedTemplate.push_back(0);
           continue;
 
         }
 
         const arma::vec& J = this->imageGradientTimesJacobian[i];
 
-        this->incrementWarpedImage.push_back(this->warpedImage[i] + arma::dot(J.t(), increment));
+        this->incrementallyDeformedTemplate.push_back(this->deformedTemplate[i] + arma::dot(J.t(), increment));
 
       }
 
