@@ -1,12 +1,9 @@
 #ifndef __ZERO_NORMALIZED_CROSS_CORRELATION_H__
 #define __ZERO_NORMALIZED_CROSS_CORRELATION_H__
 
-#include <armadillo>
+#include <vector>
 
-#include "energy/EnergyData.h"
-#include "energy/EnergyDerivedData.h"
-#include "energy/TransformationEnum.h"
-#include "energy/ITKWrapper.h"
+#include <armadillo>
 
 namespace lucasKanade{
 
@@ -22,7 +19,7 @@ namespace lucasKanade{
     const std::vector<bool> locationValid;
     const std::vector<double> incrementallyDeformedTemplate;
     const std::vector<arma::vec> imageGradientTimesJacobian;
-    const std::vector<arma::vec> originalNormalizedValues;
+    const std::vector<double> originalNormalizedValues;
 
     // immediate results
     // the mean color of the current deformed template
@@ -53,7 +50,7 @@ namespace lucasKanade{
     ZNCC(const std::vector<bool>& locationValid,
          const std::vector<double>& incrementallyDeformedTemplate,
          const std::vector<arma::vec>& imageGradientTimesJacobian,
-         const std::vector<arma::vec>& originalNormalizedValues) :
+         const std::vector<double>& originalNormalizedValues) :
 
       locationValid(locationValid),
       incrementallyDeformedTemplate(incrementallyDeformedTemplate),
@@ -61,7 +58,7 @@ namespace lucasKanade{
       originalNormalizedValues(originalNormalizedValues) {
 
       this->transformationAmount = 6;
-      this->vortexAmount = this->locationValid.size();
+      this->voxelAmount = this->locationValid.size();
 
     }
 
@@ -183,7 +180,7 @@ namespace lucasKanade{
 
         this->squaredCenteredValuesDerivatives.push_back(
                                                          2. * this->centeredValuesDerivatives[i].t() *
-                                                         this->centeredValues.at[i]
+                                                         this->centeredValues[i]
                                                          );
 
       }
@@ -285,7 +282,7 @@ namespace lucasKanade{
         // quotient rule
         this->normalizedValuesDerivatives.push_back(
 
-                                                    ( this->centeredValuesDerivatives[i] * this->standardDeviationCenteredValues - this->centeredValues[i] * this->standardDeviationDerivative ) /
+                                                    ( this->centeredValuesDerivatives[i] * this->standardDeviation- this->centeredValues[i] * this->standardDeviationDerivative ) /
                                                     pow(this->standardDeviation, 2 )
 
                                                     );
