@@ -6,6 +6,7 @@
 #include <armadillo>
 
 #include "matrix/Transformation.h"
+#include "ZeroNormalizedCrossCorrelation.h"
 
 namespace lucasKanade{
 
@@ -13,23 +14,25 @@ namespace lucasKanade{
 
   public:
 
+    EnergyDerivedData(const Image& target, const std::vector<arma::vec>& originalLocations) :
+
+      deformedTemplate(target, originalLocations),
+      incrementallyDeformedTemplate(deformedTemplate),
+      zeroNormalizedCrossCorrelation(incrementallyDeformedTemplate) {
+
+    }
+
+
+
     /*--------------------------------------------------------------------------*/
 
-    // current template in linearized format
-    std::vector<double> templateImage;
+    DeformedTemplate deformedTemplate;
 
-    // current warped image in linearized format
-    std::vector<double> warpedImage;
+    IncrementallyDeformedTemplate incrementallyDeformedTemplate;
 
-    // indicator if current location is valid
-    std::vector<bool> validLocation;
+    ZeroNormalizedCrossCorrelation zeroNormalizedCrossCorrelation;
 
-    // product of image gradient and jacobian matrix of transformation
-    // for each location
-    std::vector<arma::vec> imageGradientTimesJacobian;
 
-    // current summed up transformation parameters
-    std::vector<double> transformation;
 
     // corresponding transformation matrix
     Transformation transformationMatrix;

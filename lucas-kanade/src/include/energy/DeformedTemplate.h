@@ -16,37 +16,29 @@ namespace lucasKanade{
     /*--------------------------------------------------------------------------*/
 
     // these are the undeformed voxel coordinates of the subimage that is used as template
-    const std::vector<arma::vec> originalLocations;
+    const std::vector<arma::vec>& originalLocations;
 
-    Image originalImage;
+    // image data
+    Image image;
 
     // values depending on the current transformation matrix
     std::vector<arma::vec> transformedLocations;
 
     std::vector<bool> locationValid;
 
-    std::vector<double> warpedImage;
-
-    // flag indicating if warped image was computed
-    bool warpedComputed = false;
-
-    // flag indicating if increment warped image was computed
-    bool incrementWarpedComputed = false;
+    std::vector<double> deformedTemplate;
 
     // transformation matrix
     Transformation transformationMatrix;
-
-    // transformation increment in linearization of transformation
-    arma::vec transformationIncrement;
 
     /*--------------------------------------------------------------------------*/
 
   public:
 
     DeformedTemplate(
-                  const Image& originalImage,
+                  const Image& image,
                   const std::vector<arma::vec>& originalLocations
-                  ) : originalImage(originalImage), originalLocations(originalLocations) {
+                  ) : image(image), originalLocations(originalLocations) {
 
     }
 
@@ -60,13 +52,44 @@ namespace lucasKanade{
 
       compute_location_validity();
 
-      compute_warped_image();
-
-      this->warpedComputed = true;
+      compute_deformed_image();
 
     }
 
     /*--------------------------------------------------------------------------*/
+
+    const std::vector<arma::vec>& get_transformed_locations() const {
+
+      return this->transformedLocations;
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
+    const std::vector<bool>& get_location_valid() const {
+
+      return this->validLocation;
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
+    const std::vector<double>& get_deformed_template() const {
+
+      return this->deformedTemplate;
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
+    const Transformation& get_transformation() const {
+
+      return this->transformationMatrix;
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
 
   private:
 
@@ -95,11 +118,11 @@ namespace lucasKanade{
 
       for(const arma::vec& position : this->transformedLocations) {
 
-        const bool valid = ( position(0) < this->originalImage.info().get_nx() &&
+        const bool valid = ( position(0) < this->image.info().get_nx() &&
                              position(0) >= 0 &&
-                             position(1) < this->originalImage.info().get_ny() &&
+                             position(1) < this->image.info().get_ny() &&
                              position(1) >= 0 &&
-                             position(2) < this->originalImage.info().get_nz() &&
+                             position(2) < this->image.info().get_nz() &&
                              position(2) >= 0 );
 
         this->locationValid.push_back(valid);
@@ -111,15 +134,15 @@ namespace lucasKanade{
     /*--------------------------------------------------------------------------*/
 
     // compute the warped image: this is the current deformed template
-    void compute_warped_image() {
+    void compute_deformed_template() {
 
-      this->warpedImage.clear();
+      this->deformedTemplate.clear();
 
       for(size_t i = 0; i < this->transformedLocations.size(); ++i) {
 
         if(this->locationValid[i] == false) {
 
-          this->warpedImage.push_back(0.);
+          this->deformedTemplate.push_back(0.);
 
           continue;
 
@@ -127,11 +150,11 @@ namespace lucasKanade{
 
         const arma::vec& transformedLocation = this->transformedLocations[i];
 
-        const double warped = this->originalImage.interpolate().at_coordinate(transformedLocation(0),
+        const double warped = this->image.interpolate().at_coordinate(transformedLocation(0),
                                                                               transformedLocation(1),
                                                                               transformedLocation(2)
                                                                               );
-        this->warpedImage.push_back(warped);
+        this->deformedTemplate.push_back(warped);
 
       } // end for i
 

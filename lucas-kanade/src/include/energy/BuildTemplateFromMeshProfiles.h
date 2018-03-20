@@ -22,7 +22,7 @@ namespace lucasKanade{
     const double offset;
     const double length;
 
-    Transformation transformation;
+    arma::vec center;
 
     std::vector<arma::vec> locations;
 
@@ -56,9 +56,9 @@ namespace lucasKanade{
 
     /*-------------------------------------------------------------------------*/
 
-    const Transformation& get_transformation() const {
+    const arma::vec& get_center() const {
 
-      return this->transformation;
+      return this->center;
 
     }
 
@@ -95,7 +95,7 @@ namespace lucasKanade{
 
     void compute_rotation_center() {
 
-      this->transformation.set_origin( this->mesh.get_center() );
+      this->center =this->mesh.get_center();
 
     }
 

@@ -49,70 +49,39 @@ namespace lucasKanade{
 
       const int& transformationAmount = this->energy.data().transformationAmount;
 
-      const int voxelAmount = this->energy.derived_data().templateImage.size();
 
-      const std::vector<double>& warpedImage = this->energy.derived_data().warpedImage;
+      IncrementallyDeformedTemplate& incrementallyDeformedTemplate =
+        this->energy.derived_data().incrementallyDeformedTemplate;
 
-      const std::vector<bool>& validLocation = this->energy.derived_data().validLocation;
+      ZeroNormalizedCrossCorrelation& zeroNormalizedCrossCorrelation =
+        this->energy.derived_data().zeroNormalizedCrossCorrelation;
 
-      const std::vector<double>& templateImage = this->energy.derived_data().templateImage;
+      const arma::vec increment( {
+          this->energy.data().transformation[TX],
+            this->energy.data().transformation[TY],
+            this->energy.data().transformation[TZ],
+            this->energy.data().transformation[ALPHA],
+            this->energy.data().transformation[BETA],
+            this->energy.data().transformation[GAMMA]
+            }
+        );
 
-      const std::vector<arma::vec>& imageGradientTimesJacobian = this->energy.derived_data().imageGradientTimesJacobian;
+      incrementallyDeformedTemplate.compute(increment);
+      zeroNormalizedCrossCorrelation.update();
 
-      for(int i = 0; i < voxelAmount; ++i ) {
+      energy = - zeroNormalizedCrossCorrelation.get_correlation();
 
-        // skip if we don't have valid data for the current location
-        if( validLocation.at(i) == false) {
+      const arma::vec localGradient = - zeroNormalizedCrossCorrelation.get_correlation_derivative();
 
-          continue;
+      for(int j = 0; j < transformationAmount; ++j) {
 
-        }
-
-        const arma::vec& J = imageGradientTimesJacobian.at(i);
-
-        const arma::vec increment( {
-            this->energy.data().transformation[TX],
-              this->energy.data().transformation[TY],
-              this->energy.data().transformation[TZ],
-              this->energy.data().transformation[ALPHA],
-              this->energy.data().transformation[BETA],
-              this->energy.data().transformation[GAMMA]
-              }
-          );
-
-        const double difference = warpedImage.at(i) - templateImage.at(i) + arma::dot(J.t(), increment);
-
-        energy += psi(pow(difference, 2));
-
-        const arma::mat tmp = psi_derivative(pow(difference, 2)) * 2 * J.t() * difference;
-
-        const arma::vec localGradient = tmp.row(0).t();
-
-        for(int j = 0; j < transformationAmount; ++j) {
-
-          gradient[j] += localGradient(j);
-
-        }
+        gradient[j] = localGradient(j);
 
       }
 
     }
 
     /*--------------------------------------------------------------------------*/
-
-    // robust penalizer
-    double psi(const double& x) const {
-
-      return sqrt(x + 0.000001);
-
-    }
-
-    double psi_derivative(const double& x) const {
-
-      return 1 / ( 2 * sqrt(x + 0.000001) );
-
-    }
-
 
     Energy& energy;
 
