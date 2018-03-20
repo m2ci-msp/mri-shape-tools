@@ -16,10 +16,10 @@ namespace lucasKanade{
     int voxelAmount;
 
     // input
-    const std::vector<bool> locationValid;
-    const std::vector<double> incrementallyDeformedTemplate;
-    const std::vector<arma::vec> imageGradientTimesJacobian;
-    const std::vector<double> originalNormalizedValues;
+    const std::vector<bool>& locationValid;
+    const std::vector<double>& incrementallyDeformedTemplate;
+    const std::vector<arma::vec>& imageGradientTimesJacobian;
+    const std::vector<double>& originalNormalizedValues;
 
     // immediate results
     // the mean color of the current deformed template
@@ -60,7 +60,41 @@ namespace lucasKanade{
       this->transformationAmount = 6;
       this->voxelAmount = this->locationValid.size();
 
+      compute_mean();
+      compute_mean_derivative();
+
+      compute_centered_values();
+      compute_centered_values_derivatives();
+
+      compute_standard_deviation();
+      compute_standard_deviation_derivative();
+
+      compute_normalized_values();
+      compute_normalized_values_derivatives();
+
+      compute_correlation();
+      compute_correlation_derivative();
+
     }
+
+    /*--------------------------------------------------------------------------*/
+
+    double get_correlation() const {
+
+      return this->correlation;
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
+    arma::vec get_correlation_derivative() const {
+
+      return this->correlationDerivative;
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
 
   private:
 

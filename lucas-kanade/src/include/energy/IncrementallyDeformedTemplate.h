@@ -15,7 +15,7 @@ namespace lucasKanade{
   private:
 
     // input
-    Image originalImage;
+    Image image;
 
     const std::vector<arma::vec>& originalLocations;
 
@@ -25,7 +25,7 @@ namespace lucasKanade{
 
     const std::vector<double>& deformedTemplate;
 
-    Transformation transformationMatrix;
+    const Transformation& transformationMatrix;
 
     arma::vec increment;
 
@@ -44,13 +44,13 @@ namespace lucasKanade{
     /*--------------------------------------------------------------------------*/
 
     IncrementallyDeformedTemplate(
-                                  const Image& originalImage,
+                                  const Image& image,
                                   const std::vector<arma::vec>& originalLocations,
                                   const std::vector<arma::vec>& transformedLocations,
                                   const std::vector<bool>& locationValid,
                                   const std::vector<double>& deformedTemplate,
                                   const Transformation& transformationMatrix
-                                  ) : originalImage(originalImage),
+                                  ) : image(image),
                                       originalLocations(originalLocations),
                                       transformedLocations(transformedLocations),
                                       locationValid(locationValid),
@@ -72,31 +72,49 @@ namespace lucasKanade{
 
     }
 
+    /*--------------------------------------------------------------------------*/
+
+    const std::vector<arma::mat>& get_image_gradient_times_jacobian() const {
+
+      return this->imageGradientTimesJacobian;
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
+    const std::vector<double>& get_incrementally_deformed_template() const {
+
+      return this->incrementallyDeformedTemplate;
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
   private:
 
     /*--------------------------------------------------------------------------*/
 
     void compute_image_derivatives() {
 
-      this->originalImage.boundary().change(1, 1, 1);
-      this->originalImage.mirror().all();
+      this->image.boundary().change(1, 1, 1);
+      this->image.mirror().all();
 
-      this->imageX = this->originalImage;
-      this->imageY = this->originalImage;
-      this->imageZ = this->originalImage;
+      this->imageX = this->image;
+      this->imageY = this->image;
+      this->imageZ = this->image;
 
-      for(int i = 0; i < this->originalImage.info().get_nx(); ++i) {
-        for(int j = 0; j < this->originalImage.info().get_ny(); ++j) {
-          for(int k = 0; k < this->originalImage.info().get_nz(); ++k) {
+      for(int i = 0; i < this->image.info().get_nx(); ++i) {
+        for(int j = 0; j < this->image.info().get_ny(); ++j) {
+          for(int k = 0; k < this->image.info().get_nz(); ++k) {
 
             this->imageX.access().at_grid(i, j, k) =
-              this->originalImage.calculus().dx(i, j, k);
+              this->image.calculus().dx(i, j, k);
 
             this->imageY.access().at_grid(i, j, k) =
-              this->originalImage.calculus().dy(i, j, k);
+              this->image.calculus().dy(i, j, k);
 
             this->imageZ.access().at_grid(i, j, k) =
-              this->originalImage.calculus().dz(i, j, k);
+              this->image.calculus().dz(i, j, k);
 
           }
 
