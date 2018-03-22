@@ -5,6 +5,7 @@
 #include <vnl/vnl_cost_function.h>
 
 #include "energy/EnergyData.h"
+#include "energy/ZeroNormalizedCrossCorrelation.h"
 
 namespace lucasKanade{
 
@@ -51,10 +52,7 @@ namespace lucasKanade{
 
 
       IncrementallyDeformedTemplate& incrementallyDeformedTemplate =
-        this->energy.derived_data().incrementallyDeformedTemplate;
-
-      ZeroNormalizedCrossCorrelation& zeroNormalizedCrossCorrelation =
-        this->energy.derived_data().zeroNormalizedCrossCorrelation;
+        this->energy.data().incrementallyDeformedTemplate;
 
       const arma::vec increment( {
           this->energy.data().transformation[TX],
@@ -67,7 +65,12 @@ namespace lucasKanade{
         );
 
       incrementallyDeformedTemplate.compute(increment);
-      zeroNormalizedCrossCorrelation.update();
+
+      ZeroNormalizedCrossCorrelation zeroNormalizedCrossCorrelation(
+                                     this->energy.data().originalNormalizedValues,
+                                     this->energy.data().deformedTemplate,
+                                     incrementallyDeformedTemplate
+                                     );
 
       energy = - zeroNormalizedCrossCorrelation.get_correlation();
 

@@ -42,9 +42,6 @@ namespace lucasKanade{
 
     void minimize() {
 
-      // initialize data structures for template
-      this->energy.update().for_template();
-
       // initialize data structures for current transformation
       this->energy.update().for_transformation();
 
@@ -64,13 +61,13 @@ namespace lucasKanade{
     void perform_iteration() {
 
       // find minimizer
-      this->minimizer->minimize(this->energy.data().transformation);
+      this->minimizer->minimize(this->energy.data().transformationIncrement);
 
       // increment transformation parameters and reset increment to 0
       for(int i = 0; i < this->energy.data().transformationAmount; ++i) {
 
-        this->energy.derived_data().transformation[i] += this->energy.data().transformation[i];
-        this->energy.data().transformation[i] = 0;
+        this->energy.data().transformation[i] += this->energy.data().transformationIncrement[i];
+        this->energy.data().transformationIncrement[i] = 0;
 
       }
 

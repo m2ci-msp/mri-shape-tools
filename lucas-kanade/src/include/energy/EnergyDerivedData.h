@@ -14,28 +14,16 @@ namespace lucasKanade{
 
   public:
 
-    EnergyDerivedData(const Image& target, const std::vector<arma::vec>& originalLocations) :
-
-      deformedTemplate(target, originalLocations),
-      incrementallyDeformedTemplate(deformedTemplate),
-      zeroNormalizedCrossCorrelation(incrementallyDeformedTemplate) {
-
-    }
-
-
-
     /*--------------------------------------------------------------------------*/
 
-    DeformedTemplate deformedTemplate;
+    EnergyDerivedData(
+                      const Image& target,
+                      const std::vector<arma::vec>& originalLocations) :
 
-    IncrementallyDeformedTemplate incrementallyDeformedTemplate;
+      deformedTemplate(target, originalLocations),
+      incrementallyDeformedTemplate(target, originalLocations, deformedTemplate) {
 
-    ZeroNormalizedCrossCorrelation zeroNormalizedCrossCorrelation;
-
-
-
-    // corresponding transformation matrix
-    Transformation transformationMatrix;
+    }
 
     /*--------------------------------------------------------------------------*/
 

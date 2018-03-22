@@ -7,6 +7,7 @@
 
 #include "image/Image.h"
 #include "matrix/Transformation.h"
+#include "DeformedTemplate.h"
 
 namespace lucasKanade{
 
@@ -19,13 +20,7 @@ namespace lucasKanade{
 
     const std::vector<arma::vec>& originalLocations;
 
-    const std::vector<arma::vec>& transformedLocations;
-
-    const std::vector<bool>& locationValid;
-
-    const std::vector<double>& deformedTemplate;
-
-    const Transformation& transformationMatrix;
+    const DeformedTemplate& deformedTemplate;
 
     arma::vec increment;
 
@@ -46,16 +41,10 @@ namespace lucasKanade{
     IncrementallyDeformedTemplate(
                                   const Image& image,
                                   const std::vector<arma::vec>& originalLocations,
-                                  const std::vector<arma::vec>& transformedLocations,
-                                  const std::vector<bool>& locationValid,
-                                  const std::vector<double>& deformedTemplate,
-                                  const Transformation& transformationMatrix
+                                  const DeformedTemplate& deformedTemplate
                                   ) : image(image),
                                       originalLocations(originalLocations),
-                                      transformedLocations(transformedLocations),
-                                      locationValid(locationValid),
-                                      deformedTemplate(deformedTemplate),
-                                      transformationMatrix(transformationMatrix) {
+                                      deformedTemplate(deformedTemplate) {
       compute_image_derivatives();
 
     }
@@ -129,19 +118,22 @@ namespace lucasKanade{
     }
 
     /*--------------------------------------------------------------------------*/
+
     // compute the jacobian of the transformation matrix
     arma::mat compute_jacobian(const double& x, const double& y, const double& z) const {
 
       const arma::vec p({ x, y, z });
 
-      // compute derivatives
-      const arma::vec dTx = this->transformationMatrix.apply_derivative_tx(p);
-      const arma::vec dTy = this->transformationMatrix.apply_derivative_ty(p);
-      const arma::vec dTz = this->transformationMatrix.apply_derivative_tz(p);
+      const Transformation& transformationMatrix = this->deformedTemplate.get_transformation();
 
-      const arma::vec dAlpha = this->transformationMatrix.apply_derivative_alpha(p);
-      const arma::vec dBeta = this->transformationMatrix.apply_derivative_beta(p);
-      const arma::vec dGamma = this->transformationMatrix.apply_derivative_gamma(p);
+      // compute derivatives
+      const arma::vec dTx = transformationMatrix.apply_derivative_tx(p);
+      const arma::vec dTy = transformationMatrix.apply_derivative_ty(p);
+      const arma::vec dTz = transformationMatrix.apply_derivative_tz(p);
+
+      const arma::vec dAlpha = transformationMatrix.apply_derivative_alpha(p);
+      const arma::vec dBeta = transformationMatrix.apply_derivative_beta(p);
+      const arma::vec dGamma = transformationMatrix.apply_derivative_gamma(p);
 
       // assemble jacobian matrix
       const arma::mat J({
@@ -160,9 +152,12 @@ namespace lucasKanade{
 
       this->imageGradientTimesJacobian.clear();
 
+      const std::vector<arma::vec>& transformedLocations = this->deformedTemplate.get_transformed_locations();
+      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
+
       for(size_t i = 0; i < this->originalLocations.size(); ++i) {
 
-        if(this->locationValid[i] == false) {
+        if(locationValid[i] == false) {
 
           // insert dummy value
           this->imageGradientTimesJacobian.push_back(arma::zeros(1, 1));
@@ -175,7 +170,7 @@ namespace lucasKanade{
 
         const arma::mat J = compute_jacobian(location(0), location(1), location(2));
 
-        const arma::vec& transformedLocation = this->transformedLocations[i];
+        const arma::vec& transformedLocation = transformedLocations[i];
 
         const arma::vec imageGradient = compute_image_gradient(transformedLocation);
 
@@ -210,9 +205,12 @@ namespace lucasKanade{
 
       this->incrementallyDeformedTemplate.clear();
 
-      for(size_t i = 0; i < this->deformedTemplate.size(); ++i) {
+      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
+      const std::vector<double>& deformedTemplateValues = this->deformedTemplate.get_deformed_template();
 
-        if(this->locationValid[i] == false) {
+      for(size_t i = 0; i < deformedTemplateValues.size(); ++i) {
+
+        if(locationValid[i] == false) {
 
           this->incrementallyDeformedTemplate.push_back(0);
           continue;
@@ -221,7 +219,7 @@ namespace lucasKanade{
 
         const arma::vec& J = this->imageGradientTimesJacobian[i];
 
-        this->incrementallyDeformedTemplate.push_back(this->deformedTemplate[i] + arma::dot(J.t(), increment));
+        this->incrementallyDeformedTemplate.push_back(deformedTemplateValues[i] + arma::dot(J.t(), increment));
 
       }
 

@@ -3,7 +3,6 @@
 
 #include "energy/EnergyData.h"
 #include "energy/EnergySettings.h"
-#include "energy/EnergyDerivedData.h"
 #include "energy/EnergyDerivedDataUpdate.h"
 #include "energy/EnergyState.h"
 
@@ -25,9 +24,9 @@ namespace lucasKanade{
 
       this->energyDerivedDataUpdate =
         new EnergyDerivedDataUpdate(
-          this->energyData, this->energyDerivedData, this->energySettings);
+          this->energyData, this->energySettings);
 
-      this->energyDerivedData.transformation.resize(energyData.transformationAmount, 0);
+      this->energyData.transformation.resize(energyData.transformationAmount, 0);
 
     }
 
@@ -41,12 +40,6 @@ namespace lucasKanade{
 
     EnergyData& data() {
       return this->energyData;
-    }
-
-    /*--------------------------------------------------------------------------*/
-
-    EnergyDerivedData& derived_data() {
-      return this->energyDerivedData;
     }
 
     /*--------------------------------------------------------------------------*/
@@ -74,7 +67,6 @@ namespace lucasKanade{
     /*--------------------------------------------------------------------------*/
 
     EnergyData& energyData;
-    EnergyDerivedData energyDerivedData;
     EnergySettings energySettings;
 
     EnergyDerivedDataUpdate* energyDerivedDataUpdate;
