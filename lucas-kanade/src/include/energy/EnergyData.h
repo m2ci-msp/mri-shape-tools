@@ -9,7 +9,9 @@
 #include "image/Image.h"
 
 #include "matrix/Transformation.h"
-#include "energy/TransformationEnum.h"
+
+#include "DeformedTemplate.h"
+#include "IncrementallyDeformedTemplate.h"
 
 namespace lucasKanade{
 
@@ -18,27 +20,45 @@ namespace lucasKanade{
   public:
 
     // center of template region of interest
-    arma::vec center;
+    const arma::vec center;
+
+    // original normalized color values of the undeformed template in the source image
+    const std::vector<double> originalNormalizedValues;
 
     // current transformation parameters increment in serialized format
-    vnl_vector<double> transformation;
+    vnl_vector<double> transformationIncrement;
 
-    /*--------------------------------------------------------------------------*/
+    // current total transformation
+    std::vector<double> transformation;
+
+    // data structures of currently deformed template
+    DeformedTemplate deformedTemplate;
+
+    // data structures of incrementally deformed template
+    IncrementallyDeformedTemplate incrementallyDeformedTemplate;
+
+    // current transformationMatrix
+    Transformation transformationMatrix;
 
     const int transformationAmount = 6;
 
     /*--------------------------------------------------------------------------*/
 
     EnergyData(
-               const Image& templateImage,
-               const Image& target,
                const arma::vec& center,
-               const arma::vec& radius
+               const std::vector<double>& originalNormalizedValues,
+               const std::vector<arma::vec>& originalLocations,
+               const Image& target
                )
 
-      : templateImage(templateImage), target(target), center(center) {
+      :
+      center(center), originalNormalizedValues(originalNormalizedValues),
+      deformedTemplate(target, originalLocations),
+      incrementallyDeformedTemplate(target, originalLocations, deformedTemplate)
 
-      this->transformation = vnl_vector<double>(this->transformationAmount, 0.);
+    {
+
+      this->transformationIncrement = vnl_vector<double>(this->transformationAmount, 0.);
 
     }
 

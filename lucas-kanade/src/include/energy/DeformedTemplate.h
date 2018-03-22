@@ -15,11 +15,11 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
-    // these are the undeformed voxel coordinates of the subimage that is used as template
-    const std::vector<arma::vec>& originalLocations;
-
     // image data
     Image image;
+
+    // these are the undeformed voxel coordinates of the subimage that is used as template
+    const std::vector<arma::vec>& originalLocations;
 
     // values depending on the current transformation matrix
     std::vector<arma::vec> transformedLocations;
@@ -52,7 +52,7 @@ namespace lucasKanade{
 
       compute_location_validity();
 
-      compute_deformed_image();
+      compute_deformed_template();
 
     }
 
@@ -68,7 +68,7 @@ namespace lucasKanade{
 
     const std::vector<bool>& get_location_valid() const {
 
-      return this->validLocation;
+      return this->locationValid;
 
     }
 
