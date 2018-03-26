@@ -67,10 +67,10 @@ namespace lucasKanade{
       incrementallyDeformedTemplate.compute(increment);
 
       ZeroNormalizedCrossCorrelation zeroNormalizedCrossCorrelation(
-                                     this->energy.data().originalNormalizedValues,
-                                     this->energy.data().deformedTemplate,
-                                     incrementallyDeformedTemplate
-                                     );
+                                                                    this->energy.data().originalTemplate.get_normalized_values(),
+                                                                    this->energy.data().deformedTemplate,
+                                                                    incrementallyDeformedTemplate
+                                                                    );
 
       energy = - zeroNormalizedCrossCorrelation.get_correlation();
 
@@ -79,6 +79,7 @@ namespace lucasKanade{
       for(int j = 0; j < transformationAmount; ++j) {
 
         gradient[j] = localGradient(j);
+        std::cout << gradient[j] << std::endl;
 
       }
 

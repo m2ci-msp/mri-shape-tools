@@ -10,6 +10,7 @@
 
 #include "matrix/Transformation.h"
 
+#include "OriginalTemplate.h"
 #include "DeformedTemplate.h"
 #include "IncrementallyDeformedTemplate.h"
 
@@ -22,8 +23,8 @@ namespace lucasKanade{
     // center of template region of interest
     const arma::vec center;
 
-    // original normalized color values of the undeformed template in the source image
-    const std::vector<double> originalNormalizedValues;
+    // original template
+    OriginalTemplate originalTemplate;
 
     // current transformation parameters increment in serialized format
     vnl_vector<double> transformationIncrement;
@@ -46,17 +47,15 @@ namespace lucasKanade{
 
     EnergyData(
                const arma::vec& center,
-               const std::vector<double>& originalNormalizedValues,
                const std::vector<arma::vec>& originalLocations,
+               const Image& source,
                const Image& target
                )
 
       :
-      center(center), originalNormalizedValues(originalNormalizedValues),
+      center(center), originalTemplate(originalLocations, source),
       deformedTemplate(target, originalLocations),
-      incrementallyDeformedTemplate(target, originalLocations, deformedTemplate)
-
-    {
+      incrementallyDeformedTemplate(target, originalLocations, deformedTemplate) {
 
       this->transformationIncrement = vnl_vector<double>(this->transformationAmount, 0.);
 

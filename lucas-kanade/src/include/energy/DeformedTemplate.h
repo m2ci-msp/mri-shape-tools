@@ -40,6 +40,9 @@ namespace lucasKanade{
                   const std::vector<arma::vec>& originalLocations
                   ) : image(image), originalLocations(originalLocations) {
 
+      this->image.boundary().change(1, 1, 1);
+      this->image.mirror().all();
+
     }
 
     /*--------------------------------------------------------------------------*/
@@ -49,8 +52,6 @@ namespace lucasKanade{
       this->transformationMatrix = transformation;
 
       compute_transformed_locations();
-
-      compute_location_validity();
 
       compute_deformed_template();
 
@@ -100,10 +101,23 @@ namespace lucasKanade{
     void compute_transformed_locations() {
 
       this->transformedLocations.clear();
+      this->locationValid.clear();
 
       for(const arma::vec& location: this->originalLocations) {
 
-        this->transformedLocations.push_back(this->transformationMatrix.apply_matrix(location));
+        const arma::vec transformedLocation = this->transformationMatrix.apply_matrix(location);
+
+        if( is_valid(transformedLocation) ) {
+
+          this->transformedLocations.push_back(transformedLocation);
+          this->locationValid.push_back(true);
+
+        }
+        else {
+
+          this->locationValid.push_back(false);
+
+        }
 
       }
 
@@ -111,23 +125,24 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
-    // mark transformed locations as invalid that are outside the image bounds
-    void compute_location_validity() {
+    bool is_valid(const arma::vec& position) {
 
-      this->locationValid.clear();
+      const int& nx = this->image.info().get_nx();
+      const int& ny = this->image.info().get_ny();
+      const int& nz = this->image.info().get_nz();
 
-      for(const arma::vec& position : this->transformedLocations) {
+      const double& hx = this->image.info().get_hx();
+      const double& hy = this->image.info().get_hy();
+      const double& hz = this->image.info().get_hz();
 
-        const bool valid = ( position(0) < this->image.info().get_nx() &&
-                             position(0) >= 0 &&
-                             position(1) < this->image.info().get_ny() &&
-                             position(1) >= 0 &&
-                             position(2) < this->image.info().get_nz() &&
-                             position(2) >= 0 );
+      const bool valid = ( position(0) < nx * hx &&
+                           position(0) >= 0 &&
+                           position(1) < ny * hy &&
+                           position(1) >= 0 &&
+                           position(2) < nz * hz &&
+                           position(2) >= 0 );
 
-        this->locationValid.push_back(valid);
-
-      }
+        return valid;
 
     }
 
@@ -140,20 +155,13 @@ namespace lucasKanade{
 
       for(size_t i = 0; i < this->transformedLocations.size(); ++i) {
 
-        if(this->locationValid[i] == false) {
-
-          this->deformedTemplate.push_back(0.);
-
-          continue;
-
-        }
-
         const arma::vec& transformedLocation = this->transformedLocations[i];
 
-        const double warped = this->image.interpolate().at_coordinate(transformedLocation(0),
-                                                                              transformedLocation(1),
-                                                                              transformedLocation(2)
-                                                                              );
+        const double warped = this->image.access().at_coordinate(transformedLocation(0),
+                                                                 transformedLocation(1),
+                                                                 transformedLocation(2)
+                                                                 );
+
         this->deformedTemplate.push_back(warped);
 
       } // end for i

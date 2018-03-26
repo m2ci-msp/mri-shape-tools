@@ -13,11 +13,16 @@ namespace lucasKanade{
 
   private:
 
-    const std::vector<arma::vec> locations;
+    const std::vector<arma::vec> originalLocations;
+
+    std::vector<arma::vec> locations;
+
+    std::vector<bool> locationValid;
+
     Image image;
 
     double mean;
-    double standardDeviation;
+    double norm;
 
     std::vector<double> values;
 
@@ -30,10 +35,20 @@ namespace lucasKanade{
     /*--------------------------------------------------------------------------*/
 
     OriginalTemplate(
-                     const std::vector<arma::vec>& locations,
+                     const std::vector<arma::vec>& originalLocations,
                      const Image& image
                      ) :
-      locations(locations), image(image) {
+      originalLocations(originalLocations), image(image) {
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
+    void compute(const std::vector<bool>& locationValid) {
+
+      this->locationValid = locationValid;
+
+      assemble_locations();
 
       compute_values();
 
@@ -41,11 +56,12 @@ namespace lucasKanade{
 
       compute_centered_values();
 
-      compute_standard_deviation();
+      compute_norm();
 
       compute_normalized_values();
 
     }
+
 
     /*--------------------------------------------------------------------------*/
 
@@ -61,7 +77,27 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
+    void assemble_locations() {
+
+      this->locations.clear();
+
+      for(size_t i = 0; i < this->originalLocations.size(); ++i) {
+
+        if(this->locationValid[i] == true) {
+
+          this->locations.push_back(this->originalLocations[i]);
+
+        }
+
+      }
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
     void compute_values() {
+
+      this->values.clear();
 
       for(const arma::vec& location : this->locations ) {
 
@@ -105,7 +141,7 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
-    void compute_standard_deviation() {
+    void compute_norm() {
 
       double tmp = 0;
 
@@ -115,7 +151,7 @@ namespace lucasKanade{
 
       }
 
-      this->standardDeviation = sqrt(tmp / this->centeredValues.size() );
+      this->norm = sqrt(tmp);
 
     }
 
@@ -127,7 +163,7 @@ namespace lucasKanade{
 
       for(const double& value: this->centeredValues) {
 
-        this->normalizedValues.push_back(value / this->standardDeviation);
+        this->normalizedValues.push_back(value / this->norm);
 
       }
 
