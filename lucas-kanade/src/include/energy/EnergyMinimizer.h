@@ -46,8 +46,10 @@ namespace lucasKanade{
       this->energy.update().for_transformation();
 
       for(int i = 0; i < this->settings.iterationAmount; ++i) {
+
         perform_iteration();
         this->energy.state().energy = this->minimizer->get_end_error();
+
       }
 
     }

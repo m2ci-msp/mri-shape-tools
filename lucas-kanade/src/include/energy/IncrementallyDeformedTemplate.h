@@ -153,18 +153,8 @@ namespace lucasKanade{
       this->imageGradientTimesJacobian.clear();
 
       const std::vector<arma::vec>& transformedLocations = this->deformedTemplate.get_transformed_locations();
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
 
-      for(size_t i = 0; i < this->originalLocations.size(); ++i) {
-
-        if(locationValid[i] == false) {
-
-          // insert dummy value
-          this->imageGradientTimesJacobian.push_back(arma::zeros(1, 1));
-
-          continue;
-
-        }
+      for(size_t i = 0; i < transformedLocations.size(); ++i) {
 
         const arma::vec& location = this->originalLocations[i];
 
@@ -187,9 +177,9 @@ namespace lucasKanade{
     arma::vec compute_image_gradient(const arma::vec& p) {
 
       // interpolate values
-      const double dx = this->imageX.interpolate().at_grid(p(0), p(1), p(2));
-      const double dy = this->imageY.interpolate().at_grid(p(0), p(1), p(2));
-      const double dz = this->imageZ.interpolate().at_grid(p(0), p(1), p(2));
+      const double dx = this->imageX.interpolate().at_coordinate(p(0), p(1), p(2));
+      const double dy = this->imageY.interpolate().at_coordinate(p(0), p(1), p(2));
+      const double dz = this->imageZ.interpolate().at_coordinate(p(0), p(1), p(2));
 
       // assemble image gradient
       const arma::vec gradient( { dx, dy, dz });
@@ -205,17 +195,9 @@ namespace lucasKanade{
 
       this->incrementallyDeformedTemplate.clear();
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
       const std::vector<double>& deformedTemplateValues = this->deformedTemplate.get_deformed_template();
 
       for(size_t i = 0; i < deformedTemplateValues.size(); ++i) {
-
-        if(locationValid[i] == false) {
-
-          this->incrementallyDeformedTemplate.push_back(0);
-          continue;
-
-        }
 
         const arma::vec& J = this->imageGradientTimesJacobian[i];
 

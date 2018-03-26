@@ -27,13 +27,11 @@ int main(int argc, char* argv[]) {
 
   lucasKanade::BuildTemplateFromMeshProfiles builder(mesh, templateImage, offset, profileLength);
 
+  // TODO: map to image domain needed?
   const arma::vec& center = builder.get_center();
   const std::vector<arma::vec>& originalLocations = builder.get_locations();
 
-  const std::vector<double> originalNormalizedValues =
-    lucasKanade::OriginalTemplate(originalLocations, templateImage).get_normalized_values();
-
-  lucasKanade::EnergyData energyData(center, originalNormalizedValues, originalLocations, target);
+  lucasKanade::EnergyData energyData(center, originalLocations, templateImage, target);
 
   lucasKanade::Energy energy(energyData, settings.energySettings);
 

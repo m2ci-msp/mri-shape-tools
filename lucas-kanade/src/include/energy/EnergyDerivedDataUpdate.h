@@ -35,6 +35,8 @@ namespace lucasKanade{
 
       update_deformed_template();
 
+      update_original_template();
+
     }
 
     /*--------------------------------------------------------------------------*/
@@ -56,6 +58,17 @@ namespace lucasKanade{
       DeformedTemplate& deformedTemplate = this->energyData.deformedTemplate;
 
       deformedTemplate.compute(this->energyData.transformationMatrix);
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
+    void update_original_template() {
+
+      OriginalTemplate& originalTemplate = this->energyData.originalTemplate;
+      const std::vector<bool>& locationValid = this->energyData.deformedTemplate.get_location_valid();
+
+      originalTemplate.compute(locationValid);
 
     }
 

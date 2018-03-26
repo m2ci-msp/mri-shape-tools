@@ -33,14 +33,14 @@ namespace lucasKanade{
     // values centered to the mean
     std::vector<double> centeredValues;
 
-    std::vector<arma::vec> centeredValuesDerivatives;
+    std::vector<arma::mat> centeredValuesDerivatives;
 
-    std::vector<arma::vec> squaredCenteredValuesDerivatives;
+    std::vector<arma::mat> squaredCenteredValuesDerivatives;
 
-    double standardDeviation;
-    arma::vec standardDeviationDerivative;
+    double norm;
+    arma::mat normDerivative;
     std::vector<double> normalizedValues;
-    std::vector<arma::vec> normalizedValuesDerivatives;
+    std::vector<arma::mat> normalizedValuesDerivatives;
 
     // output
     double correlation;
@@ -60,16 +60,17 @@ namespace lucasKanade{
       incrementallyDeformedTemplate(incrementallyDeformedTemplate) {
 
       this->transformationAmount = 6;
-      this->voxelAmount = this->deformedTemplate.get_location_valid().size();
+      this->voxelAmount = this->deformedTemplate.get_deformed_template().size();
 
       compute_mean();
       compute_mean_derivative();
 
       compute_centered_values();
       compute_centered_values_derivatives();
+      compute_squared_centered_values_derivatives();
 
-      compute_standard_deviation();
-      compute_standard_deviation_derivative();
+      compute_norm();
+      compute_norm_derivative();
 
       compute_normalized_values();
       compute_normalized_values_derivatives();
@@ -105,8 +106,6 @@ namespace lucasKanade{
     // compute the mean color in the modified image
     void compute_mean() {
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
-
       const std::vector<double>& incrementallyDeformedTemplateValues =
         this->incrementallyDeformedTemplate.get_incrementally_deformed_template();
 
@@ -115,18 +114,12 @@ namespace lucasKanade{
 
       for(int i = 0; i < this->voxelAmount; ++i) {
 
-        if(locationValid[i] == false) {
-
-          continue;
-
-        }
-
         mean += incrementallyDeformedTemplateValues[i];
         ++count;
 
       }
 
-      this->mean /= count;
+      this->mean /= (count > 0) ? count : 1;
 
     }
 
@@ -134,8 +127,6 @@ namespace lucasKanade{
 
     // compute derivative of mean with respect to increment
     void compute_mean_derivative() {
-
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
 
       const std::vector<arma::mat>& imageGradientTimesJacobian =
         this->incrementallyDeformedTemplate.get_image_gradient_times_jacobian();
@@ -146,18 +137,12 @@ namespace lucasKanade{
 
       for(int i = 0; i < this->voxelAmount; ++i) {
 
-        if(locationValid[i] == false) {
-
-          continue;
-
-        }
-
         this->meanDerivative += imageGradientTimesJacobian[i];
         ++count;
 
       }
 
-      this->meanDerivative /= count;
+      this->meanDerivative /= ( count > 0)? count: 1;
 
     }
 
@@ -166,21 +151,12 @@ namespace lucasKanade{
     // subtract the mean from each color of the modified image
     void compute_centered_values() {
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
-
       const std::vector<double>& incrementallyDeformedTemplateValues =
         this->incrementallyDeformedTemplate.get_incrementally_deformed_template();
 
       this->centeredValues.clear();
 
       for(int i = 0; i < this->voxelAmount; ++i) {
-
-        if(locationValid[i] == false) {
-
-          this->centeredValues.push_back(0);
-          continue;
-
-        }
 
         this->centeredValues.push_back(incrementallyDeformedTemplateValues[i] - this->mean);
 
@@ -193,8 +169,6 @@ namespace lucasKanade{
     // compute the derivative of each centered value with respect to increment
     void compute_centered_values_derivatives() {
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
-
       const std::vector<arma::mat>& imageGradientTimesJacobian =
         this->incrementallyDeformedTemplate.get_image_gradient_times_jacobian();
 
@@ -202,16 +176,9 @@ namespace lucasKanade{
 
       for(int i = 0; i < this->voxelAmount; ++i) {
 
-        if(locationValid[i] == false) {
-
-          this->centeredValuesDerivatives.push_back(arma::zeros(this->transformationAmount));
-          continue;
-
-        }
-
         this->centeredValuesDerivatives.push_back(
 
-                                                  imageGradientTimesJacobian[i] - this->meanDerivative
+                                                  (imageGradientTimesJacobian[i] - this->meanDerivative).t()
 
                                                   );
 
@@ -224,21 +191,12 @@ namespace lucasKanade{
     // compute derivative of squared version of the centered values
     void compute_squared_centered_values_derivatives() {
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
-
       this->squaredCenteredValuesDerivatives.clear();
 
       for(int i = 0; i < this->voxelAmount; ++i) {
 
-        if(locationValid[i] == false) {
-
-          this->squaredCenteredValuesDerivatives.push_back(arma::zeros(this->transformationAmount));
-          continue;
-
-        }
-
         this->squaredCenteredValuesDerivatives.push_back(
-                                                         2. * this->centeredValuesDerivatives[i].t() *
+                                                         2. * this->centeredValuesDerivatives[i] *
                                                          this->centeredValues[i]
                                                          );
 
@@ -249,58 +207,35 @@ namespace lucasKanade{
 
     /*--------------------------------------------------------------------------*/
 
-    // compute the standard deviation of modified image
-    void compute_standard_deviation() {
+    // compute the norm of the modified image
+    void compute_norm() {
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
-
-      this->standardDeviation = 0.;
-
-      int count = 0;
+      this->norm = 0.;
 
       for(int i = 0; i < this->voxelAmount; ++i) {
 
-        if(locationValid[i] == false) {
-
-          continue;
-
-        }
-
-        this->standardDeviation += pow(this->centeredValues[i], 2.);
-        ++count;
+        this->norm += pow(this->centeredValues[i], 2.);
 
       }
 
-      this->standardDeviation = sqrt( 1. / count * standardDeviation);
+      this->norm = sqrt(this->norm);
 
     }
 
     /*--------------------------------------------------------------------------*/
 
     // compute derivative of standard deviation with respect to increment
-    void compute_standard_deviation_derivative() {
+    void compute_norm_derivative() {
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
-
-      this->standardDeviationDerivative = arma::zeros(this->transformationAmount);
-
-      int count = 0;
+      this->normDerivative = arma::zeros(this->transformationAmount).t();
 
       for(int i = 0; i < this->voxelAmount; ++i) {
 
-        if(locationValid[i] == false) {
-
-          continue;
-
-        }
-
-        this->standardDeviationDerivative += this->squaredCenteredValuesDerivatives[i];
-        ++count;
+        this->normDerivative += this->squaredCenteredValuesDerivatives[i];
 
       }
 
-      this->standardDeviationDerivative /= count;
-      this->standardDeviationDerivative *= 0.5 / this->standardDeviation;
+      this->normDerivative *= 0.5 / this->norm;
 
     }
 
@@ -309,20 +244,11 @@ namespace lucasKanade{
     // normalize values by dividing by standard deviation
     void compute_normalized_values() {
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
-
       this->normalizedValues.clear();
 
       for(int i = 0; i < this->voxelAmount; ++i) {
 
-        if(locationValid[i] == false) {
-
-          this->normalizedValues.push_back(0);
-          continue;
-
-        }
-
-        this->normalizedValues.push_back(this->centeredValues[i] / this->standardDeviation);
+        this->normalizedValues.push_back(this->centeredValues[i] / this->norm);
 
       }
 
@@ -333,26 +259,18 @@ namespace lucasKanade{
     // take derivative of normalized values with respect to increment
     void compute_normalized_values_derivatives() {
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
-
       this->normalizedValuesDerivatives.clear();
 
       for(int i = 0; i < this->voxelAmount; ++i) {
 
-        if(locationValid[i] == false) {
-
-          this->normalizedValuesDerivatives.push_back(arma::zeros(this->transformationAmount));
-          continue;
-
-        }
-
         // quotient rule
         this->normalizedValuesDerivatives.push_back(
 
-                                                    ( this->centeredValuesDerivatives[i] * this->standardDeviation- this->centeredValues[i] * this->standardDeviationDerivative ) /
-                                                    pow(this->standardDeviation, 2 )
+                                                    ( this->centeredValuesDerivatives[i] * this->norm - this->centeredValues[i] * this->normDerivative ) /
+                                                    pow(this->norm, 2 )
 
                                                     );
+
 
       }
 
@@ -362,17 +280,9 @@ namespace lucasKanade{
 
     void compute_correlation() {
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
-
       this->correlation = 0;
 
       for(int i = 0; i < this->voxelAmount; ++i) {
-
-        if(locationValid[i] == false) {
-
-          continue;
-
-        }
 
         this->correlation += this->originalNormalizedValues[i] * this->normalizedValues[i];
 
@@ -384,21 +294,17 @@ namespace lucasKanade{
 
     void compute_correlation_derivative() {
 
-      const std::vector<bool>& locationValid = this->deformedTemplate.get_location_valid();
+      arma::mat derivative = arma::zeros(this->transformationAmount).t();
 
-      this->correlationDerivative = arma::zeros(this->transformationAmount);
+      // this->correlationDerivative = arma::zeros(this->transformationAmount).t();
 
       for(int i = 0; i < this->voxelAmount; ++i) {
 
-        if(locationValid[i] == false) {
-
-          continue;
-
-        }
-
-        this->correlationDerivative += this->originalNormalizedValues[i] * this->normalizedValuesDerivatives[i];
+        derivative += this->originalNormalizedValues[i] * this->normalizedValuesDerivatives[i];
 
       }
+
+      this->correlationDerivative = derivative.t();
 
     }
 
