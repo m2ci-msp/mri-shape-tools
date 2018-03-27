@@ -40,6 +40,9 @@ namespace lucasKanade{
                      ) :
       originalLocations(originalLocations), image(image) {
 
+      this->image.boundary().change(1, 1, 1);
+      this->image.mirror().all();
+
     }
 
     /*--------------------------------------------------------------------------*/
@@ -101,7 +104,7 @@ namespace lucasKanade{
 
       for(const arma::vec& location : this->locations ) {
 
-        const double& value = this->image.access().at_coordinate(location(0), location(1), location(2));
+        const double& value = this->image.interpolate().at_coordinate(location(0), location(1), location(2));
         this->values.push_back(value);
 
       }
