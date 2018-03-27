@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
   std::ifstream inFile(settings.motion);
   Json::Value root;
   Json::Reader reader;
-  reader.parse(settings.motion, root);
+  reader.parse(inFile, root);
 
   inFile.close();
 
