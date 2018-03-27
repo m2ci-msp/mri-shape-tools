@@ -45,15 +45,17 @@ public:
   arma::vec apply_matrix(const arma::vec& p) const {
 
     const arma::mat A =
+
+      this->translation.get_matrix() *
+
       this->toGlobal.get_matrix() *
 
       this->rotationX.get_matrix() *
       this->rotationY.get_matrix() *
       this->rotationZ.get_matrix() *
 
-      this->toLocal.get_matrix() *
+      this->toLocal.get_matrix();
 
-      this->translation.get_matrix();
 
     const arma::vec ph = convert_to_homogeneous(p);
 
@@ -66,15 +68,17 @@ public:
   arma::vec apply_derivative_alpha(const arma::vec& p) const {
 
     const arma::mat A =
+
+      this->translation.get_matrix() *
+
       this->toGlobal.get_matrix() *
 
       this->rotationX.get_derivative_theta() *
       this->rotationY.get_matrix() *
       this->rotationZ.get_matrix() *
 
-      this->toLocal.get_matrix() *
+      this->toLocal.get_matrix();
 
-      this->translation.get_matrix();
 
     const arma::vec ph = convert_to_homogeneous(p);
 
@@ -87,15 +91,17 @@ public:
   arma::vec apply_derivative_beta(const arma::vec& p) const {
 
     const arma::mat A =
+
+      this->translation.get_matrix() *
+
       this->toGlobal.get_matrix() *
 
       this->rotationX.get_matrix() *
       this->rotationY.get_derivative_theta() *
       this->rotationZ.get_matrix() *
 
-      this->toLocal.get_matrix() *
+      this->toLocal.get_matrix();
 
-      this->translation.get_matrix();
 
     const arma::vec ph = convert_to_homogeneous(p);
 
@@ -108,15 +114,17 @@ public:
   arma::vec apply_derivative_gamma(const arma::vec& p) const {
 
     const arma::mat A =
+
+      this->translation.get_matrix() *
+
       this->toGlobal.get_matrix() *
 
       this->rotationX.get_matrix() *
       this->rotationY.get_matrix() *
       this->rotationZ.get_derivative_theta() *
 
-      this->toLocal.get_matrix() *
+      this->toLocal.get_matrix();
 
-      this->translation.get_matrix();
 
     const arma::vec ph = convert_to_homogeneous(p);
 
@@ -130,15 +138,16 @@ public:
   arma::vec apply_derivative_tx(const arma::vec& p) const {
 
     const arma::mat A =
+
+      this->translation.get_derivative_tx() *
+
       this->toGlobal.get_matrix() *
 
       this->rotationX.get_matrix() *
       this->rotationY.get_matrix() *
       this->rotationZ.get_matrix() *
 
-      this->toLocal.get_matrix() *
-
-      this->translation.get_derivative_tx();
+      this->toLocal.get_matrix();
 
     const arma::vec ph = convert_to_homogeneous(p);
 
@@ -151,15 +160,17 @@ public:
   arma::vec apply_derivative_ty(const arma::vec& p) const {
 
     const arma::mat A =
+
+      this->translation.get_derivative_ty() *
+
       this->toGlobal.get_matrix() *
 
       this->rotationX.get_matrix() *
       this->rotationY.get_matrix() *
       this->rotationZ.get_matrix() *
 
-      this->toLocal.get_matrix() *
+      this->toLocal.get_matrix();
 
-      this->translation.get_derivative_ty();
 
     const arma::vec ph = convert_to_homogeneous(p);
 
@@ -173,15 +184,17 @@ public:
   arma::vec apply_derivative_tz(const arma::vec& p) const {
 
     const arma::mat A =
+
+      this->translation.get_derivative_tz() *
+
       this->toGlobal.get_matrix() *
 
       this->rotationX.get_matrix() *
       this->rotationY.get_matrix() *
       this->rotationZ.get_matrix() *
 
-      this->toLocal.get_matrix() *
+      this->toLocal.get_matrix();
 
-      this->translation.get_derivative_tz();
 
     const arma::vec ph = convert_to_homogeneous(p);
 
