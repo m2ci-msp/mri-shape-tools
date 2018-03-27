@@ -55,12 +55,12 @@ namespace lucasKanade{
         this->energy.data().incrementallyDeformedTemplate;
 
       const arma::vec increment( {
-          this->energy.data().transformation[TX],
-            this->energy.data().transformation[TY],
-            this->energy.data().transformation[TZ],
-            this->energy.data().transformation[ALPHA],
-            this->energy.data().transformation[BETA],
-            this->energy.data().transformation[GAMMA]
+          this->energy.data().transformationIncrement[TX],
+            this->energy.data().transformationIncrement[TY],
+            this->energy.data().transformationIncrement[TZ],
+            this->energy.data().transformationIncrement[ALPHA],
+            this->energy.data().transformationIncrement[BETA],
+            this->energy.data().transformationIncrement[GAMMA]
             }
         );
 
@@ -79,7 +79,6 @@ namespace lucasKanade{
       for(int j = 0; j < transformationAmount; ++j) {
 
         gradient[j] = localGradient(j);
-        std::cout << gradient[j] << std::endl;
 
       }
 

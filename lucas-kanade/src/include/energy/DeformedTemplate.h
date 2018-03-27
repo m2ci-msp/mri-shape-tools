@@ -157,7 +157,7 @@ namespace lucasKanade{
 
         const arma::vec& transformedLocation = this->transformedLocations[i];
 
-        const double warped = this->image.access().at_coordinate(transformedLocation(0),
+        const double warped = this->image.interpolate().at_coordinate(transformedLocation(0),
                                                                  transformedLocation(1),
                                                                  transformedLocation(2)
                                                                  );
