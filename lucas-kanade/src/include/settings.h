@@ -17,12 +17,9 @@ public:
   // input and output
   std::string target;
   std::string source;
+  std::string landmarkFile;
   std::string output;
 
-  std::string mesh;
-
-  double offset = 1;
-  double profileLength = 5;
 
   lucasKanade::MinimizerSettings minimizerSettings;
   lucasKanade::EnergySettings energySettings;
@@ -32,12 +29,8 @@ public:
     // input and output
     FlagSingle<std::string> targetFlag("target", this->target);
     FlagSingle<std::string> sourceFlag("source", this->source);
+    FlagSingle<std::string> landmarkFileFlag("landmarkFile", this->landmarkFile);
     FlagSingle<std::string> outputFlag("output", this->output);
-
-    FlagSingle<std::string> meshFlag("mesh", this->mesh);
-
-    FlagSingle<double> offsetFlag("offset", this->offset, true);
-    FlagSingle<double> profileLengthFlag("profileLength", this->profileLength, true);
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -62,13 +55,10 @@ public:
     FlagsParser parser(argv[0]);
 
     // input and output
-    parser.define_flag(&targetFlag);
     parser.define_flag(&sourceFlag);
+    parser.define_flag(&targetFlag);
+    parser.define_flag(&landmarkFileFlag);
     parser.define_flag(&outputFlag);
-
-    parser.define_flag(&meshFlag);
-    parser.define_flag(&offsetFlag);
-    parser.define_flag(&profileLengthFlag);
 
     // minimizer settings
     parser.define_flag(&iterationAmountFlag);
