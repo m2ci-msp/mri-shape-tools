@@ -5,7 +5,7 @@
 #include <vnl/vnl_cost_function.h>
 
 #include "energy/EnergyData.h"
-#include "energy/ZeroNormalizedCrossCorrelation.h"
+#include "ZeroNormalizedCrossCorrelation.h"
 
 namespace lucasKanade{
 
