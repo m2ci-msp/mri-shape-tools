@@ -8,12 +8,11 @@
 #include "energy/EnergyMinimizer.h"
 #include "settings.h"
 
-#include "energy/BuildTemplateFromMeshProfiles.h"
-#include "energy/OriginalTemplate.h"
+#include "OriginalTemplate.h"
 
-#include "energy/LandmarkReader.h"
-#include "energy/BuildBoundingBox.h"
-#include "energy/BuildTemplateFromBoundingBox.h"
+#include "LandmarkReader.h"
+#include "BuildBoundingBox.h"
+#include "BuildTemplateFromBoundingBox.h"
 
 int main(int argc, char* argv[]) {
 
