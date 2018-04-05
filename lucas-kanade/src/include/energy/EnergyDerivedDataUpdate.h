@@ -12,18 +12,15 @@ namespace lucasKanade{
   private:
 
     EnergyData& energyData;
-    EnergySettings& energySettings;
 
   public:
 
     /*--------------------------------------------------------------------------*/
 
     EnergyDerivedDataUpdate(
-                            EnergyData& energyData,
-                            EnergySettings& energySettings
+                            EnergyData& energyData
                             ) :
-      energyData(energyData),
-      energySettings(energySettings) {
+      energyData(energyData) {
     }
 
     /*--------------------------------------------------------------------------*/
