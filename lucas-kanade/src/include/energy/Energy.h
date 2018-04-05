@@ -20,20 +20,11 @@ namespace lucasKanade{
       EnergySettings& energySettings
       ) :
       energyData(energyData),
-      energySettings(energySettings) {
-
-      this->energyDerivedDataUpdate =
-        new EnergyDerivedDataUpdate(
-          this->energyData, this->energySettings);
+      energySettings(energySettings),
+      energyDerivedDataUpdate(energyData) {
 
       this->energyData.transformation.resize(energyData.transformationAmount, 0);
 
-    }
-
-    /*--------------------------------------------------------------------------*/
-
-    ~Energy() {
-      delete this->energyDerivedDataUpdate;
     }
 
     /*--------------------------------------------------------------------------*/
@@ -45,7 +36,7 @@ namespace lucasKanade{
     /*--------------------------------------------------------------------------*/
 
     EnergyDerivedDataUpdate& update() {
-      return *this->energyDerivedDataUpdate;
+      return this->energyDerivedDataUpdate;
     }
 
     /*--------------------------------------------------------------------------*/
@@ -69,7 +60,7 @@ namespace lucasKanade{
     EnergyData& energyData;
     EnergySettings energySettings;
 
-    EnergyDerivedDataUpdate* energyDerivedDataUpdate;
+    EnergyDerivedDataUpdate energyDerivedDataUpdate;
     EnergyState energyState;
 
     /*--------------------------------------------------------------------------*/

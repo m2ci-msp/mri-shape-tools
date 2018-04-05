@@ -59,6 +59,8 @@ int main(int argc, char* argv[]) {
   root["oy"] = Json::Value( center(1));
   root["oz"] = Json::Value( center(2));
 
+  root["correlation"] = Json::Value( energy.state().energy * - 100 );
+
   std::ofstream outFile(settings.output);
 
   Json::StyledStreamWriter writer;

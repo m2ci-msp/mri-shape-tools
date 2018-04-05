@@ -173,5 +173,4 @@ namespace lucasKanade{
   };
 
 }
-
 #endif
