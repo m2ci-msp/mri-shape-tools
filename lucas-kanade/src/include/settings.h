@@ -36,7 +36,7 @@ public:
 
     // minimizer settings
     FlagSingle<int> iterationAmountFlag(
-      "iter", this->minimizerSettings.iterationAmount, true);
+      "iterationAmount", this->minimizerSettings.iterationAmount, true);
 
     FlagSingle<int> convergenceFactorFlag(
       "convergenceFactor",
