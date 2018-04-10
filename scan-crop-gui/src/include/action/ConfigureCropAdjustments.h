@@ -49,9 +49,9 @@ class ConfigureCropAdjustments : public Action {
         return;
       }
 
-      const int nx = Data::get_instance()->get_scan().data()->get_nx();
-      const int ny = Data::get_instance()->get_scan().data()->get_ny();
-      const int nz = Data::get_instance()->get_scan().data()->get_nz();
+      const int& nx = Data::get_instance()->get_scan().info().get_nx();
+      const int& ny = Data::get_instance()->get_scan().info().get_ny();
+      const int& nz = Data::get_instance()->get_scan().info().get_nz();
 
       this->minX->set_lower(0);
       this->minY->set_lower(0);

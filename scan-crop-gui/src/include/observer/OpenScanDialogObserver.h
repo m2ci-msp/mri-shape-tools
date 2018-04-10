@@ -4,7 +4,7 @@
 #include <gtkmm/filechooserdialog.h>
 
 #include "singleton/GuiDescription.h"
-#include "action/ProcessScan.h"
+#include "action/OpenScan.h"
 #include "action/ShowErrorMessage.h"
 #include "action/ShowFileInTitle.h"
 
@@ -42,7 +42,7 @@ class OpenScanDialogObserver {
           {
             try{
               // try to build a image stack from the provided scan
-              ProcessScan action(this->dialog->get_filename());
+              OpenScan action(this->dialog->get_filename());
               action.execute();
 
               ShowFileInTitle show(this->dialog->get_filename());
