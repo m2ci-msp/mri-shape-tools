@@ -12,7 +12,7 @@ class Settings {
 public:
 
   // input and output
-  std::string source;
+  std::string input;
   std::string output;
   std::string outputCloud;
 
@@ -21,13 +21,13 @@ public:
 
   Settings(int argc, char* argv[]) {
 
-    FlagSingle<std::string> sourceFlag("source", this->source);
+    FlagSingle<std::string> inputFlag("source", this->input);
     FlagSingle<std::string> outputFlag("output", this->output);
     FlagSingle<std::string> outputCloudFlag("cloud", this->outputCloud, true);
     FlagNone flipFlag("flip", this->flip);
 
     FlagsParser parser(argv[0]);
-    parser.define_flag(&sourceFlag);
+    parser.define_flag(&inputFlag);
     parser.define_flag(&outputFlag);
     parser.define_flag(&outputCloudFlag);
     parser.define_flag(&flipFlag);

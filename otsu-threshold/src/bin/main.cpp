@@ -11,17 +11,17 @@ int main(int argc, char* argv[]) {
 
   Settings settings(argc, argv);
 
-  Image source;
+  Image input;
 
-  source.read().from(settings.source);
-  source.segment().otsu();
+  input.read().from(settings.input);
+  input.segment().otsu();
 
-  source.write().to(settings.output);
+  input.write().to(settings.output);
 
   // output point cloud if wanted
   if(settings.createCloud == true) {
 
-    CreatePointCloud cloud(source);
+    CreatePointCloud cloud(input);
     cloud.set_flip(settings.flip);
 
     Mesh pointCloud = cloud.create_point_cloud();
