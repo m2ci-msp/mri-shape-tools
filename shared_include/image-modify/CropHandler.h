@@ -20,12 +20,12 @@ public:
   void crop(Image& image, Json::Value& options) {
 
     const int minX = options["minX"].asInt();
-    const int minY = options["minX"].asInt();
-    const int minZ = options["minX"].asInt();
+    const int minY = options["minY"].asInt();
+    const int minZ = options["minZ"].asInt();
 
-    const int maxX = options["minX"].asInt();
-    const int maxY = options["minX"].asInt();
-    const int maxZ = options["minX"].asInt();
+    const int maxX = options["maxX"].asInt();
+    const int maxY = options["maxY"].asInt();
+    const int maxZ = options["maxZ"].asInt();
 
     image.crop().to(minX, minY, minZ, maxX, maxY, maxZ);
 
