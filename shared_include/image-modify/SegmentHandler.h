@@ -18,7 +18,7 @@ public:
 
     if      (type == "threshold") { threshold(image, options); }
     else if (type == "otsu" ) { otsu(image); }
-    else if (type == "cascaded otsu" ) { cascaded_otsu(image, options); }
+    else if (type == "iterated otsu" ) { iterated_otsu(image, options); }
     else if (type == "with landmarks" ) { with_landmarks(image, options); }
 
   }
@@ -37,11 +37,11 @@ public:
 
   }
 
-  void cascaded_otsu(Image& image, Json::Value& options) {
+  void iterated_otsu(Image& image, Json::Value& options) {
 
     const int iterations = options["iterations"].asInt();
 
-    image.segment().cascaded_otsu(iterations);
+    image.segment().iterated_otsu(iterations);
 
   }
 

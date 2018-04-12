@@ -1,16 +1,16 @@
-#ifndef __CASCADED_OTSU_H__
-#define __CASCADED_OTSU_H__
+#ifndef __ITERATED_OTSU_H__
+#define __ITERATED_OTSU_H__
 
 #include "image/segmentation/Otsu.h"
 #include "image/ImageData.h"
 #include "image/ImageAccess.h"
 #include "image/ImageBoundary.h"
 
-class CascadedOtsu{
+class IteratedOtsu{
 
 public:
 
-  CascadedOtsu(
+  IteratedOtsu(
                ImageData& imageData,
                const int& iterations) :
     imageData(imageData), imageCopy(imageData), iterations(iterations) {

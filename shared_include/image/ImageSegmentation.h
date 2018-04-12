@@ -4,7 +4,7 @@
 #include "image/ImageData.h"
 #include "image/segmentation/Threshold.h"
 #include "image/segmentation/Otsu.h"
-#include "image/segmentation/CascadedOtsu.h"
+#include "image/segmentation/IteratedOtsu.h"
 #include "image/segmentation/LandmarkSegmentation.h"
 
 class ImageSegmentation{
@@ -22,8 +22,8 @@ public:
     Otsu(this->imageData).apply();
   }
 
-  void cascaded_otsu(const int& iterations) {
-    CascadedOtsu(this->imageData, iterations).apply();
+  void iterated_otsu(const int& iterations) {
+    IteratedOtsu(this->imageData, iterations).apply();
   }
 
   void with_landmarks(const std::vector<arma::vec>& landmarks) {
