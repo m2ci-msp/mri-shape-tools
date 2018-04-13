@@ -41,9 +41,9 @@ The following specifications would
 ]
 ```
 
-We see that the specification objects consist of an *action* and an *options* field.
+We see that the specification objects consist of an **action** and an **options** field.
 One action might offer different types of operations:
-The wanted type is set in the *type* field of the *options* data.
+The wanted type is set in the **type** field of the **options** data.
 
 ## Actions
 
@@ -55,7 +55,7 @@ We use the name of the action as the heading of the associated subsection.
 The action crops the image to a specified region of interest.
 It offers currently only one operation.
 
-Supported *options*:
+Supported **options**:
 
 - minX
 - minY
@@ -83,67 +83,67 @@ Here, we visualize the magnitude of the image gradient in each voxel.
 #### largest eigenvalue structure tensor
 
 The last operation type shows the magnitude of the largest eigenvalue of the structure tensor in each voxel.
-The radius of the box that is used for computing the structure tensor has to be set in the *radius* field of the *options* data.
+The radius of the box that is used for computing the structure tensor has to be set in the **radius** field of the **options** data.
 
 ### morphology
 
 This action provides the basic operations of [mathematical morphology][4], the [top-hat transforms][5], and the [morphological gradient][6] that can be applied to the image.
 All operations use a cube as structuring element.
 
-Shared *options* for all operations of this action:
+Shared **options** for all operations of this action:
 
-* *radius*: radius of the underlying structuring element
+- **radius**: radius of the underlying structuring element
 
-Supported *types* of operations:
+Supported **types** of operations:
 
-* dilation
-* erosion
-* opening
-* closing
-* white top hat
-* black top hat
-* gradient
+- dilation
+- erosion
+- opening
+- closing
+- white top hat
+- black top hat
+- gradient
 
 Please have a look at the above links for background information on these operations.
 
 ### filter
 
 Action for applying filters to the image.
-Supported *types*:
+Supported **types**:
 
 #### median
 
 This operation applies a [median filter][7] to the image by using a box as the window for computing the median at each voxel.
-The radius of this box has to be set in the *radius* field of the *options* data.
+The radius of this box has to be set in the **radius** field of the **options** data.
 
 #### gaussian
 
 This filter type applies a [Gaussian smoothing][8] to the image.
-The standard deviation of the Gaussian kernel has to be set in the *sigma* field of the *options* data.
+The standard deviation of the Gaussian kernel has to be set in the **sigma** field of the **options** data.
 
 #### diffusion
 
 Applies an [anisotropic diffusion filter][9] to the image.
 The underyling implementation uses an explicit scheme.
-Needed *options*:
+Needed **options**:
 
-* timeSteps: time steps to take for the evolution
-* stepSize: time step size that affects the stability of the scheme ( use, for example, 0.124 )
-* contrastLambda: parameter that determines which edges are preserved
-* integrationRho: standard deviation of Gaussian kernel used for computing the structure tensor
-* presmoothSigma: standard deviation of Gaussian kernel used for presmoothing the image
+- **timeSteps**: time steps to take for the evolution
+- **stepSize**: time step size that affects the stability of the scheme ( use, for example, 0.124 )
+- **contrastLambda**: parameter that determines which edges are preserved
+- **integrationRho**: standard deviation of Gaussian kernel used for computing the structure tensor
+- **presmoothSigma**: standard deviation of Gaussian kernel used for presmoothing the image
 
 ### interpolateSlice
 
 Interpolates a slice at a given position and adds it to the image.
 The slice is inserted between the slices that participated in the interpolation process.
-The position is set in the *position* of the *options* data.
+The position is set in the **position** of the **options** data.
 
 Supported types:
 
-* xy
-* xz
-* yz
+- xy
+- xz
+- yz
 
 ### histogram
 
@@ -161,7 +161,7 @@ Supported types:
 
 #### threshold
 
-Basic thresholding that uses the value in the field *threshold* of the *options* data to segment the image:
+Basic thresholding that uses the value in the field **threshold** of the **options** data to segment the image:
 Everything below the threshold is classified as background, the remaining voxels as foreground.
 
 #### otsu
@@ -172,12 +172,12 @@ This operation uses [Otsu's method][11] to segment the image.
 
 Applies Otsu's method multiple times.
 After each iteration, the voxel colors in the foreground region are replaced with the mean in that area.
-The number of iterations is set with *iterations* in the *options*.
+The number of iterations is set with **iterations** in the **options**.
 
 #### with landmarks
 
 Chooses the smallest threshold such that all provided landmarks are inside the foreground region.
-Landmarks are provided as a list of image coordinates in the *landmarks* field of *options*:
+Landmarks are provided as a list of image coordinates in the **landmarks** field of **options**:
 
 ```json
 [
@@ -204,7 +204,7 @@ Several operations that modify the voxel colors.
 #### scale
 
 Lineraly scales the values to have the provided minimum and maximum.
-The new minimum is set in *minNew* in the *options*, the new maximum in *maxNew*.
+The new minimum is set in **minNew** in the **options**, the new maximum in **maxNew**.
 
 #### normalize
 
@@ -213,20 +213,20 @@ Linearly scales the values to the interval [0, 1]
 #### discard
 
 This operation corresponds to the [contrast-stretch][12] command of image magick.
-The percentage of brightest pixels that are set to white is provided in *upper* of the *options*.
-The percentage of darkest pixels that are set to black is provided in *lower* of the *options*.
+The percentage of brightest pixels that are set to white is provided in **upper** of the **options**.
+The percentage of darkest pixels that are set to black is provided in **lower** of the **options**.
 
 #### add
 
 Adds a value to all voxel colors.
 Optionally, corner points of a bounding box can be provided.
 In this case, only voxels inside that box are modified.
-The value to be added is given in *value* of the *options*.
-The corner points are provided by *minX*, *minY*, *minZ*, *maxX*, *maxY*, and *maxZ*.
+The value to be added is given in **value** of the **options**.
+The corner points are provided by **minX**, **minY**, **minZ**, **maxX**, **maxY**, and **maxZ**.
 
-[1]: ../image-modify
-[2]: ../custom-segmentation
-[3]: ../landmark-tool
+[1]:../image-modify
+[2]:../custom-segmentation
+[3]:../landmark-tool
 [4]:https://en.wikipedia.org/wiki/Mathematical_morphology
 [5]:https://en.wikipedia.org/wiki/Top-hat_transform
 [6]:https://en.wikipedia.org/wiki/Morphological_gradient
