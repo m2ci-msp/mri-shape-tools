@@ -226,7 +226,7 @@ The corner points are provided by *minX*, *minY*, *minZ*, *maxX*, *maxY*, and *m
 
 [1]: ../image-modify
 [2]: ../custom-segmentation
-[2]: ../landmark-tool
+[3]: ../landmark-tool
 [4]:https://en.wikipedia.org/wiki/Mathematical_morphology
 [5]:https://en.wikipedia.org/wiki/Top-hat_transform
 [6]:https://en.wikipedia.org/wiki/Morphological_gradient
