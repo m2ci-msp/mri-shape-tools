@@ -44,6 +44,10 @@ int main(int, char*[])
   Observatory<ApplyFiltersButtonObserver>::create();
   Observatory<ApplySegmentationButtonObserver>::create();
   Observatory<ResetImageButtonObserver>::create();
+  Observatory<SaveSliceDialogObserver>::create();
+  Observatory<SaveSliceObserver>::create();
+  Observatory<ShowFilterWindowObserver>::create();
+  Observatory<ShowSegmentationWindowObserver>::create();
 
   // show main window
   return app->run(*window);

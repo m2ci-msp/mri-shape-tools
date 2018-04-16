@@ -1,36 +1,36 @@
-#ifndef __ADD_SEGMENTATION_BUTTON_OBSERVER_H__
-#define __ADD_SEGMENTATION_BUTTON_OBSERVER_H__
+#ifndef __SHOW_FILTER_WINDOW_OBSERVER_H__
+#define __SHOW_FILTER_WINDOW_OBSERVER_H__
 
 #include <gtkmm/toolbutton.h>
 
+#include "action/ShowFilterWindow.h"
 #include "singleton/GuiDescription.h"
-#include "action/ShowAddSegmentationDialog.h"
 
-/** Class that watches the state of the openImageStackButton */
-class AddSegmentationButtonObserver {
+class ShowFilterWindowObserver {
   public:
 
     /*-----------------------------------------------------------------------*/
 
-    AddSegmentationButtonObserver() {
+    ShowFilterWindowObserver() {
       // get builder from gui description
       Glib::RefPtr<Gtk::Builder> builder =
         GuiDescription::get_instance()->get_builder();
 
       // get menu item to watch
       Gtk::MenuItem* item;
-      builder->get_widget("loadSegmentationItem", item);
+      builder->get_widget("showFilterItem", item);
 
       // connect handler to clicked signal
       this->activateHandler = item->signal_activate().connect(
-                                                            sigc::mem_fun(*this, &AddSegmentationButtonObserver::clicked)
+                                                            sigc::mem_fun(*this, &ShowFilterWindowObserver::clicked)
                                                             );
+
     }
 
 
     /*-----------------------------------------------------------------------*/
 
-    ~AddSegmentationButtonObserver() {
+    ~ShowFilterWindowObserver() {
       this->activateHandler.disconnect();
     }
 
@@ -38,7 +38,7 @@ class AddSegmentationButtonObserver {
 
     void clicked() {
       // open the dialog
-      ShowAddSegmentationDialog action;
+      ShowFilterWindow action;
       action.execute();
     }
 

@@ -13,9 +13,17 @@ class ShowMoreActions : public Action {
         Glib::RefPtr<Gtk::Builder> builder =
           GuiDescription::get_instance()->get_builder();
 
-        builder->get_widget("addLandmarksButton", this->addLandmarks);
-        builder->get_widget("saveLandmarksButton", this->saveLandmarks);
-        builder->get_widget("addSegmentationButton", this->addSegmentation);
+        builder->get_widget("addLandmarksButton", this->addLandmarksButton);
+        builder->get_widget("saveLandmarksButton", this->saveLandmarksButton);
+
+        builder->get_widget("addLandmarksItem", this->addLandmarksItem);
+        builder->get_widget("saveLandmarksItem", this->saveLandmarksItem);
+        builder->get_widget("loadSegmentationItem", this->loadSegmentationItem);
+        builder->get_widget("saveSliceItem", this->saveSliceItem);
+        builder->get_widget("moveLandmarksItem", this->moveLandmarksItem);
+        builder->get_widget("clearLandmarksItem", this->clearLandmarksItem);
+        builder->get_widget("showFilterItem", this->showFilterItem);
+        builder->get_widget("showSegmentationItem", this->showSegmentationItem);
 
 
       }
@@ -24,9 +32,17 @@ class ShowMoreActions : public Action {
 
     virtual void execute() {
 
-      this->addLandmarks->show();
-      this->saveLandmarks->show();
-      this->addSegmentation->show();
+      this->addLandmarksButton->set_sensitive();
+      this->saveLandmarksButton->set_sensitive();
+
+      this->addLandmarksItem->set_sensitive();
+      this->saveLandmarksItem->set_sensitive();
+      this->loadSegmentationItem->set_sensitive();
+      this->saveSliceItem->set_sensitive();
+      this->moveLandmarksItem->set_sensitive();
+      this->clearLandmarksItem->set_sensitive();
+      this->showFilterItem->set_sensitive();
+      this->showSegmentationItem->set_sensitive();
 
     }
 
@@ -34,9 +50,17 @@ class ShowMoreActions : public Action {
 
   private:
 
-    Gtk::ToolButton *addLandmarks;
-    Gtk::ToolButton *saveLandmarks;
-    Gtk::ToolButton *addSegmentation;
+    Gtk::ToolButton *addLandmarksButton;
+    Gtk::ToolButton *saveLandmarksButton;
+
+    Gtk::MenuItem *addLandmarksItem;
+    Gtk::MenuItem *saveLandmarksItem;
+    Gtk::MenuItem *loadSegmentationItem;
+    Gtk::MenuItem *saveSliceItem;
+    Gtk::MenuItem *moveLandmarksItem;
+    Gtk::MenuItem *clearLandmarksItem;
+    Gtk::MenuItem *showFilterItem;
+    Gtk::MenuItem *showSegmentationItem;
 
     /*----------------------------------------------------------------------*/
 };

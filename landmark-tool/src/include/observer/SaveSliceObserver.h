@@ -1,36 +1,36 @@
-#ifndef __ADD_SEGMENTATION_BUTTON_OBSERVER_H__
-#define __ADD_SEGMENTATION_BUTTON_OBSERVER_H__
+#ifndef __SAVE_SLICE_OBSERVER_H__
+#define __SAVE_SLICE_OBSERVER_H__
 
 #include <gtkmm/toolbutton.h>
 
+#include "action/ShowSaveSliceDialog.h"
 #include "singleton/GuiDescription.h"
-#include "action/ShowAddSegmentationDialog.h"
 
-/** Class that watches the state of the openImageStackButton */
-class AddSegmentationButtonObserver {
+class SaveSliceObserver {
   public:
 
     /*-----------------------------------------------------------------------*/
 
-    AddSegmentationButtonObserver() {
+    SaveSliceObserver() {
       // get builder from gui description
       Glib::RefPtr<Gtk::Builder> builder =
         GuiDescription::get_instance()->get_builder();
 
       // get menu item to watch
       Gtk::MenuItem* item;
-      builder->get_widget("loadSegmentationItem", item);
+      builder->get_widget("saveSliceItem", item);
 
       // connect handler to clicked signal
       this->activateHandler = item->signal_activate().connect(
-                                                            sigc::mem_fun(*this, &AddSegmentationButtonObserver::clicked)
+                                                            sigc::mem_fun(*this, &SaveSliceObserver::clicked)
                                                             );
+
     }
 
 
     /*-----------------------------------------------------------------------*/
 
-    ~AddSegmentationButtonObserver() {
+    ~SaveSliceObserver() {
       this->activateHandler.disconnect();
     }
 
@@ -38,7 +38,7 @@ class AddSegmentationButtonObserver {
 
     void clicked() {
       // open the dialog
-      ShowAddSegmentationDialog action;
+      ShowSaveSliceDialog action;
       action.execute();
     }
 

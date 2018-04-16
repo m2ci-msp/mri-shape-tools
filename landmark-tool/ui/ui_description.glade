@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.2 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkTextBuffer" id="filterTextBuffer"/>
   <object class="GtkWindow" id="filterWindow">
-    <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Filter description</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -69,18 +71,15 @@
         </child>
       </object>
     </child>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkAdjustment" id="hScrollAdjustment">
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkFileFilter" id="jsonFilter">
-    <mime-types>
-      <mime-type>application/json</mime-type>
-    </mime-types>
+    <patterns>
+      <pattern>*.json</pattern>
+    </patterns>
   </object>
   <object class="GtkListStore" id="landmarkListStore">
     <columns>
@@ -98,11 +97,13 @@
   </object>
   <object class="GtkTextBuffer" id="segmentationTextBuffer"/>
   <object class="GtkWindow" id="segmentationWindow">
-    <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Segmentation description</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -163,9 +164,6 @@
         </child>
       </object>
     </child>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkAdjustment" id="sliceAdjustment">
     <property name="step_increment">1</property>
@@ -188,6 +186,10 @@
     <property name="default_width">1000</property>
     <property name="default_height">800</property>
     <property name="icon_name">applications-science</property>
+    <property name="show_menubar">False</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -218,6 +220,7 @@
                     <child>
                       <object class="GtkMenuItem" id="addLandmarksItem">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Add landmarks</property>
                         <property name="use_underline">True</property>
@@ -226,60 +229,27 @@
                     <child>
                       <object class="GtkMenuItem" id="loadSegmentationItem">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Load segmentation</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="saveLandmarksItem">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Save landmarks</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="saveSliceItem">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Save slice visualization</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="exitItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Exit</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Edit</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkMenuItem" id="moveLandmarksItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Move landmarks</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="clearLandmarksItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Clear landmarks</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -298,8 +268,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkMenuItem" id="showFilterWindow">
+                      <object class="GtkMenuItem" id="showFilterItem">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Show filter window</property>
                         <property name="use_underline">True</property>
@@ -308,6 +279,7 @@
                     <child>
                       <object class="GtkMenuItem" id="showSegmentationItem">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Show segmentation window</property>
                         <property name="use_underline">True</property>
@@ -355,6 +327,8 @@
                     </child>
                     <child>
                       <object class="GtkToolButton" id="addLandmarksButton">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Add landmarks from file.</property>
                         <property name="label" translatable="yes">Add landmarks from file.</property>
@@ -368,24 +342,13 @@
                     </child>
                     <child>
                       <object class="GtkToolButton" id="saveLandmarksButton">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Save landmarks.</property>
                         <property name="label" translatable="yes">Save landmarks to file.</property>
                         <property name="use_underline">True</property>
                         <property name="icon_name">document-save</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkToolButton" id="addSegmentationButton">
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Add segmentation mask.</property>
-                        <property name="label" translatable="yes">Add segmentation mask.</property>
-                        <property name="use_underline">True</property>
-                        <property name="icon_name">insert-image</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -711,9 +674,6 @@
         </child>
       </object>
     </child>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkFileChooserDialog" id="addLandmarksDialog">
     <property name="can_focus">False</property>
@@ -723,6 +683,9 @@
     <property name="type_hint">dialog</property>
     <property name="transient_for">mainWindow</property>
     <property name="filter">jsonFilter</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="filechooserdialog-vbox3">
         <property name="can_focus">False</property>
@@ -777,9 +740,6 @@
       <action-widget response="1">addLandmarksDialogOpenButton</action-widget>
       <action-widget response="0">addLandmarksDialogCancelButton</action-widget>
     </action-widgets>
-    <child>
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkFileChooserDialog" id="addSegmentationDialog">
     <property name="can_focus">False</property>
@@ -789,6 +749,9 @@
     <property name="type_hint">dialog</property>
     <property name="transient_for">mainWindow</property>
     <property name="filter">jsonFilter</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -841,9 +804,6 @@
       <action-widget response="1">addSegmentationDialogSelectButton</action-widget>
       <action-widget response="0">addSegmentationDialogCancelButton</action-widget>
     </action-widgets>
-    <child>
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkMessageDialog" id="errorMessageDialog">
     <property name="can_focus">False</property>
@@ -851,6 +811,9 @@
     <property name="transient_for">mainWindow</property>
     <property name="message_type">error</property>
     <property name="buttons">close</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="messagedialog-vbox4">
         <property name="can_focus">False</property>
@@ -879,73 +842,6 @@
         </child>
       </object>
     </child>
-    <child>
-      <placeholder/>
-    </child>
-  </object>
-  <object class="GtkFileChooserDialog" id="openImageStackDialog">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Select folder containing image stack</property>
-    <property name="modal">True</property>
-    <property name="window_position">center</property>
-    <property name="type_hint">dialog</property>
-    <property name="transient_for">mainWindow</property>
-    <property name="action">select-folder</property>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="filechooserdialog-vbox1">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="filechooserdialog-action_area1">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="openImageStackDialogSelectButton">
-                <property name="label" translatable="yes">Select</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="openImageStackDialogCancelButton">
-                <property name="label" translatable="yes">Cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="1">openImageStackDialogSelectButton</action-widget>
-      <action-widget response="0">openImageStackDialogCancelButton</action-widget>
-    </action-widgets>
-    <child>
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkFileChooserDialog" id="openScanDialog">
     <property name="can_focus">False</property>
@@ -955,6 +851,9 @@
     <property name="type_hint">dialog</property>
     <property name="transient_for">mainWindow</property>
     <property name="filter">jsonFilter</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="filechooserdialog-vbox6">
         <property name="can_focus">False</property>
@@ -1007,9 +906,6 @@
       <action-widget response="1">openScanDialogSelectButton</action-widget>
       <action-widget response="0">openScanDialogCancelButton</action-widget>
     </action-widgets>
-    <child>
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkFileChooserDialog" id="saveLandmarksDialog">
     <property name="can_focus">False</property>
@@ -1020,6 +916,9 @@
     <property name="transient_for">mainWindow</property>
     <property name="action">save</property>
     <property name="filter">jsonFilter</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="filechooserdialog-vbox2">
         <property name="can_focus">False</property>
@@ -1072,9 +971,6 @@
       <action-widget response="1">saveLandmarksDialogSaveButton</action-widget>
       <action-widget response="0">saveLandmarksDialogCancelButton</action-widget>
     </action-widgets>
-    <child>
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkFileChooserDialog" id="saveSegmentationDialog">
     <property name="can_focus">False</property>
@@ -1085,6 +981,9 @@
     <property name="transient_for">mainWindow</property>
     <property name="action">save</property>
     <property name="filter">jsonFilter</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -1137,8 +1036,67 @@
       <action-widget response="1">saveSegmentationDialogSaveButton</action-widget>
       <action-widget response="0">saveSegmentationDialogCancelButton</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkFileChooserDialog" id="saveSliceDialog">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Choose filename</property>
+    <property name="modal">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="transient_for">mainWindow</property>
+    <property name="action">save</property>
     <child>
       <placeholder/>
     </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="saveSliceDialogSave">
+                <property name="label" translatable="yes">Save</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="saveSliceDialogCancel">
+                <property name="label" translatable="yes">button</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="1">saveSliceDialogSave</action-widget>
+      <action-widget response="0">saveSliceDialogCancel</action-widget>
+    </action-widgets>
   </object>
 </interface>

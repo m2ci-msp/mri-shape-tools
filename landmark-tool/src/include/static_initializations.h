@@ -35,6 +35,10 @@
 #include "observer/ApplyFiltersButtonObserver.h"
 #include "observer/ApplySegmentationButtonObserver.h"
 #include "observer/ResetImageButtonObserver.h"
+#include "observer/SaveSliceDialogObserver.h"
+#include "observer/SaveSliceObserver.h"
+#include "observer/ShowFilterWindowObserver.h"
+#include "observer/ShowSegmentationWindowObserver.h"
 #include "core/Landmark.h"
 #include "core/IdPool.h"
 
@@ -115,6 +119,18 @@ Observatory<ApplySegmentationButtonObserver>::observer = nullptr;
 
 template<> std::shared_ptr<ResetImageButtonObserver>
 Observatory<ResetImageButtonObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SaveSliceDialogObserver>
+Observatory<SaveSliceDialogObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SaveSliceObserver>
+Observatory<SaveSliceObserver>::observer = nullptr;
+
+template<> std::shared_ptr<ShowFilterWindowObserver>
+Observatory<ShowFilterWindowObserver>::observer = nullptr;
+
+template<> std::shared_ptr<ShowSegmentationWindowObserver>
+Observatory<ShowSegmentationWindowObserver>::observer = nullptr;
 
 template<> IdPool<Landmark>* IdPool<Landmark>::instance = nullptr; 
 

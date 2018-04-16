@@ -25,6 +25,16 @@ class SaveLandmarksButtonObserver {
       this->clickHandler = button->signal_clicked().connect(
           sigc::mem_fun(*this, &SaveLandmarksButtonObserver::clicked)
           );
+
+      // get menu item to watch
+      Gtk::MenuItem* item;
+      builder->get_widget("saveLandmarksItem", item);
+
+      // connect handler to clicked signal
+      this->activateHandler = item->signal_activate().connect(
+                                                            sigc::mem_fun(*this, &SaveLandmarksButtonObserver::clicked)
+                                                            );
+
     }
 
 
@@ -32,6 +42,7 @@ class SaveLandmarksButtonObserver {
 
     ~SaveLandmarksButtonObserver() {
       this->clickHandler.disconnect();
+      this->activateHandler.disconnect();
     }
 
     /*-----------------------------------------------------------------------*/
@@ -45,7 +56,10 @@ class SaveLandmarksButtonObserver {
     /*-----------------------------------------------------------------------*/
 
   private:
+
     sigc::connection clickHandler;
+    sigc::connection activateHandler;
+
 };
 
 #endif

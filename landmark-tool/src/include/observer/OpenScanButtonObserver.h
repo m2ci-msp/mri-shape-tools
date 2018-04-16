@@ -22,7 +22,16 @@ class OpenScanButtonObserver {
       builder->get_widget("openScanButton", button);
 
       // connect handler to clicked signal
-      this->clickHandler = button->signal_clicked().connect(
+      this->activateHandler = button->signal_clicked().connect(
+                                                              sigc::mem_fun(*this, &OpenScanButtonObserver::clicked)
+                                                              );
+
+      // get menu item to observe
+      Gtk::MenuItem* item;
+      builder->get_widget("openScanItem", item);
+
+      // connect handler to activate signal
+      this->activateHandler = item->signal_activate().connect(
           sigc::mem_fun(*this, &OpenScanButtonObserver::clicked)
           );
     }
@@ -31,7 +40,11 @@ class OpenScanButtonObserver {
     /*-----------------------------------------------------------------------*/
 
     ~OpenScanButtonObserver() {
+
       this->clickHandler.disconnect();
+
+      this->activateHandler.disconnect();
+
     }
 
     /*-----------------------------------------------------------------------*/
@@ -45,7 +58,10 @@ class OpenScanButtonObserver {
     /*-----------------------------------------------------------------------*/
 
   private:
+
     sigc::connection clickHandler;
+    sigc::connection activateHandler;
+
 };
 
 #endif

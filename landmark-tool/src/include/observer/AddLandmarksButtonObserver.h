@@ -25,6 +25,16 @@ class AddLandmarksButtonObserver {
       this->clickHandler = button->signal_clicked().connect(
           sigc::mem_fun(*this, &AddLandmarksButtonObserver::clicked)
           );
+
+      // get menu item to watch
+      Gtk::MenuItem* item;
+      builder->get_widget("addLandmarksItem", item);
+
+      // connect handler to activate signal
+      this->activateHandler = item->signal_activate().connect(
+                                                            sigc::mem_fun(*this, &AddLandmarksButtonObserver::clicked)
+                                                            );
+
     }
 
 
@@ -32,6 +42,7 @@ class AddLandmarksButtonObserver {
 
     ~AddLandmarksButtonObserver() {
       this->clickHandler.disconnect();
+      this->activateHandler.disconnect();
     }
 
     /*-----------------------------------------------------------------------*/
@@ -46,6 +57,7 @@ class AddLandmarksButtonObserver {
 
   private:
     sigc::connection clickHandler;
+    sigc::connection activateHandler;
 };
 
 #endif
