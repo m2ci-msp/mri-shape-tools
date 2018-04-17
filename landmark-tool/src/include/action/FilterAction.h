@@ -21,7 +21,13 @@ protected:
       const std::string action = entry["action"].asString();
       Json::Value& options = entry["options"];
 
-      if( action == "segment" && options["type"].asString() == "with landmarks") {
+      // add landmarks if
+      // 1. segment action is used,
+      // 2. "with landmarks" type is wanted,
+      // 3. and landmarks are not present in filter string
+      Json::Value nullValue;
+
+      if( action == "segment" && options["type"].asString() == "with landmarks" && options["landmarks"] == nullValue){
 
         Json::Value landmarks(Json::arrayValue);
 
