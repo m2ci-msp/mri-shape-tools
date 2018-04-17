@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <sstream>
 
 #include "image/Image.h"
 
@@ -46,9 +47,8 @@ class ApplyModifications{
   void apply(const std::string& jsonString) {
     
     Json::Value root;
-    Json::Reader reader;
     
-    reader.parse(jsonString, root);
+    std::stringstream(jsonString) >> root;
     
     // apply each modification to the image in order of occurence
     for(Json::Value& modification: root) {

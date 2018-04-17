@@ -1,6 +1,7 @@
 #ifndef __FILTER_ACTION_H__
 #define __FILTER_ACTION_H__
 
+#include <sstream>
 #include <json/json.h>
 
 #include "action/Action.h"
@@ -12,9 +13,8 @@ protected:
   Json::Value add_landmarks_if_needed(const std::string& originalString) const {
 
     Json::Value description;
-    Json::Reader reader;
 
-    reader.parse(originalString, description);
+    std::stringstream(originalString) >> description;
 
     for(Json::Value& entry: description) {
 

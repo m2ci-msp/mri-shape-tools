@@ -7,8 +7,7 @@
 #include "core/Point.h"
 
 /** A class representing a landmark on a 3D image.
- * A landmark consists of a 3D coordinate, a given name, and an optional
- * normal
+ * A landmark consists of a 3D coordinate and a given name
  */
 class Landmark: public ObjectWithId<Landmark> {
 
@@ -50,12 +49,6 @@ class Landmark: public ObjectWithId<Landmark> {
 
     /*----------------------------------------------------------------------*/
 
-    void set_normal( const Point& normal) {
-      this->normal = normal;
-    }
-
-    /*----------------------------------------------------------------------*/
-
     void set_name( const std::string& name) {
       this->name = name;
     }
@@ -64,12 +57,6 @@ class Landmark: public ObjectWithId<Landmark> {
 
     const Point& get_position() const {
       return this->position;
-    }
-
-    /*----------------------------------------------------------------------*/
-
-    const Point& get_normal() const {
-      return this->normal;
     }
 
     /*----------------------------------------------------------------------*/
@@ -83,7 +70,6 @@ class Landmark: public ObjectWithId<Landmark> {
   private:
     Point position;
     std::string name;
-    Point normal;
 
 };
 #endif

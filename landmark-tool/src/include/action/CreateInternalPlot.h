@@ -145,10 +145,6 @@ class CreateInternalPlot : public Action {
 
         plot_position(position, cr);
 
-        auto normal = mark->get_normal();
-
-        plot_normal(position, normal, cr);
-
       }
 
       cr->restore();
@@ -169,29 +165,6 @@ class CreateInternalPlot : public Action {
       cr->stroke();
       cr->move_to( x, y - 6);
       cr->line_to( x, y + 6);
-      cr->stroke();
-
-    }
-
-    /*-----------------------------------------------------------------------*/
-
-    void plot_normal(
-      const Point& position,
-      const Point& normal,
-      Cairo::RefPtr<Cairo::Context> cr) {
-
-      const double zoom = get_zoom_factor();
-
-      const double sourceX = position.get_x() * zoom; 
-      const double sourceY = position.get_y() * zoom; 
-
-      const double targetX = ( position.get_x() + 5 * normal.get_x() ) * zoom; 
-      const double targetY = ( position.get_y() + 5 * normal.get_y() ) * zoom; 
-
-      cr->set_line_width(2.);
-      cr->set_source_rgb(1, 1, 0);
-      cr->move_to( sourceX, sourceY);
-      cr->line_to( targetX, targetY);
       cr->stroke();
 
     }

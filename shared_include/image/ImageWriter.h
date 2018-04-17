@@ -68,8 +68,8 @@ public:
 
     root["data"] = data;
 
-    Json::StyledStreamWriter writer;
-    writer.write(outFile, root);
+    outFile << root << std::endl;
+    outFile.close();
 
   }
 

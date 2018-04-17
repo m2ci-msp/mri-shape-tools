@@ -37,9 +37,9 @@ class LandmarkIO {
       const double orgZ = Data::get_instance()->get_current_image().info().get_origin_z() / Data::get_instance()->get_current_image().info().get_hz();
 
       Json::Value root;
-      Json::Reader reader;
 
-      reader.parse(inFile, root);
+      inFile >> root;
+      inFile.close();
 
       for( const auto& value: root) {
 
@@ -50,27 +50,15 @@ class LandmarkIO {
         const double y = value["y"].asDouble() - orgY;
         const double z = value["z"].asDouble() - orgZ;
 
-        const double nx = value["nx"].asDouble();
-        const double ny = value["ny"].asDouble();
-        const double nz = value["nz"].asDouble();
-
         Point point;
-        Point normal;
 
         // set coordinates in canonical coordinate system
         point.set_canonical_x(x);
         point.set_canonical_y(y);
         point.set_canonical_z(z);
 
-        normal.set_canonical_x(nx);
-        normal.set_canonical_y(ny);
-        normal.set_canonical_z(nz);
-
         // store landmark 
-        auto mark = LandmarkPool::get_instance()->create_landmark(name, point);
-
-        // set normal
-        mark->set_normal(normal);
+        LandmarkPool::get_instance()->create_landmark(name, point);
 
       }
 
@@ -96,7 +84,6 @@ class LandmarkIO {
       const double orgY = Data::get_instance()->get_current_image().info().get_origin_y() / Data::get_instance()->get_current_image().info().get_hy();
       const double orgZ = Data::get_instance()->get_current_image().info().get_origin_z() / Data::get_instance()->get_current_image().info().get_hz();
 
-
       // create root node of json file
       Json::Value root(Json::arrayValue);
 
@@ -113,21 +100,6 @@ class LandmarkIO {
         const double y = point.get_canonical_y() + orgY;
         const double z = point.get_canonical_z() + orgZ;
 
-        // get normal
-        auto normal = mark->get_normal();
-
-        double nx = normal.get_canonical_x();
-        double ny = normal.get_canonical_y();
-        double nz = normal.get_canonical_z();
-
-        // normalize
-        const double length = sqrt(pow(nx, 2) + pow(ny, 2) + pow(nz, 2));
-        if( length > 0) {
-          nx /= length;
-          ny /= length;
-          nz /= length;
-        }
-
         Json::Value landmark(Json::objectValue);
 
         Json::Value name(mark->get_name());
@@ -139,17 +111,13 @@ class LandmarkIO {
         landmark["x"]    = Json::Value(x);
         landmark["y"]    = Json::Value(y);
         landmark["z"]    = Json::Value(z);
-        landmark["nx"]    = Json::Value(nx);
-        landmark["ny"]    = Json::Value(ny);
-        landmark["nz"]    = Json::Value(nz);
 
         root.append(landmark);
 
       } // end for
 
-      Json::StyledStreamWriter writer;
-      writer.write(outFile, root);
-
+      outFile << root << std::endl;
+      outFile.close();
 
     }
   private:

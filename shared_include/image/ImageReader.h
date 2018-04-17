@@ -25,9 +25,8 @@ public:
     }
 
     Json::Value root;
-    Json::Reader reader;
 
-    reader.parse(inFile, root);
+    inFile >> root;
     inFile.close();
 
     // set boundary size to 0

@@ -1,6 +1,8 @@
 #ifndef __APPLY_FILTERS_H__
 #define __APPLY_FILTERS_H__
 
+#include <sstream>
+
 #include <json/json.h>
 
 #include "action/FilterAction.h"
@@ -32,9 +34,10 @@ public:
 
     Image image = Data::get_instance()->get_current_image();
 
-    std::string modifiedText = Json::FastWriter().write( add_landmarks_if_needed(filtersText->get_text()) );
+    std::stringstream modifiedText;
+    modifiedText << add_landmarks_if_needed(filtersText->get_text()) << std::endl;
 
-    ApplyModifications(image).apply(modifiedText);
+    ApplyModifications(image).apply(modifiedText.str());
 
     Data::get_instance()->set_current_image(image);
 

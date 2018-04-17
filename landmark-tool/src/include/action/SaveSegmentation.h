@@ -30,7 +30,7 @@ public:
 
     std::ofstream outFile(this->path);
 
-    Json::StyledStreamWriter().write(outFile, jsonSegmentation);
+    outFile << jsonSegmentation << std::endl;
 
     outFile.close();
 
