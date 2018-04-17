@@ -20,8 +20,6 @@ class ShowMoreActions : public Action {
         builder->get_widget("saveLandmarksItem", this->saveLandmarksItem);
         builder->get_widget("loadSegmentationItem", this->loadSegmentationItem);
         builder->get_widget("saveSliceItem", this->saveSliceItem);
-        builder->get_widget("moveLandmarksItem", this->moveLandmarksItem);
-        builder->get_widget("clearLandmarksItem", this->clearLandmarksItem);
         builder->get_widget("showFilterItem", this->showFilterItem);
         builder->get_widget("showSegmentationItem", this->showSegmentationItem);
 
@@ -39,8 +37,6 @@ class ShowMoreActions : public Action {
       this->saveLandmarksItem->set_sensitive();
       this->loadSegmentationItem->set_sensitive();
       this->saveSliceItem->set_sensitive();
-      this->moveLandmarksItem->set_sensitive();
-      this->clearLandmarksItem->set_sensitive();
       this->showFilterItem->set_sensitive();
       this->showSegmentationItem->set_sensitive();
 
@@ -57,8 +53,6 @@ class ShowMoreActions : public Action {
     Gtk::MenuItem *saveLandmarksItem;
     Gtk::MenuItem *loadSegmentationItem;
     Gtk::MenuItem *saveSliceItem;
-    Gtk::MenuItem *moveLandmarksItem;
-    Gtk::MenuItem *clearLandmarksItem;
     Gtk::MenuItem *showFilterItem;
     Gtk::MenuItem *showSegmentationItem;
 
