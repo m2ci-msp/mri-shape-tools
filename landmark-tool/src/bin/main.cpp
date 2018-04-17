@@ -48,6 +48,8 @@ int main(int, char*[])
   Observatory<SaveSliceObserver>::create();
   Observatory<ShowFilterWindowObserver>::create();
   Observatory<ShowSegmentationWindowObserver>::create();
+  Observatory<SaveFilterDialogObserver>::create();
+  Observatory<SaveFilterButtonObserver>::create();
 
   // show main window
   return app->run(*window);

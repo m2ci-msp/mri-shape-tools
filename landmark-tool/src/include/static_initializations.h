@@ -39,6 +39,8 @@
 #include "observer/SaveSliceObserver.h"
 #include "observer/ShowFilterWindowObserver.h"
 #include "observer/ShowSegmentationWindowObserver.h"
+#include "observer/SaveFilterButtonObserver.h"
+#include "observer/SaveFilterDialogObserver.h"
 #include "core/Landmark.h"
 #include "core/IdPool.h"
 
@@ -131,6 +133,12 @@ Observatory<ShowFilterWindowObserver>::observer = nullptr;
 
 template<> std::shared_ptr<ShowSegmentationWindowObserver>
 Observatory<ShowSegmentationWindowObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SaveFilterButtonObserver>
+Observatory<SaveFilterButtonObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SaveFilterDialogObserver>
+Observatory<SaveFilterDialogObserver>::observer = nullptr;
 
 template<> IdPool<Landmark>* IdPool<Landmark>::instance = nullptr; 
 
