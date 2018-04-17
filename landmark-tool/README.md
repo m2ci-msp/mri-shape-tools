@@ -73,7 +73,7 @@ Hitting **Apply** will apply the given specifications.
 **Save** can be used to save the specifications to a file.
 **ATTENTION:** 
 The **action** type **segment** with type **with landmarks** has a special behavior in this tool: 
-Providing landmarks in the **options** field of this action is here **optional***.
+Providing landmarks in the **options** field of this action is here **optional**.
 By default, the landmarks placed in the GUI are be used.
 
 #### Visualizing a segmentation
