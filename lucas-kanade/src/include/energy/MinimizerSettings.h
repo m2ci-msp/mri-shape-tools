@@ -8,9 +8,9 @@ namespace lucasKanade{
 
     int iterationAmount = 10;
 
-    int convergenceFactor = 1000;
-    double projectedGradientTolerance = 0.001;
-    int maxFunctionEvals = 50;
+    int convergenceFactor = 1e+7;
+    double projectedGradientTolerance = 1e-5;
+    int maxFunctionEvals = 1000;
 
   };
 

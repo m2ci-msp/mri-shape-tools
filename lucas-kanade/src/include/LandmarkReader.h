@@ -53,9 +53,8 @@ private:
     }
 
     Json::Value root;
-    Json::Reader reader;
 
-    reader.parse(inFile, root);
+    inFile >> root;
 
     inFile.close();
 
