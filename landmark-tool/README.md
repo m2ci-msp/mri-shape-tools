@@ -5,6 +5,7 @@
 This tool provides a GUI for inspecting and annotating MRI scans.
 Furthermore, it can be used to apply different filters to the scan, compute and show segmentations, and save visualizations of slices.
 The tool currently inputs scan data in [JSON format][1].
+The landmarks are output in [image landmarks format][2].
 
 ## Installation
 
@@ -92,3 +93,4 @@ This time, however, the provided modification specifications are used to compute
 
 [1]: ../dataFormats/scan.md
 [2]:../dataFormats/imageModifySpecifications.md
+[3]:../dataFormats/imageLandmarks.md
