@@ -21,7 +21,7 @@ public:
 
   Settings(int argc, char* argv[]) {
 
-    FlagSingle<std::string> inputFlag("source", this->input);
+    FlagSingle<std::string> inputFlag("input", this->input);
     FlagSingle<std::string> outputFlag("output", this->output);
     FlagSingle<std::string> outputCloudFlag("cloud", this->outputCloud, true);
     FlagNone flipFlag("flip", this->flip);
