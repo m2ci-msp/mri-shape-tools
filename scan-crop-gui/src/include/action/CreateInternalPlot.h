@@ -93,7 +93,7 @@ class CreateInternalPlot : public Action {
       double zoom = get_zoom_factor();
 
       this->plot =
-        Cairo::ImageSurface::create(slice->get_format(),
+        Cairo::ImageSurface::create(image->get_format(),
             image->get_width() * zoom, image->get_height() * zoom);
 
       Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(this->plot);

@@ -30,8 +30,6 @@ int main(int, char*[])
   Observatory<CropObserver>::create();
   Observatory<SaveCropSpecificationButtonObserver>::create();
   Observatory<SaveCropSpecificationDialogObserver>::create();
-  Observatory<SaveSliceButtonObserver>::create();
-  Observatory<SaveSliceDialogObserver>::create();
 
   // show main window
   return app->run(*window);

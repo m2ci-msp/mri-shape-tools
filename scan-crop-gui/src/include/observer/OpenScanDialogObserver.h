@@ -7,6 +7,7 @@
 #include "action/OpenScan.h"
 #include "action/ShowErrorMessage.h"
 #include "action/ShowFileInTitle.h"
+#include "action/ShowMoreActions.h"
 
 /** Class that watches the open image stack dialog */
 class OpenScanDialogObserver {
@@ -48,6 +49,7 @@ class OpenScanDialogObserver {
               ShowFileInTitle show(this->dialog->get_filename());
               show.execute();
 
+              ShowMoreActions().execute();
             }
             catch (const std::exception& e) {
               ShowErrorMessage message("Problem opening scan:", e);

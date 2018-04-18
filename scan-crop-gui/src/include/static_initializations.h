@@ -21,8 +21,6 @@
 #include "observer/CropObserver.h"
 #include "observer/SaveCropSpecificationButtonObserver.h"
 #include "observer/SaveCropSpecificationDialogObserver.h"
-#include "observer/SaveSliceButtonObserver.h"
-#include "observer/SaveSliceDialogObserver.h"
 
 template<> std::shared_ptr<OpenScanButtonObserver>
 Observatory<OpenScanButtonObserver>::observer = nullptr;
@@ -62,12 +60,6 @@ Observatory<SaveCropSpecificationButtonObserver>::observer = nullptr;
 
 template<> std::shared_ptr<SaveCropSpecificationDialogObserver>
 Observatory<SaveCropSpecificationDialogObserver>::observer = nullptr;
-
-template<> std::shared_ptr<SaveSliceButtonObserver>
-Observatory<SaveSliceButtonObserver>::observer = nullptr;
-
-template<> std::shared_ptr<SaveSliceDialogObserver>
-Observatory<SaveSliceDialogObserver>::observer = nullptr;
 
 std::shared_ptr<GuiDescription> GuiDescription::instance = nullptr;
 std::shared_ptr<Data> Data::instance = nullptr;
