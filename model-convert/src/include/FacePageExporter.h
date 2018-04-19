@@ -69,8 +69,7 @@ private:
     descriptor["truncatedNumberOfIdentities"]  =
       this->model.data().get_speaker_mode_dimension();
 
-    Json::StyledStreamWriter writer;
-    writer.write(outFile, descriptor);
+    outFile << descriptor << std::endl;
 
     outFile.close();
 

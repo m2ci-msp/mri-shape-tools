@@ -13,8 +13,8 @@ int main(int argc, char* argv[]) {
 
   std::ifstream inFile(settings.motion);
   Json::Value root;
-  Json::Reader reader;
-  reader.parse(inFile, root);
+
+  inFile >> root;
 
   inFile.close();
 

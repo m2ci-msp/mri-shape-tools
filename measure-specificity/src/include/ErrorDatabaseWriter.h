@@ -34,8 +34,7 @@ public:
 
     }
 
-    Json::StyledStreamWriter writer;
-    writer.write(outFile, list);
+    outFile << list << std::endl;
 
     outFile.close();
 

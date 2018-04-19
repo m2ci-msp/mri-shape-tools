@@ -25,8 +25,9 @@ public:
 
     // read json file
     Json::Value root;
-    Json::Reader reader;
-    reader.parse(inFile, root);
+    inFile >> root;
+
+    inFile.close();
 
     MeshNeighbors meshNeighbors;
 
@@ -96,8 +97,7 @@ public:
     root["description"] = jsonDescriptions;
     root["neighborhoods"] = jsonNeighborList;
 
-    Json::StyledStreamWriter writer;
-    writer.write(outFile, root);
+    outFile << root << std::endl;
 
     outFile.close();
 
