@@ -22,18 +22,45 @@
 #include "observer/LandmarkTreeViewObserver.h"
 #include "observer/SaveLandmarksButtonObserver.h"
 #include "observer/SaveLandmarksDialogObserver.h"
+#include "observer/SaveSegmentationButtonObserver.h"
+#include "observer/SaveSegmentationDialogObserver.h"
 #include "observer/AddLandmarksButtonObserver.h"
 #include "observer/AddLandmarksDialogObserver.h"
 #include "observer/ErrorMessageDialogObserver.h"
 #include "observer/MainWindowObserver.h"
+#include "observer/AddSegmentationDialogObserver.h"
+#include "observer/AddSegmentationButtonObserver.h"
+#include "observer/AlphaObserver.h"
+#include "observer/SegmentationObserver.h"
+#include "observer/ApplyFiltersButtonObserver.h"
+#include "observer/ApplySegmentationButtonObserver.h"
+#include "observer/ResetImageButtonObserver.h"
+#include "observer/SaveSliceDialogObserver.h"
+#include "observer/SaveSliceObserver.h"
+#include "observer/ShowFilterWindowObserver.h"
+#include "observer/ShowSegmentationWindowObserver.h"
+#include "observer/SaveFilterButtonObserver.h"
+#include "observer/SaveFilterDialogObserver.h"
 #include "core/Landmark.h"
 #include "core/IdPool.h"
 
 template<> std::shared_ptr<OpenScanButtonObserver>
 Observatory<OpenScanButtonObserver>::observer = nullptr;
 
+template<> std::shared_ptr<AddSegmentationButtonObserver>
+Observatory<AddSegmentationButtonObserver>::observer = nullptr;
+
 template<> std::shared_ptr<OpenScanDialogObserver>
 Observatory<OpenScanDialogObserver>::observer = nullptr;
+
+template<> std::shared_ptr<AddSegmentationDialogObserver>
+Observatory<AddSegmentationDialogObserver>::observer = nullptr;
+
+template<> std::shared_ptr<AlphaObserver>
+Observatory<AlphaObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SegmentationObserver>
+Observatory<SegmentationObserver>::observer = nullptr;
 
 template<> std::shared_ptr<ImageStackObserver>
 Observatory<ImageStackObserver>::observer = nullptr;
@@ -65,8 +92,14 @@ Observatory<LandmarkTreeViewObserver>::observer = nullptr;
 template<> std::shared_ptr<SaveLandmarksButtonObserver>
 Observatory<SaveLandmarksButtonObserver>::observer = nullptr;
 
+template<> std::shared_ptr<SaveSegmentationButtonObserver>
+Observatory<SaveSegmentationButtonObserver>::observer = nullptr;
+
 template<> std::shared_ptr<SaveLandmarksDialogObserver>
 Observatory<SaveLandmarksDialogObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SaveSegmentationDialogObserver>
+Observatory<SaveSegmentationDialogObserver>::observer = nullptr;
 
 template<> std::shared_ptr<AddLandmarksButtonObserver>
 Observatory<AddLandmarksButtonObserver>::observer = nullptr;
@@ -79,6 +112,33 @@ Observatory<ErrorMessageDialogObserver>::observer = nullptr;
 
 template<> std::shared_ptr<MainWindowObserver>
 Observatory<MainWindowObserver>::observer = nullptr;
+
+template<> std::shared_ptr<ApplyFiltersButtonObserver>
+Observatory<ApplyFiltersButtonObserver>::observer = nullptr;
+
+template<> std::shared_ptr<ApplySegmentationButtonObserver>
+Observatory<ApplySegmentationButtonObserver>::observer = nullptr;
+
+template<> std::shared_ptr<ResetImageButtonObserver>
+Observatory<ResetImageButtonObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SaveSliceDialogObserver>
+Observatory<SaveSliceDialogObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SaveSliceObserver>
+Observatory<SaveSliceObserver>::observer = nullptr;
+
+template<> std::shared_ptr<ShowFilterWindowObserver>
+Observatory<ShowFilterWindowObserver>::observer = nullptr;
+
+template<> std::shared_ptr<ShowSegmentationWindowObserver>
+Observatory<ShowSegmentationWindowObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SaveFilterButtonObserver>
+Observatory<SaveFilterButtonObserver>::observer = nullptr;
+
+template<> std::shared_ptr<SaveFilterDialogObserver>
+Observatory<SaveFilterDialogObserver>::observer = nullptr;
 
 template<> IdPool<Landmark>* IdPool<Landmark>::instance = nullptr; 
 

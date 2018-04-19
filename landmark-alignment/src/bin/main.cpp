@@ -13,6 +13,29 @@ int main(int argc, char* argv[]) {
 
   auto input = MeshIO::read(settings.source);
   auto landmarks = LandmarkIO::read(settings.landmarks);
+
+  // only use the subset of landmarks if wanted by the user
+  if(settings.subset.empty() == false) {
+
+    std::map<std::string, Landmark> lookupMap;
+
+    for(const Landmark& mark: landmarks) {
+
+      lookupMap[mark.name] = mark;
+
+    }
+
+    landmarks.clear();
+
+    for(const std::string name: settings.subset) {
+
+      landmarks.push_back( lookupMap.at(name) );
+
+    }
+
+
+  }
+
   RigidAlignment alignment(landmarks);
 
   alignment.set_rotation(!settings.noRotation).\

@@ -19,7 +19,11 @@ int main(int, char*[])
 
   // register observers
   Observatory<OpenScanButtonObserver>::create();
+  Observatory<AddSegmentationButtonObserver>::create();
   Observatory<OpenScanDialogObserver>::create();
+  Observatory<AddSegmentationDialogObserver>::create();
+  Observatory<AlphaObserver>::create();
+  Observatory<SegmentationObserver>::create();
   Observatory<ImageStackObserver>::create();
   Observatory<DrawingAreaObserver>::create();
   Observatory<ScrollbarObserver>::create();
@@ -31,10 +35,21 @@ int main(int, char*[])
   Observatory<LandmarkTreeViewObserver>::create();
   Observatory<SaveLandmarksButtonObserver>::create();
   Observatory<SaveLandmarksDialogObserver>::create();
+  Observatory<SaveSegmentationButtonObserver>::create();
+  Observatory<SaveSegmentationDialogObserver>::create();
   Observatory<AddLandmarksButtonObserver>::create();
   Observatory<AddLandmarksDialogObserver>::create();
   Observatory<ErrorMessageDialogObserver>::create();
   Observatory<MainWindowObserver>::create();
+  Observatory<ApplyFiltersButtonObserver>::create();
+  Observatory<ApplySegmentationButtonObserver>::create();
+  Observatory<ResetImageButtonObserver>::create();
+  Observatory<SaveSliceDialogObserver>::create();
+  Observatory<SaveSliceObserver>::create();
+  Observatory<ShowFilterWindowObserver>::create();
+  Observatory<ShowSegmentationWindowObserver>::create();
+  Observatory<SaveFilterDialogObserver>::create();
+  Observatory<SaveFilterButtonObserver>::create();
 
   // show main window
   return app->run(*window);

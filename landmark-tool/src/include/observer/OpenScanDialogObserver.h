@@ -4,10 +4,12 @@
 #include <gtkmm/filechooserdialog.h>
 
 #include "singleton/GuiDescription.h"
-#include "action/ProcessScan.h"
+#include "action/OpenScan.h"
 #include "action/ClearLandmarks.h"
 #include "action/ShowErrorMessage.h"
 #include "action/ShowFileInTitle.h"
+#include "action/ShowMoreActions.h"
+#include "action/HideSegmentationFrame.h"
 
 /** Class that watches the open image stack dialog */
 class OpenScanDialogObserver {
@@ -43,7 +45,7 @@ class OpenScanDialogObserver {
           {
             try{
               // try to build a image stack from the provided scan
-              ProcessScan action(this->dialog->get_filename());
+              OpenScan action(this->dialog->get_filename());
               action.execute();
 
               ShowFileInTitle show(this->dialog->get_filename());
@@ -51,6 +53,12 @@ class OpenScanDialogObserver {
 
               ClearLandmarks clear;
               clear.execute();
+
+              ShowMoreActions showActions;
+              showActions.execute();
+
+              HideSegmentationFrame hide;
+              hide.execute();
 
             }
             catch (const std::exception& e) {

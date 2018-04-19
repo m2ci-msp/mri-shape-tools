@@ -13,7 +13,8 @@
 #include "action/MoveLandmark.h"
 #include "action/CreateInternalPlot.h"
 #include "action/FindNearestLandmark.h"
-#include "action/UpdateLandmarkNormal.h"
+#include "action/UpdatePositionLabel.h"
+#include "action/UpdateAbsolutePositionLabel.h"
 
 class DrawingAreaObserver {
   public:
@@ -76,21 +77,15 @@ class DrawingAreaObserver {
 
     bool motion_occured(GdkEventMotion *event) {
 
-      if(
-          this->mode->get_mode() == Mode::EDIT_NORMAL &&
-          LandmarkPool::get_instance()->get_selected_landmark() != nullptr ) {
+      // compute internal coordinates from cursor
+      SetEventPosition setPosition(event->x, event->y);
+      setPosition.execute();
 
-        // compute internal coordinates from cursor
-        SetEventPosition setPosition(event->x, event->y);
-        setPosition.execute();
+      UpdatePositionLabel update;
+      update.execute();
 
-        UpdateLandmarkNormal action;
-        action.execute();
-
-        CreateInternalPlot plot;
-        plot.execute();
-
-      }
+      UpdateAbsolutePositionLabel updateAbsolute;
+      updateAbsolute.execute();
 
       return true;
 
@@ -115,10 +110,6 @@ class DrawingAreaObserver {
 
         case Mode::MOVE_LANDMARK:
           button_pressed_move_mode( event );
-          break;
-
-        case Mode::EDIT_NORMAL:
-          button_pressed_normal_mode( event );
           break;
 
       }
@@ -169,12 +160,6 @@ class DrawingAreaObserver {
         action.execute();
 
       }
-    }
-
-    /*-----------------------------------------------------------------------*/
-
-    void button_pressed_normal_mode(GdkEventButton*) {
-      this->mode->set_mode(Mode::STANDARD);
     }
 
     /*-----------------------------------------------------------------------*/

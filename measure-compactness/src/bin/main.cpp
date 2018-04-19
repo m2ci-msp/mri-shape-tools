@@ -40,8 +40,8 @@ int main(int argc, char* argv[]) {
   }
 
   std::ofstream outFile(settings.output + "_speaker.json");
-  Json::StyledStreamWriter writer;
-  writer.write(outFile, speakerJson);
+
+  outFile << speakerJson << std::endl;
   outFile.close();
 
   Json::Value phonemeJson(Json::arrayValue);
@@ -59,7 +59,8 @@ int main(int argc, char* argv[]) {
 
 
   outFile = std::ofstream(settings.output + "_phoneme.json");
-  writer.write(outFile, phonemeJson);
+
+  outFile << phonemeJson << std::endl;
   outFile.close();
 
   return 0;

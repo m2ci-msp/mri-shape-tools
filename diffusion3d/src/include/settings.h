@@ -5,8 +5,6 @@
 #include "flags/FlagNone.h"
 #include "flags/FlagsParser.h"
 
-#include "diffusion/DiffusionSettings.h"
-
 #include <string>
 
 class Settings {
@@ -18,17 +16,21 @@ public:
 
   std::string outputScan;
 
-  DiffusionSettings diffusionSettings;
+  int timeSteps = 1;
+  double stepSize = 0.125;
+  double contrastLambda = 1;
+  double integrationRho = 1;
+  double presmoothSigma = 1;
 
   Settings(int argc, char* argv[]) {
 
     FlagSingle<std::string> inputScanFlag("input", this->inputScan);
     FlagSingle<std::string> outputScanFlag("output", this->outputScan);
 
-    FlagSingle<double> sigmaFlag("sigma", this->diffusionSettings.presmoothSigma, true);
-    FlagSingle<double> rhoFlag("rho", this->diffusionSettings.integrationRho, true);
-    FlagSingle<double> lambdaFlag("lambda", this->diffusionSettings.contrastLambda, true);
-    FlagSingle<int> iterFlag("iter", this->diffusionSettings.timeSteps, true);
+    FlagSingle<double> sigmaFlag("sigma", this->presmoothSigma, true);
+    FlagSingle<double> rhoFlag("rho", this->integrationRho, true);
+    FlagSingle<double> lambdaFlag("lambda", this->contrastLambda, true);
+    FlagSingle<int> iterFlag("iter", this->timeSteps, true);
 
     FlagsParser parser(argv[0]);
     parser.define_flag(&inputScanFlag);

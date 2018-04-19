@@ -7,8 +7,7 @@
 
 enum class Mode : int {
   STANDARD,
-  MOVE_LANDMARK,
-  EDIT_NORMAL
+  MOVE_LANDMARK
 };
 
 class EditMode {
@@ -69,9 +68,6 @@ class EditMode {
           this->statusBar->push("Move mode");
           break;
 
-        case Mode::EDIT_NORMAL:
-          this->statusBar->push("Edit normal mode");
-          break;
       }
     }
 

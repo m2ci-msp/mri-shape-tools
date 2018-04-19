@@ -39,8 +39,8 @@ public:
 
     // read json file
     Json::Value subset;
-    Json::Reader reader;
-    reader.parse(inFile, subset);
+
+    inFile >> subset;
 
     std::string name = subset["name"].asString();
 

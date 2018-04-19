@@ -31,8 +31,9 @@ class LandmarkIO {
 
       // read json file
       Json::Value root;
-      Json::Reader reader;
-      reader.parse(inFile, root);
+
+      inFile >> root;
+      inFile.close();
 
       for( Json::ArrayIndex i = 0; i < root.size(); ++i) {
 
@@ -93,8 +94,7 @@ class LandmarkIO {
 
       } // end for
 
-      Json::StyledStreamWriter writer;
-      writer.write(outFile, root);
+      outFile << root << std::endl;
 
       outFile.close();
 

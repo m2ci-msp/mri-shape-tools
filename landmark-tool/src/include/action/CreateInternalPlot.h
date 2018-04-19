@@ -31,6 +31,11 @@ class CreateInternalPlot : public Action {
       this->sliceAdjustment = 
         Glib::RefPtr<Gtk::Adjustment>::cast_dynamic(
             builder->get_object("sliceAdjustment"));
+
+      this->segmentationAdjustment = 
+        Glib::RefPtr<Gtk::Adjustment>::cast_dynamic(
+            builder->get_object("segmentationAdjustment"));
+
     }
 
     /*-----------------------------------------------------------------------*/
@@ -95,8 +100,20 @@ class CreateInternalPlot : public Action {
 
       // set source pattern
       cr->set_source(pattern);
+
       // plot the entire pattern on the widget
       cr->paint();
+
+      // check if segmentation mask is present
+      if( Data::get_instance()->segmentation_stack_present()) {
+
+        slice = Data::get_instance()->get_segmentation_slice(index);
+        pattern = Cairo::SurfacePattern::create(slice);
+        pattern->set_filter(Cairo::FILTER_NEAREST);
+        cr->set_source(pattern);
+        cr->paint_with_alpha(get_segmentation_alpha());
+
+      }
 
       // restore the old transformation matrix
       cr->restore();
@@ -128,10 +145,6 @@ class CreateInternalPlot : public Action {
 
         plot_position(position, cr);
 
-        auto normal = mark->get_normal();
-
-        plot_normal(position, normal, cr);
-
       }
 
       cr->restore();
@@ -152,29 +165,6 @@ class CreateInternalPlot : public Action {
       cr->stroke();
       cr->move_to( x, y - 6);
       cr->line_to( x, y + 6);
-      cr->stroke();
-
-    }
-
-    /*-----------------------------------------------------------------------*/
-
-    void plot_normal(
-      const Point& position,
-      const Point& normal,
-      Cairo::RefPtr<Cairo::Context> cr) {
-
-      const double zoom = get_zoom_factor();
-
-      const double sourceX = position.get_x() * zoom; 
-      const double sourceY = position.get_y() * zoom; 
-
-      const double targetX = ( position.get_x() + 5 * normal.get_x() ) * zoom; 
-      const double targetY = ( position.get_y() + 5 * normal.get_y() ) * zoom; 
-
-      cr->set_line_width(2.);
-      cr->set_source_rgb(1, 1, 0);
-      cr->move_to( sourceX, sourceY);
-      cr->line_to( targetX, targetY);
       cr->stroke();
 
     }
@@ -229,9 +219,22 @@ class CreateInternalPlot : public Action {
     }
 
     /*-----------------------------------------------------------------------*/
+
+    double get_segmentation_alpha() const {
+
+      return this->segmentationAdjustment->get_value();
+
+    }
+
+    /*-----------------------------------------------------------------------*/
+
     Cairo::RefPtr<Cairo::ImageSurface> plot;
     Glib::RefPtr<Gtk::Adjustment> sliceAdjustment;
     Glib::RefPtr<Gtk::Adjustment> zoomAdjustment;
+    Glib::RefPtr<Gtk::Adjustment> segmentationAdjustment;
+
+    /*-----------------------------------------------------------------------*/
+
 };
 
 #endif
