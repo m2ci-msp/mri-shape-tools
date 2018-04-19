@@ -80,13 +80,18 @@ This work is licensed under the [MIT license](./LICENSE.md).
 If you are using our tools, please cite, for the time being, the following paper:
 
 ```bibtex
-@article{HewerWSR16,
-    author    = {Hewer, Alexander and Wuhrer, Stefanie and Steiner, Ingmar and Richmond, Korin},
-    title     = {A Multilinear Tongue Model Derived from Speech Related {MRI} Data of the Human Vocal Tract},
-    journal   = {CoRR},
-    volume    = {abs/1612.05005},
-    year      = {2016},
-    url       = {http://arxiv.org/abs/1612.05005}
+@article{Hewer2018CSL,
+  author = {Hewer, Alexander and Wuhrer, Stefanie and Steiner, Ingmar and Richmond, Korin},
+  doi = {10.1016/j.csl.2018.02.001},
+  eprint = {1612.05005},
+  eprinttype = {arxiv},
+  journal = {Computer Speech \& Language},
+  month = sep,
+  pages = {68-92},
+  title = {A Multilinear Tongue Model Derived from Speech Related {MRI} Data of the Human Vocal Tract},
+  url = {https://arxiv.org/abs/1612.05005},
+  volume = {51},
+  year = {2018}
 }
 ```
 
