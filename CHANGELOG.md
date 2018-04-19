@@ -25,7 +25,7 @@ initial release
 [4]:./custom-segmentation
 [5]:./image-modify
 [6]:./threshold
-[7]:./dataFormats/imageModificationSpecifications.md
+[7]:./dataFormats/imageModifySpecifications.md
 [8]:./landmark-tool
 [9]:./dataFormats/imageLandmarks.md
 [10]:./dataFormats/rigidMotion.md
