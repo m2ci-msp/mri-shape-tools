@@ -42,10 +42,10 @@ This map entry provides information about the shape space:
 {
 
   "Dimensions" : {
-    "OriginalSpeakerMode" : 9
-    "OriginalPhonemeMode" : 7
-    "TruncatedSpeakerMode" : 6
-    "TruncatedPhonemeMode" : 5
+    "OriginalSpeakerMode" : 9,
+    "OriginalPhonemeMode" : 7,
+    "TruncatedSpeakerMode" : 6,
+    "TruncatedPhonemeMode" : 5,
     "VertexMode" : 9300
   },
 
@@ -57,12 +57,12 @@ This map entry provides information about the shape space:
 
 
   "MeanWeights" : {
-    "SpeakerMode" : [...]
+    "SpeakerMode" : [...],
     "PhonemeMode" : [...]
   },
 
   "ShapeSpace" : {
-    "Origin": [1, 2, 3, 4, 5, ...]
+    "Origin": [1, 2, 3, 4, 5, ...],
     "Faces" : [[0, 1, 2], [2, 3, 4], ...]
   }
 
