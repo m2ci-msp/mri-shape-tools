@@ -9,6 +9,7 @@ Derives a multilinear model from a provided sample database.
 ### Requirements
 
 - [armadillo](http://arma.sourceforge.net)
+- [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
 - [yaml-cpp](https://github.com/jbeder/yaml-cpp)
 - [cmake](https://cmake.org)
 
@@ -25,12 +26,13 @@ make install
 ## Usage
 
 ```sh
-    ./model-builder --samples string --output string [ --outputMesh string =  ] [ --outputPhonemeWeights string =  ]
+    ./model-builder --samples string --output string [--jsonOutput string =  ] [ --outputMesh string =  ] [ --outputPhonemeWeights string =  ]
                   [ --truncatedSpeaker int = 0 ] [ --truncatedPhoneme int = 0 ]
 ```
 
 - **samples** : sample database in [YAML format][1]
 - **output**  : model file in [YAML format][2]
+- **jsonOutput** : model file in [JSON format][3]
 - **outputMesh** : outputs the mean mesh of the model. Supported formats: OBJ and PLY.
 - **outputPhonemeWeights** : outputs the original weights of the considered phonemes in YAML format
 - **truncatedSpeaker** : truncates the speaker mode to the provided amount of entries
@@ -38,3 +40,4 @@ make install
 
 [1]: ../dataFormats/sampleDatabase.md
 [2]: ../dataFormats/model.md
+[3]: ../dataFormats/modelJson.md

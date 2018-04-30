@@ -14,6 +14,8 @@
 - added '--scale_to_8bit' flag to otsu-threshold
 - added data formats: [image-landmarks][9], [rigid body motion][10], [image modification specifications][7]
 - data format update: scan origin is now stored in form of scan coordinates instead of voxel coordinates
+- added JSON output functionality to [model-builder][11]
+- added [JSON model dataformat description][12] 
 
 ## version 1.0
 
@@ -29,4 +31,5 @@ initial release
 [8]:./landmark-tool
 [9]:./dataFormats/imageLandmarks.md
 [10]:./dataFormats/rigidMotion.md
-
+[11]:./model-builder
+[12]:./dataFormats/modelJson.md
