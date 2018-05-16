@@ -65,9 +65,9 @@ private:
 
     std::vector<double> values;
 
-    for(int i = -this->radius; i < this->radius; ++i) {
-      for(int j = -this->radius; j < this->radius; ++j) {
-        for(int k = -this->radius; k < this->radius; ++k) {
+    for(int i = -this->radius; i <= this->radius; ++i) {
+      for(int j = -this->radius; j <= this->radius; ++j) {
+        for(int k = -this->radius; k <= this->radius; ++k) {
 
           values.push_back(image.at_grid(x + i, y + j, z + k));
 
