@@ -13,6 +13,7 @@ public:
   // input and output
   std::string samples;
   std::string output;
+  std::string jsonOutput;
   std::string outputMeanMeshFile;
   std::string outputPhonemeWeightsFile;
 
@@ -25,11 +26,14 @@ public:
   bool outputMeanMesh = false;
   bool outputPhonemeWeights = false;
 
+  bool outputJson = false;
+
   Settings(int argc, char* argv[]) {
 
 
     FlagSingle<std::string> samplesFlag("samples", this->samples);
     FlagSingle<std::string> outputFlag("output", this->output);
+    FlagSingle<std::string> jsonOutputFlag("jsonOutput", this->jsonOutput, true);
     FlagSingle<std::string> outputMeanMeshFlag("outputMesh",
                                                this->outputMeanMeshFile,
                                                true);
@@ -49,6 +53,7 @@ public:
     // input and output
     parser.define_flag(&samplesFlag);
     parser.define_flag(&outputFlag);
+    parser.define_flag(&jsonOutputFlag);
     parser.define_flag(&outputMeanMeshFlag);
     parser.define_flag(&outputPhonemeWeightsFlag);
 
@@ -61,6 +66,7 @@ public:
     this->truncatePhoneme = truncatedPhonemeFlag.is_present();
     this->outputMeanMesh = outputMeanMeshFlag.is_present();
     this->outputPhonemeWeights = outputPhonemeWeightsFlag.is_present();
+    this->outputJson = jsonOutputFlag.is_present();
 
   }
 
