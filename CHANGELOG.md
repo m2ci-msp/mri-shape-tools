@@ -16,6 +16,7 @@
 - data format update: scan origin is now stored in form of scan coordinates instead of voxel coordinates
 - added JSON output functionality to [model-builder][11]
 - added [JSON model dataformat description][12] 
+- fix for [landmark-tool][8]: landmarks are no longer placed between two voxels
 
 ## version 1.0
 
