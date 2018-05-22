@@ -27,10 +27,10 @@ class MoveLandmark: public Action {
 
       auto point = EventPosition::get_instance()->get(); 
 
-      // convert point to the center of the pixel containing it
-      point.set_x( (int) point.get_x() + 0.5);
-      point.set_y( (int) point.get_y() + 0.5);
-      point.set_z( (int) point.get_z() + 0.5);
+      // convert point to voxel containing it
+      point.set_x( (int) point.get_x() );
+      point.set_y( (int) point.get_y() );
+      point.set_z( (int) point.get_z() );
 
       auto mark = LandmarkPool::get_instance()->get_selected_landmark(); 
 
