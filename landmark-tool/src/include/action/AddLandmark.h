@@ -42,10 +42,10 @@ class AddLandmark : public Action {
 
       auto point = EventPosition::get_instance()->get(); 
 
-      // convert point to the center of the pixel containing it
-      point.set_x( (int) point.get_x() + 0.5);
-      point.set_y( (int) point.get_y() + 0.5);
-      point.set_z( (int) point.get_z() + 0.5);
+      // convert point to the voxel containing it
+      point.set_x( (int) point.get_x() );
+      point.set_y( (int) point.get_y() );
+      point.set_z( (int) point.get_z() );
 
       // create landmark and add it to the landmark pool
       auto mark = LandmarkPool::get_instance()->create_landmark(point); 
