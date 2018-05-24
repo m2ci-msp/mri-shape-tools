@@ -102,15 +102,12 @@ class LandmarkIO {
 
         Json::Value landmark(Json::objectValue);
 
-        Json::Value name(mark->get_name());
-        Json::Value posX(x);
-        Json::Value posY(y);
-        Json::Value posZ(z);
-
         landmark["name"] = Json::Value(mark->get_name());
-        landmark["x"]    = Json::Value(x);
-        landmark["y"]    = Json::Value(y);
-        landmark["z"]    = Json::Value(z);
+
+        // save positions as integers
+        landmark["x"]    = Json::Value((int) x);
+        landmark["y"]    = Json::Value((int) y);
+        landmark["z"]    = Json::Value((int) z);
 
         root.append(landmark);
 
