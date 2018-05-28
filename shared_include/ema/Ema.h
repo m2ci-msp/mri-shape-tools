@@ -7,6 +7,7 @@
 #include "ema/EmaWriter.h"
 #include "ema/EmaResample.h"
 #include "ema/EmaHeadCorrection.h"
+#include "ema/EmaTransform.h"
 
 
 class Ema{
@@ -19,6 +20,7 @@ private:
   EmaWriter emaWriter;
   EmaResample emaResample;
   EmaHeadCorrection emaHeadCorrection;
+  EmaTransform emaTransform;
 
 public:
 
@@ -30,7 +32,8 @@ public:
     emaReader(emaData),
     emaWriter(emaData),
     emaResample(emaData),
-    emaHeadCorrection(emaData) {
+    emaHeadCorrection(emaData),
+    emaTransform(emaData) {
 
   }
     
@@ -43,7 +46,8 @@ public:
     emaReader(emaData),
     emaWriter(emaData),
     emaResample(emaData),
-    emaHeadCorrection(emaData) {
+    emaHeadCorrection(emaData),
+    emaTransform(emaData) {
     
   }
 
@@ -52,12 +56,14 @@ public:
   EmaInfo& info() { return this->emaInfo; }
     
   EmaReader& read() { return this->emaReader; }
-    
+
   EmaWriter& write() { return this->emaWriter; }
-    
+
   EmaResample& resample() { return this->emaResample; }
 
   EmaHeadCorrection& head_correct() { return this->emaHeadCorrection; }
+
+  EmaTransform& transform_all_coils() { return this->emaTransform; }
 
 };
 #endif

@@ -57,6 +57,17 @@ public:
   
   }
 
+  void project_to_midsagittal() {
+
+    for(arma::vec& position : this->emaCoilData.positions ) {
+
+      // set x-coordinate to 0
+      position(0) = 0;
+
+    }
+
+  }
+
 private:
 
   // reference to the EmaCoilData instance
