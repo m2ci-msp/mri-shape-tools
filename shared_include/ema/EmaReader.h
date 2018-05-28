@@ -35,8 +35,8 @@ public:
   
     // read json file
     Json::Value json;
-    Json::Reader reader;
-    reader.parse(inFile, json);
+
+    inFile >> json;
   
     inFile.close();
   

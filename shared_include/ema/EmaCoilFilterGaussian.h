@@ -5,8 +5,6 @@
 
 #include <armadillo>
 
-#include "gaussian/GaussianBuilder.h"
-
 #include "ema/EmaCoilData.h"
 #include "ema/EmaCoilAccess.h"
 #include "ema/EmaCoilBoundary.h"
@@ -60,17 +58,43 @@ public:
 
 private:
 
+  // TODO: refactor, same method is also used in GaussianFilter.h
   void init_gauss_kernel() {
   
     // radius of truncated gaussian to each side in terms
     // of standard deviation
     // we use a radius of 3 stdDev
     const int size = 3;
-  
-    this->kernel = GaussianBuilder::build(this->stdDev, size);
-  
-    this->radius = (this->kernel.size() - 1) / 2;
-  
+
+    // ensure that we have at least radius 1
+    this->radius = ( size * this->stdDev > 0) ? size * this->stdDev: 1;
+
+    // resize kernel
+    this->kernel.resize(2 * radius + 1, 0);
+
+    // time savers
+    const double ts1 = 2. * pow( this->stdDev, 2 );
+    const double ts2 = 1. / sqrt(ts1 * M_PI);
+
+    double sum = 0;
+
+    for(int i = 0; i < 2 * this->radius + 1; ++i) {
+
+      // center Gaussian at radius
+      const double x = pow(i - this->radius, 2.);
+
+      kernel[i] = ts2 * exp( - x / ts1 );
+
+      sum += this->kernel[i];
+
+    } // end for
+
+      // normalize kernel like in code by J. Weickert
+      // -> ensure that entries of truncated kernel sum up to 1
+    for(double& value: kernel) {
+      value /= sum;
+    }
+ 
   }
 
   void adjust_boundaries() {

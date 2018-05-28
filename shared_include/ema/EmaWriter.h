@@ -31,8 +31,7 @@ public:
     jsonEmaData["timestamps"] = build_time_stamps(this->emaData.emaInfoData.timeStamps);
     jsonEmaData["samplingFrequency"] = build_sampling_frequency(this->emaData.emaInfoData.samplingFrequency);
   
-    Json::StyledStreamWriter writer;
-    writer.write(outFile, jsonEmaData);
+    outFile << jsonEmaData << std::endl;
   
     outFile.close();
   

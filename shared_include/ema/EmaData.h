@@ -12,9 +12,9 @@ class EmaData{
 
 public:
 
-  // map that associated an EmaCoil object to an EMA coil id
+  // map that associates an EmaCoil object to an EMA coil id
   std::map<std::string, EmaCoil> emaCoils;
-  
+
   // meta information about EMA data
   EmaInfoData emaInfoData;
 
