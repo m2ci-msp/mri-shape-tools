@@ -20,11 +20,11 @@ public:
 
   }
 
-  // constructor that also takes a axis access specification
+  // constructor that also takes an axis access specification
   PalateContour(
-		const std::vector<arma::vec>& points,
-		const std::string& specification
-		) :
+                const std::vector<arma::vec>& points,
+                const std::string& specification
+                ) :
     originalPoints(points),
     axisAccess(specification) {
 
@@ -33,7 +33,9 @@ public:
   }
 
   ~PalateContour() {
+
     delete this->projectedPointsTree;
+
   }
 
   // returns the boundary points of the underlying point cloud
@@ -79,10 +81,10 @@ private:
 
       for(int j = 0; j < samplesY + 1; ++j) {
 
-	const double y = this->minY + spacingY * j;
+        const double y = this->minY + spacingY * j;
 
-	const arma::vec samplePoint({x, y, 0});
-	samplePoints.push_back(samplePoint);
+        const arma::vec samplePoint({x, y, 0});
+        samplePoints.push_back(samplePoint);
 
       }
     }
@@ -101,7 +103,7 @@ private:
       const arma::vec point = this->originalPoints.at(index);
 
       if(point( this->axisAccess.z() ) > max) {
-	max = point( this->axisAccess.z() );
+        max = point( this->axisAccess.z() );
       }
 
     }
