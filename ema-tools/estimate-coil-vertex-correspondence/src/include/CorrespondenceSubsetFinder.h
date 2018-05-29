@@ -16,22 +16,22 @@ class CorrespondenceSubsetFinder{
 
 public:
 
-    CorrespondenceSubsetFinder(
-                         const std::vector<arma::vec>& emaData,
-                         const fitModel::EnergySettings& energySettings,
-                         const fitModel::MinimizerSettings& minimizerSettings,
-                         const Model& model,
-                         const std::vector< std::vector<unsigned int> >& subsets,
-                         const int& partitionIndex,
-                         const int& partitionAmount
-                         ) :
-                         emaData(emaData),
-                         energySettings(energySettings),
-                         minimizerSettings(minimizerSettings),
-                         model(model),
-                         subsets(subsets),
-                         partitionIndex(partitionIndex),
-                         partitionAmount(partitionAmount) {
+  CorrespondenceSubsetFinder(
+                             const std::vector<arma::vec>& emaData,
+                             const fitModel::EnergySettings& energySettings,
+                             const fitModel::MinimizerSettings& minimizerSettings,
+                             const Model& model,
+                             const std::vector< std::vector<unsigned int> >& subsets,
+                             const int& partitionIndex,
+                             const int& partitionAmount
+                             ) :
+    emaData(emaData),
+    energySettings(energySettings),
+    minimizerSettings(minimizerSettings),
+    model(model),
+    subsets(subsets),
+    partitionIndex(partitionIndex),
+    partitionAmount(partitionAmount) {
   
     compute_combination_amount();
     verify_partition();
@@ -42,37 +42,46 @@ public:
 
   CorrespondenceSubsetFinder& find_best_correspondence() {
   
-      for(int i = this->partitionStart; i < this->partitionEnd; ++i) {
+    for(int i = this->partitionStart; i < this->partitionEnd; ++i) {
   
-        std::vector<unsigned int> combination = derive_combination(i);
-        fit_combination(combination);
-  
-      }
-  
-      // translate combination entries to actual vertex indices
-      convert_to_vertex_indices(this->bestCombination);
-  
-      this->resultComputed = true;
-  
-      return *this;
+      std::vector<unsigned int> combination = derive_combination(i);
+      fit_combination(combination);
   
     }
+  
+    // translate combination entries to actual vertex indices
+    convert_to_vertex_indices(this->bestCombination);
+  
+    this->resultComputed = true;
+  
+    return *this;
+  
+  }
 
   
 
   CorrespondenceSubsetFinder& get_best_correspondence(std::vector<unsigned int>& correspondence) {
   
-  //    verify();
-      correspondence = this->bestCombination;
-      return *this;
+    if( this->resultComputed == false) {
+
+      throw std::runtime_error("Best correspondence was not computed.");
+
+    }
+
+    correspondence = this->bestCombination;
+    return *this;
   
   }
   
   CorrespondenceSubsetFinder& get_best_energy(double& energy) {
-  
-   //   verify();
-      energy = this->bestEnergy;
-      return *this;
+
+    if( this->resultComputed == false) {
+
+      throw std::runtime_error("Best correspondence was not computed.");
+
+    }
+    energy = this->bestEnergy;
+    return *this;
   
   }
 
@@ -92,17 +101,17 @@ private:
 
   void verify_partition() const {
   
-      if(this->partitionIndex < 1) {
+    if(this->partitionIndex < 1) {
   
-        throw std::runtime_error("Index smaller 1 not allowed.");
+      throw std::runtime_error("Index smaller 1 not allowed.");
   
-      }
+    }
   
-      if(this->partitionIndex > this->partitionAmount) {
+    if(this->partitionIndex > this->partitionAmount) {
   
-        throw std::runtime_error("Index larger than partition amount.");
+      throw std::runtime_error("Index larger than partition amount.");
   
-      }
+    }
   
   }
 
@@ -116,8 +125,12 @@ private:
   
   }
 
+  /*
+    This methods computes the factors that are used in the 'derive_combination' method for deriving
+    the subset indices from a given number.
+  */
   void derive_subset_factors() {
-  
+
     int initial = this->combinationAmount;
   
     for(const auto& subset: this->subsets) {
@@ -130,6 +143,26 @@ private:
   
   }
 
+  /*
+    This is a method for computing the subset indices participating in a combination that is
+    represented by a number.
+
+    We have $ \Pi_{i=0}^k \|M_i\|$ combinations where $\|M_i\|$ is the cardinality of
+    subset $M_i$ and $k$ is the amount of subsets.
+
+    Let $k$ be $3$ and $a, b, c$ the cardinalities of the subsets.
+
+    Given a number $z = i b c + j c + k$, we can compute $i < a, j < b$, and $k < c$ as follows:
+
+    \begin{align}
+    i &= z / ( b  c ) \\
+    j &= z mod ( b c ) / c \\
+    k &= z mod ( c )
+    \end{align}
+
+    i, j, and k are the indices of the individual subsets.
+
+  */
   std::vector<unsigned int> derive_combination(int number) const {
   
     std::vector<unsigned int> result;
@@ -146,6 +179,10 @@ private:
   
   }
 
+
+  /* method for reordering the target points to preserve the correspondence with vertices that
+     have been ordered
+  */
   std::vector<arma::vec> get_target_points_for_combination(std::vector<unsigned int> combination) {
   
     // convert to vertex indices
@@ -160,6 +197,7 @@ private:
   
     }
   
+    // compare data structure for ordering
     struct {
   
       bool operator() (
@@ -208,6 +246,7 @@ private:
   
   }
 
+  // convert subset indices to vertex indices that are stored at the respective indices
   void convert_to_vertex_indices(std::vector<unsigned int>& combination) const {
   
     for(size_t i = 0; i < combination.size(); ++i) {
@@ -220,6 +259,7 @@ private:
   
   }
 
+  // convert to coordinate indices belonging to the vertex indices
   void convert_to_coordinate_indices(std::vector<unsigned int>& combination) {
   
     std::vector<unsigned int> result;

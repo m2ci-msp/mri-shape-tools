@@ -54,19 +54,15 @@ public:
     FlagSingle<int> timeFrameFlag("timeFrame", this->timeFrame);
 
     FlagList<std::string> channelsFlag("channels", this->channels);
+    FlagSingle<double> scaleFactorFlag("scaleFactor", this->scaleFactor, true);
 
     // for shifting
     FlagSingle<double> shiftXFlag("shiftX", this->shiftX, true);
     FlagSingle<double> shiftYFlag("shiftY", this->shiftY, true);
     FlagSingle<double> shiftZFlag("shiftZ", this->shiftZ, true);
 
-    // for scaling
-    FlagSingle<double> scaleFactorFlag("scaleFactor", this->scaleFactor, true);
-
-    // for enforcing midsagittal behaviour of all coils
     FlagNone enforceMidsagittalFlag("enforceMidsagittal", this->enforceMidsagittal);
 
-    // for accessing the partition
     FlagSingle<int> partitionAmountFlag("partitionAmount", this->partitionAmount, true);
     FlagSingle<int> partitionIndexFlag("partitionIndex", this->partitionIndex, true);
 
@@ -106,23 +102,21 @@ public:
     // scaling
     parser.define_flag(&scaleFactorFlag);
 
-    // partition access
+
     parser.define_flag(&partitionAmountFlag);
     parser.define_flag(&partitionIndexFlag);
 
-    // shifting
     parser.define_flag(&shiftXFlag);
     parser.define_flag(&shiftYFlag);
     parser.define_flag(&shiftZFlag);
+
+    parser.define_flag(&enforceMidsagittalFlag);
 
     // minimizer settings
     parser.define_flag(&priorSizeFlag);
     parser.define_flag(&convergenceFactorFlag);
     parser.define_flag(&projectedGradientToleranceFlag);
     parser.define_flag(&maxFunctionEvalsFlag);
-
-    // enforce midsagittal
-    parser.define_flag(&enforceMidsagittalFlag);
 
     parser.parse_from_command_line(argc, argv);
 

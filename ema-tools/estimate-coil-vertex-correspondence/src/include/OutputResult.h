@@ -89,8 +89,7 @@ public:
     
         root["emaChannels"] = channels;
     
-        Json::StyledStreamWriter writer;
-        writer.write(outFile, root);
+        outFile << root << std::endl;
     
         outFile.close();
     

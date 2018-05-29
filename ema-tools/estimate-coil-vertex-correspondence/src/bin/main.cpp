@@ -1,8 +1,8 @@
 #include "model/Model.h"
 #include "model/ModelReader.h"
+#include "ema/Ema.h"
 
 #include "settings.h"
-#include "EmaPoints.h"
 #include "CorrespondenceSubsetFinder.h"
 #include "CorrespondenceSubsetFinderBuilder.h"
 #include "VertexSubsets.h"
@@ -15,15 +15,21 @@ int main(int argc, char* argv[]) {
   // read model
   Model model = ModelReader(settings.model).get_model();
 
-  // read EMA data
-  EmaPoints emaPoints;
-  emaPoints.set_enforce_midsagittal(settings.enforceMidsagittal);
-  emaPoints.set_shift(settings.shiftX, settings.shiftY, settings.shiftZ);
-  emaPoints.set_channels(settings.channels);
-  emaPoints.add_points_from_file(settings.emaFile);
+  Ema ema;
 
-  // extract wanted time frame
-  std::vector<arma::vec> timeFrame = emaPoints.get_time_frame(settings.timeFrame);
+  ema.read().from(settings.emaFile);
+  ema.reduce_coil_set().to(settings.channels);
+  ema.transform_all_coils().scale(settings.scaleFactor);
+  ema.transform_all_coils().translate({settings.shiftX, settings.shiftY, settings.shiftZ});
+
+  if(settings.enforceMidsagittal == true) {
+
+    ema.transform_all_coils().project_to_midsagittal();
+
+  }
+
+  std::vector<arma::vec> emaData =
+    ema.point_cloud().from(settings.channels, settings.timeFrame).get_vertices();
 
   // read subsets
   auto subset = VertexSubsets::read_from(settings.subsets);
@@ -33,7 +39,7 @@ int main(int argc, char* argv[]) {
   double energy;
 
   CorrespondenceSubsetFinderBuilder() \
-    .set_ema_data(timeFrame) \
+    .set_ema_data(emaData) \
     .set_energy_settings(settings.energySettings) \
     .set_minimizer_settings(settings.minimizerSettings) \
     .set_model(model) \
