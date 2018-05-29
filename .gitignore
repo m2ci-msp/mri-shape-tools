@@ -1,0 +1,9 @@
+# cmake
+*.cmake
+CMakeFiles
+CMakeCache.txt
+Makefile
+ITKIOFactoryRegistration
+
+# build folders
+build
