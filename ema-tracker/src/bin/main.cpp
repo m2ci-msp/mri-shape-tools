@@ -12,6 +12,24 @@ int main(int argc, char* argv[]) {
 
   Settings settings(argc, argv);
 
+  Ema ema;
+
+  ema.read.from(settings);
+
+  // reduce ema data to selected coil subset
+  ema.reduce_coil_set().to(settings.channels);
+  // scale data
+  ema.transform_all_coils().scale(settings.scaleFactor);
+  // translate data
+  ema.transform_all_coils().translate({settings.shiftX, settings.shiftY, settings.shiftZ});
+
+  // enforce midsagittal if wanted
+  if( settings.enforceMidsagittal == true ) {
+
+    ema.transform_all_coils().project_to_midsagittal();
+
+  }
+
   EmaData input(settings);
 
   const arma::vec shift = arma::vec({settings.shiftX, settings.shiftY, settings.shiftZ});
@@ -34,11 +52,11 @@ int main(int argc, char* argv[]) {
     tracker.update().to_fixed_speaker(speakerWeights);
   }
 
-  for(int i = 0; i < input.get_size(); ++i) {
+  for(int i = 0; i < ema.info().sampleAmount(); ++i) {
 
     // update data for current time frame
-    tracker.data().target = input.get_mesh_at(i);
-    tracker.data().currentTime = input.get_time_at(i);
+    tracker.data().target = ema.point_cloud().from(settings.channels, i);
+    tracker.data().currentTime = ema.info().time_stamps().at(i);
 
     tracker.fitting().fit();
   }
