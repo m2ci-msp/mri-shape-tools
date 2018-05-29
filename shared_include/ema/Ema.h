@@ -8,6 +8,8 @@
 #include "ema/EmaResample.h"
 #include "ema/EmaHeadCorrection.h"
 #include "ema/EmaTransform.h"
+#include "ema/EmaCoilSubset.h"
+#include "ema/EmaPointCloud.h"
 
 
 class Ema{
@@ -21,6 +23,8 @@ private:
   EmaResample emaResample;
   EmaHeadCorrection emaHeadCorrection;
   EmaTransform emaTransform;
+  EmaCoilSubset emaCoilSubset;
+  EmaPointCloud emaPointCloud;
 
 public:
 
@@ -33,7 +37,9 @@ public:
     emaWriter(emaData),
     emaResample(emaData),
     emaHeadCorrection(emaData),
-    emaTransform(emaData) {
+    emaTransform(emaData),
+    emaCoilSubset(emaData),
+    emaPointCloud(emaData) {
 
   }
     
@@ -47,7 +53,9 @@ public:
     emaWriter(emaData),
     emaResample(emaData),
     emaHeadCorrection(emaData),
-    emaTransform(emaData) {
+    emaTransform(emaData),
+    emaCoilSubset(emaData),
+    emaPointCloud(emaData) {
     
   }
 
@@ -64,6 +72,10 @@ public:
   EmaHeadCorrection& head_correct() { return this->emaHeadCorrection; }
 
   EmaTransform& transform_all_coils() { return this->emaTransform; }
+
+  EmaCoilSubset& coil_subset() { return this->emaCoilSubset; }
+
+  EmaPointCloud& point_cloud() { return this->emaPointCloud; }
 
 };
 #endif
