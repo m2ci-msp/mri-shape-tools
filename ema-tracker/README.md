@@ -29,7 +29,7 @@ make install
 
 ```sh
  ./ema-tracker --input string --model string --output string --channels string list
-               --sourceIds int list [ --fixedSpeakerWeights string =  ] [ --reference string =  ]
+               --sourceIds int list [ --fixedSpeakerWeights string =  ]
              [ --scaleFactor double = 1 ] [ --shiftX double = 0 ] [ --shiftY double = 0 ]
              [ --shiftZ double = 0 ] [ --enforceMidsagittal ] [ --speakerWeight double = 1 ]
              [ --phonemeWeight double = 1 ] [ --meanBiasWeight double = 0 ]
@@ -42,7 +42,6 @@ make install
 - **output**   : JSON output file.
 - **sourceIds** : Vertex IDs of the model (in ascending order) corresponding to the provided channel IDs.
 - **channels**  : Channel IDs in the EMA file.
-- **reference** : ID of the reference coil.
 - **fixedSpeakerWeights** : JSON file containing a list of weights that are used to derive a PCA model from the provided multilinear model.
 - **scaleFactor** : Scaling factor to be applied to the EMA data.
 - **priorSize** : Factor describing how far the model parameters may be away from the mean in terms of standard deviation

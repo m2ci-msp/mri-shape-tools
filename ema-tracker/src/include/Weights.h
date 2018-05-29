@@ -5,6 +5,7 @@
 #include <fstream>
 
 #include <armadillo>
+#include <json/json.h>
 
 class Weights{
 
@@ -24,8 +25,10 @@ public:
 
     // read json file
     Json::Value root;
-    Json::Reader reader;
-    reader.parse(inFile, root);
+
+    inFile >> root;
+
+    inFile.close();
 
     arma::vec result = arma::zeros(root.size());
 

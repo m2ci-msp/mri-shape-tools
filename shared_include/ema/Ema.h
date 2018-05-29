@@ -73,7 +73,7 @@ public:
 
   EmaTransform& transform_all_coils() { return this->emaTransform; }
 
-  EmaCoilSubset& coil_subset() { return this->emaCoilSubset; }
+  EmaCoilSubset& reduce_coil_set() { return this->emaCoilSubset; }
 
   EmaPointCloud& point_cloud() { return this->emaPointCloud; }
 
