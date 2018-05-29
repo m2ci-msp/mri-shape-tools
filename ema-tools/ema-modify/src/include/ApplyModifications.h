@@ -13,6 +13,7 @@
 #include "TransformAllHandler.h"
 #include "HeadCorrectionHandler.h"
 #include "ReduceCoilSetHandler.h"
+#include "ArithmeticHandler.h"
 
 class ApplyModifications{
 
@@ -26,6 +27,7 @@ public:
     this->handlers["transform all"] = new EmaTransformAllHandler();
     this->handlers["head correction"] = new EmaHeadCorrectionHandler();
     this->handlers["reduce coil set"] = new EmaReduceCoilSetHandler();
+    this->handlers["arithmetic"] = new EmaArithmeticHandler();
 
   }
 
