@@ -11,6 +11,7 @@
 #include "ema/EmaCoilCalculus.h"
 #include "ema/EmaCoilArithmetic.h"
 #include "ema/EmaCoilFilter.h"
+#include "ema/EmaCoilPositions.h"
 
 class EmaCoil{
 
@@ -27,8 +28,9 @@ public:
     emaCoilMirror(emaCoilData),
     emaCoilCalculus(emaCoilData),
     emaCoilArithmetic(emaCoilData),
-    emaCoilFilter(emaCoilData) {
-  
+    emaCoilFilter(emaCoilData),
+    emaCoilPositions(emaCoilData) {
+
   }
   
   // copy constructor -> make sure that the members of the copy no longer
@@ -44,7 +46,8 @@ public:
     emaCoilMirror(emaCoilData),
     emaCoilCalculus(emaCoilData),
     emaCoilArithmetic(emaCoilData),
-    emaCoilFilter(emaCoilData) {
+    emaCoilFilter(emaCoilData),
+    emaCoilPositions(emaCoilData) {
   
     }
 
@@ -82,6 +85,8 @@ public:
   
   const EmaCoilFilter& filter() const { return this->emaCoilFilter; }
 
+  const EmaCoilPositions& positions() const { return this->emaCoilPositions; }
+
 private:
 
   EmaCoilData emaCoilData;
@@ -103,6 +108,8 @@ private:
   EmaCoilArithmetic emaCoilArithmetic;
   
   EmaCoilFilter emaCoilFilter;
+
+  EmaCoilPositions emaCoilPositions;
 
 };
 #endif
