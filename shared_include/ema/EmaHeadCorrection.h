@@ -6,6 +6,7 @@
 #include <armadillo>
 
 #include "ema/EmaCoil.h"
+#include "ema/EmaCoordinateSystem.h"
 
 /* given reference coils, the orientation of the coordinate system is:
  *
@@ -53,7 +54,6 @@ public:
 
     }
 
-
   }
 
 private:
@@ -64,14 +64,14 @@ private:
     const arma::vec right = emaData.emaCoils.at(this->rightCoilName).access().position(sampleIndex);
     const arma::vec front = emaData.emaCoils.at(this->frontCoilName).access().position(sampleIndex);
 
-    const arma::vec leftToRight = right - left;
-    const arma::vec leftToFront = front - left;
+    EmaCoordinateSystem system;
+    system.build_from(left, right, front);
 
-    const arma::vec xAxis = arma::normalise(leftToRight);
-    const arma::vec zAxis = arma::normalise(arma::cross(xAxis, leftToFront));
-    const arma::vec yAxis = arma::normalise(arma::cross(zAxis, xAxis));
+    const arma::vec xAxis = system.get_x_axis();
+    const arma::vec zAxis = system.get_y_axis();
+    const arma::vec yAxis = system.get_z_axis();
 
-    translation = (left + right + front) / 3;
+    translation = system.get_origin();
 
     // assemble mapping matrix
     mappingMatrix = arma::zeros(3, 3);
