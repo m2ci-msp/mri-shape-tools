@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 
   system.build_from(left, right, front);
 
-  system.write_to(settings.outputFile);
+  system.write_to(settings.output);
 
   return 0;
 

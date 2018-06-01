@@ -48,9 +48,9 @@ public:
       arma::vec translation;
       arma::mat mappingMatrix;
 
-      construct_mapping(i, translation, mappingMatrix);
+      const EmaCoordinateSystem system = construct_mapping(i);
 
-      apply_mapping(translation, mappingMatrix, i);
+      apply_mapping(system, i);
 
     }
 
@@ -58,7 +58,7 @@ public:
 
 private:
 
-  void construct_mapping(const int& sampleIndex, arma::vec& translation, arma::mat& mappingMatrix) const {
+  EmaCoordinateSystem construct_mapping(const int& sampleIndex) const {
 
     const arma::vec left = emaData.emaCoils.at(this->leftCoilName).access().position(sampleIndex);
     const arma::vec right = emaData.emaCoils.at(this->rightCoilName).access().position(sampleIndex);
@@ -67,27 +67,17 @@ private:
     EmaCoordinateSystem system;
     system.build_from(left, right, front);
 
-    const arma::vec xAxis = system.get_x_axis();
-    const arma::vec zAxis = system.get_y_axis();
-    const arma::vec yAxis = system.get_z_axis();
-
-    translation = system.get_origin();
-
-    // assemble mapping matrix
-    mappingMatrix = arma::zeros(3, 3);
-    mappingMatrix.row(0) = xAxis.t();
-    mappingMatrix.row(1) = yAxis.t();
-    mappingMatrix.row(2) = zAxis.t();
+    return system;
 
   }
 
-  void apply_mapping(const arma::vec& translation, const arma::mat& matrix, const int& sampleIndex) {
+  void apply_mapping(const EmaCoordinateSystem& system, const int& sampleIndex) {
 
     for(auto& mapObject: this->emaData.emaCoils) {
 
       EmaCoil& coil = mapObject.second;
 
-      coil.access().position(sampleIndex) = matrix * ( coil.access().position(sampleIndex) - translation );
+      coil.access().position(sampleIndex) = system.map( coil.access().position(sampleIndex) );
 
     }
 

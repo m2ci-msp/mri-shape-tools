@@ -19,6 +19,8 @@ private:
   arma::vec yAxis;
   arma::vec zAxis;
 
+  arma::mat mappingMatrix;
+
 public:
 
   EmaCoordinateSystem() {
@@ -33,6 +35,8 @@ public:
 
     compute_axis();
     compute_origin();
+
+    compute_mapping_matrix();
 
   }
 
@@ -50,6 +54,8 @@ public:
     this->xAxis = read_vector(root["xAxis"]);
     this->yAxis = read_vector(root["yAxis"]);
     this->zAxis = read_vector(root["zAxis"]);
+
+    compute_mapping_matrix();
 
   }
 
@@ -91,6 +97,12 @@ public:
   arma::vec get_z_axis() const {
 
     return this->zAxis;
+
+  }
+
+  arma::vec map(const arma::vec& position) const {
+
+    return this->mappingMatrix * ( position - this->origin );
 
   }
 
@@ -138,6 +150,15 @@ private:
     }
 
     return result;
+
+  }
+
+  void compute_mapping_matrix() {
+
+    this->mappingMatrix = arma::zeros(3, 3);
+    this->mappingMatrix.row(0) = xAxis.t();
+    this->mappingMatrix.row(1) = yAxis.t();
+    this->mappingMatrix.row(2) = zAxis.t();
 
   }
 

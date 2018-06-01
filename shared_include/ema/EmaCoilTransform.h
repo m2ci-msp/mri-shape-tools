@@ -5,6 +5,9 @@
 
 #include "ema/EmaCoilData.h"
 #include "alignment/RigidTransformation.h"
+#include "ema/EmaCoordinateSystem.h"
+
+// TODO: invalidate Euler angles after specific transformations
 
 class EmaCoilTransform{
 
@@ -63,6 +66,16 @@ public:
 
       // set x-coordinate to 0
       position(0) = 0;
+
+    }
+
+  }
+
+  void map_to_coordinate_system(const EmaCoordinateSystem& system) {
+
+    for(arma::vec& position : this->emaCoilData.positions ) {
+
+      position = system.map(position);
 
     }
 
