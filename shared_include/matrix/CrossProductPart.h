@@ -40,7 +40,7 @@ public:
 
     this->A_ay = arma::mat{
 
-      { 0 , ay    , 0 },
+      { 0 , ax    , 0 },
       { ax, 2 * ay, az },
       { 0 , az    , 0 }
 
