@@ -35,9 +35,9 @@ namespace matchTemplate{
       Translation toGlobal(p(0), p(1), p(2));
 
       const arma::mat A =
+        this->translation.get_matrix() *
         toGlobal.get_matrix() *
         this->rotation.get_matrix() *
-        this->translation.get_matrix() *
         toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -54,9 +54,9 @@ namespace matchTemplate{
       Translation toGlobal(p(0), p(1), p(2));
 
       const arma::mat A =
+        this->translation.get_matrix() *
         toGlobal.get_matrix() *
         this->rotation.get_derivative_theta() *
-        this->translation.get_matrix() *
         toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -73,9 +73,9 @@ namespace matchTemplate{
       Translation toGlobal(p(0), p(1), p(2));
 
       const arma::mat A =
+        this->translation.get_matrix() *
         toGlobal.get_matrix() *
         this->rotation.get_derivative_ax() *
-        this->translation.get_matrix() *
         toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -92,9 +92,9 @@ namespace matchTemplate{
       Translation toGlobal(p(0), p(1), p(2));
 
       const arma::mat A =
+        this->translation.get_matrix() *
         toGlobal.get_matrix() *
         this->rotation.get_derivative_ay() *
-        this->translation.get_matrix() *
         toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -111,9 +111,9 @@ namespace matchTemplate{
       Translation toGlobal(p(0), p(1), p(2));
 
       const arma::mat A =
+        this->translation.get_matrix() *
         toGlobal.get_matrix() *
         this->rotation.get_derivative_az() *
-        this->translation.get_matrix() *
         toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -130,9 +130,9 @@ namespace matchTemplate{
       Translation toGlobal(p(0), p(1), p(2));
 
       const arma::mat A =
+        this->translation.get_derivative_tx() *
         toGlobal.get_matrix() *
         this->rotation.get_matrix() *
-        this->translation.get_derivative_tx() *
         toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -149,9 +149,9 @@ namespace matchTemplate{
       Translation toGlobal(p(0), p(1), p(2));
 
       const arma::mat A =
+        this->translation.get_derivative_ty() *
         toGlobal.get_matrix() *
         this->rotation.get_matrix() *
-        this->translation.get_derivative_ty() *
         toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -169,9 +169,9 @@ namespace matchTemplate{
       Translation toGlobal(p(0), p(1), p(2));
 
       const arma::mat A =
+        this->translation.get_derivative_tz() *
         toGlobal.get_matrix() *
         this->rotation.get_matrix() *
-        this->translation.get_derivative_tz() *
         toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
