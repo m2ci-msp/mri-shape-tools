@@ -1,6 +1,7 @@
 #include <armadillo>
 
 #include "settings.h"
+#include "RigidAlignment.h"
 
 #include "landmark/LandmarkIO.h"
 
@@ -24,6 +25,12 @@ int main(int argc, char* argv[]) {
   // read input data
   Mesh source = MeshIO::read(settings.source);
   Mesh target = MeshIO::read(settings.target);
+
+  if( settings.performRigidAlignment == true) {
+
+    source = RigidAlignment(source, target, settings).perform();
+
+  }
 
   // deal with target meshes that do not provide normals
   if( settings.fixedNeighbors == false && target.has_normals() == false ) {

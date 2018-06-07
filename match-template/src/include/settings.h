@@ -8,6 +8,10 @@
 #include "optimization/matchtemplate/EnergySettings.h"
 #include "optimization/matchtemplate/MinimizerSettings.h"
 
+#include "optimization/rigidalignment/EnergySettings.h"
+#include "optimization/rigidalignment/MinimizerSettings.h"
+
+
 #include <string>
 
 class Settings {
@@ -33,6 +37,9 @@ public:
   matchTemplate::MinimizerSettings minimizerSettings;
   matchTemplate::EnergySettings energySettings;
 
+  rigidAlignment::MinimizerSettings rigidAlignmentMinimizerSettings;
+  rigidAlignment::EnergySettings rigidAlignmentEnergySettings;
+
   double smoothnessTermWeight = 1;
   double smoothnessTermWeightEnd = 1;
   double postSmoothnessTermWeight = 0;
@@ -46,6 +53,8 @@ public:
 
   bool fixedNeighbors = false;
   bool useNoProjection = false;
+
+  bool performRigidAlignment = false;
 
   Settings(int argc, char* argv[]) {
 
@@ -101,9 +110,9 @@ public:
     FlagSingle<double> geodesicNeighborhoodSizeFlag("geodesicNeighbors", this->geodesicNeighborhoodSize, true);
     FlagSingle<double> sphericalNeighborhoodSizeFlag("sphericalNeighbors", this->sphericalNeighborhoodSize, true);
 
-
-
     /////////////////////////////////////////////////////////////////////////
+
+    FlagNone performRigidAlignmentFlag("performRigidAlignment", this->performRigidAlignment);
 
     FlagsParser parser(argv[0]);
 
@@ -138,6 +147,8 @@ public:
     parser.define_flag(&fixedNeighborsFlag);
     parser.define_flag(&useNoProjectionFlag);
 
+    parser.define_flag(&performRigidAlignmentFlag);
+
     parser.parse_from_command_line(argc, argv);
 
     if( smoothnessTermWeightEndFlag.is_present() ) {
@@ -158,12 +169,22 @@ public:
     this->energySettings.useProjection = !this->useNoProjection;
 
     if( this->fixedNeighbors == true) {
+
       this->energySettings.searchStrategy =
         matchTemplate::EnergySettings::SearchStrategy::FIXED;
+
+      this->rigidAlignmentEnergySettings.searchStrategy =
+        rigidAlignment::EnergySettings::SearchStrategy::FIXED;
+
     }
     else if( searchRadiusFlag.is_present() == true ) {
+
       this->energySettings.searchStrategy =
         matchTemplate::EnergySettings::SearchStrategy::ADAPTIVE;
+
+      this->rigidAlignmentEnergySettings.searchStrategy =
+        rigidAlignment::EnergySettings::SearchStrategy::ADAPTIVE;
+
     }
 
     this->landmarksPresent = landmarksFlag.is_present();
@@ -171,6 +192,17 @@ public:
     this->addGeodesic = geodesicNeighborhoodSizeFlag.is_present();
     this->addSpherical = sphericalNeighborhoodSizeFlag.is_present();
     this->meshNeighborhoodPresent = meshNeighborhoodFlag.is_present();
+
+    // copy settings to rigid alignment data structures
+    this->rigidAlignmentEnergySettings.useProjection = this->energySettings.useProjection;
+    this->rigidAlignmentEnergySettings.maxDistance = this->energySettings.maxDistance;
+    this->rigidAlignmentEnergySettings.maxAngle = this->energySettings.maxAngle;
+    this->rigidAlignmentEnergySettings.searchRadius = this->energySettings.searchRadius;
+
+    this->rigidAlignmentMinimizerSettings.iterationAmount = this->minimizerSettings.iterationAmount;
+    this->rigidAlignmentMinimizerSettings.convergenceFactor = this->minimizerSettings.convergenceFactor;
+    this->rigidAlignmentMinimizerSettings.projectedGradientTolerance = this->minimizerSettings.projectedGradientTolerance;
+    this->rigidAlignmentMinimizerSettings.maxFunctionEvals = this->minimizerSettings.maxFunctionEvals;
 
   }
 
