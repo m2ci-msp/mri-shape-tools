@@ -39,15 +39,18 @@ int main(int argc, char* argv[]) {
 
   } // end if
 
-  rigidAlignment::EnergyData data(source, target);
+  std::vector<Landmark> landmarks;
 
   if(settings.landmarksPresent == true) {
 
-    data.landmarks = LandmarkIO::read(settings.landmarks);
+    landmarks = LandmarkIO::read(settings.landmarks);
 
   }
 
   if( settings.initializeWithLandmarks == true ) {
+
+    rigidAlignment::EnergyData data(source, target);
+    data.landmarks = landmarks;
 
     settings.energySettings.weights["dataTerm"] = 0;
     settings.energySettings.weights["landmarkTerm"] = 1;
@@ -58,9 +61,13 @@ int main(int argc, char* argv[]) {
     minimizer.minimize();
 
     // replace source with aligned one
-    data.source = energy.derived_data().source;
+    source = energy.derived_data().source;
 
   }
+
+  rigidAlignment::EnergyData data(source, target);
+
+  data.landmarks = landmarks;
 
   settings.energySettings.weights["dataTerm"] = 1;
   settings.energySettings.weights["landmarkTerm"] = 1;

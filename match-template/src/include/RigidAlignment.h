@@ -50,12 +50,21 @@ public:
 
     } // end if
 
-    rigidAlignment::EnergyData data(source, target);
+
+    std::vector<Landmark> landmarks;
+
+    if(settings.landmarksPresent == true) {
+
+      landmarks = LandmarkIO::read(settings.landmarks);
+
+    }
+
 
     // initialize with landmarks
     if( this->settings.landmarksPresent == true) {
 
-      data.landmarks = LandmarkIO::read(settings.landmarks);
+      rigidAlignment::EnergyData data(source, target);
+      data.landmarks = landmarks;
 
       this->settings.rigidAlignmentEnergySettings.weights["dataTerm"] = 0;
       this->settings.rigidAlignmentEnergySettings.weights["landmarkTerm"] = 1;
@@ -69,7 +78,7 @@ public:
       minimizer.minimize();
 
       // replace source with aligned one
-      data.source = energy.derived_data().source;
+      this->source = energy.derived_data().source;
 
       // restore original iteration amount
       this->settings.rigidAlignmentMinimizerSettings.iterationAmount = iterationAmount;
@@ -78,6 +87,9 @@ public:
 
     this->settings.rigidAlignmentEnergySettings.weights["dataTerm"] = 1;
     this->settings.rigidAlignmentEnergySettings.weights["landmarkTerm"] = 1;
+
+    rigidAlignment::EnergyData data(source, target);
+    data.landmarks = landmarks;
 
     rigidAlignment::Energy energy(data, settings.rigidAlignmentEnergySettings);
 
