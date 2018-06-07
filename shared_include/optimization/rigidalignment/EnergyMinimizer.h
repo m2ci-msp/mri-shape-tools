@@ -127,8 +127,8 @@ namespace rigidAlignment{
         upperBounds[i] =   DBL_MAX;
       }
 
-      // avoid negative scaling
-      lowerBounds[S] = 0;
+      // avoid decimation
+      lowerBounds[S] = 0.1;
 
       if( this->settings.noRotation == true ) {
 
