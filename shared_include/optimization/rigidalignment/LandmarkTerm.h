@@ -88,12 +88,11 @@ namespace rigidAlignment{
         serialize(transformation.apply_derivative_ty(vertex), i, innerDerivatives.at(TY));
         serialize(transformation.apply_derivative_tz(vertex), i, innerDerivatives.at(TZ));
 
-//        serialize(transformation.apply_derivative_s(vertex), i, innerDerivatives.at(S));
+        serialize(transformation.apply_derivative_s(vertex), i, innerDerivatives.at(S));
 
-        serialize(transformation.apply_derivative_theta(vertex), i, innerDerivatives.at(THETA));
-        serialize(transformation.apply_derivative_ax(vertex), i, innerDerivatives.at(AX));
-        serialize(transformation.apply_derivative_ay(vertex), i, innerDerivatives.at(AY));
-        serialize(transformation.apply_derivative_az(vertex), i, innerDerivatives.at(AZ));
+        serialize(transformation.apply_derivative_alpha(vertex), i, innerDerivatives.at(ALPHA));
+        serialize(transformation.apply_derivative_beta(vertex), i, innerDerivatives.at(BETA));
+        serialize(transformation.apply_derivative_gamma(vertex), i, innerDerivatives.at(GAMMA));
 
       }
 

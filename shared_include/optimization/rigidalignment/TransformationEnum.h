@@ -7,10 +7,10 @@ namespace rigidAlignment{
     TX = 0,
     TY = 1,
     TZ = 2,
-    THETA = 3,
-    AX = 4,
-    AY = 5,
-    AZ = 6
+    S = 3,
+    ALPHA = 4,
+    BETA = 5,
+    GAMMA = 6
   };
 
 }

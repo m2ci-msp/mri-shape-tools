@@ -223,7 +223,6 @@ namespace rigidAlignment{
 
     void setup_landmark_indicators() {
 
-
       // clear current indicators and set to false
       const int vertexAmount =
         this->energyDerivedData.source.get_vertices().size();

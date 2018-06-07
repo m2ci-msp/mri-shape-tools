@@ -17,11 +17,17 @@ namespace rigidAlignment{
     /*--------------------------------------------------------------------------*/
 
     Transformation(
-      const Rotation& rotation,
+      const Translation& translation,
       const Scaling& scaling,
-      const Translation& translation
+      const double& alpha,
+      const double& beta,
+      const double& gamma
       ) :
-      rotation(rotation), scaling(scaling), translation(translation) {
+      translation(translation),
+      scaling(scaling),
+      rotationX(1, 0, 0, alpha),
+      rotationY(0, 1, 0, beta),
+      rotationZ(0, 0, 1, gamma) {
 
     }
 
@@ -45,9 +51,15 @@ namespace rigidAlignment{
 
       const arma::mat A =
         this->translation.get_matrix() *
+
         this->toGlobal.get_matrix() *
-        //  this->scaling.get_matrix() *
-        this->rotation.get_matrix() *
+
+        this->scaling.get_matrix() *
+
+        this->rotationX.get_matrix() *
+        this->rotationY.get_matrix() *
+        this->rotationZ.get_matrix() *
+
         this->toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -58,13 +70,19 @@ namespace rigidAlignment{
 
     /*--------------------------------------------------------------------------*/
 
-    arma::vec apply_derivative_theta(const arma::vec& p) const {
+    arma::vec apply_derivative_alpha(const arma::vec& p) const {
 
       const arma::mat A =
         this->translation.get_matrix() *
+
         this->toGlobal.get_matrix() *
-//        this->scaling.get_matrix() *
-        this->rotation.get_derivative_theta() *
+
+        this->scaling.get_matrix() *
+
+        this->rotationX.get_derivative_theta() *
+        this->rotationY.get_matrix() *
+        this->rotationZ.get_matrix() *
+
         this->toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -75,12 +93,19 @@ namespace rigidAlignment{
 
     /*--------------------------------------------------------------------------*/
 
-    arma::vec apply_derivative_ax(const arma::vec& p) const {
+    arma::vec apply_derivative_beta(const arma::vec& p) const {
 
       const arma::mat A =
         this->translation.get_matrix() *
+
         this->toGlobal.get_matrix() *
-        this->rotation.get_derivative_ax() *
+
+        this->scaling.get_matrix() *
+
+        this->rotationX.get_matrix() *
+        this->rotationY.get_derivative_theta() *
+        this->rotationZ.get_matrix() *
+
         this->toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -91,12 +116,19 @@ namespace rigidAlignment{
 
     /*--------------------------------------------------------------------------*/
 
-    arma::vec apply_derivative_ay(const arma::vec& p) const {
+    arma::vec apply_derivative_gamma(const arma::vec& p) const {
 
       const arma::mat A =
         this->translation.get_matrix() *
+
         this->toGlobal.get_matrix() *
-        this->rotation.get_derivative_ay() *
+
+        this->scaling.get_matrix() *
+
+        this->rotationX.get_matrix() *
+        this->rotationY.get_matrix() *
+        this->rotationZ.get_derivative_theta() *
+
         this->toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -107,30 +139,20 @@ namespace rigidAlignment{
 
     /*--------------------------------------------------------------------------*/
 
-    arma::vec apply_derivative_az(const arma::vec& p) const {
-
-      const arma::mat A =
-        this->translation.get_matrix() *
-        this->toGlobal.get_matrix() *
-//        this->scaling.get_matrix() *
-        this->rotation.get_derivative_az() *
-        this->toLocal.get_matrix();
-
-      const arma::vec ph = convert_to_homogeneous(p);
-
-      return convert_to_euclidean(A * ph);
-
-    }
-
-    /*--------------------------------------------------------------------------*/
 
     arma::vec apply_derivative_s(const arma::vec& p) const {
 
       const arma::mat A =
         this->translation.get_matrix() *
+
         this->toGlobal.get_matrix() *
-//        this->scaling.get_derivative_s() *
-        this->rotation.get_matrix() *
+
+        this->scaling.get_derivative_s() *
+
+        this->rotationX.get_matrix() *
+        this->rotationY.get_matrix() *
+        this->rotationZ.get_matrix() *
+
         this->toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -145,9 +167,15 @@ namespace rigidAlignment{
 
       const arma::mat A =
         this->translation.get_derivative_tx() *
+
         this->toGlobal.get_matrix() *
-//        this->scaling.get_matrix() *
-        this->rotation.get_matrix() *
+
+        this->scaling.get_matrix() *
+
+        this->rotationX.get_matrix() *
+        this->rotationY.get_matrix() *
+        this->rotationZ.get_matrix() *
+
         this->toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -162,9 +190,15 @@ namespace rigidAlignment{
 
       const arma::mat A =
         this->translation.get_derivative_ty() *
+
         this->toGlobal.get_matrix() *
-//        this->scaling.get_matrix() *
-        this->rotation.get_matrix() *
+
+        this->scaling.get_matrix() *
+
+        this->rotationX.get_matrix() *
+        this->rotationY.get_matrix() *
+        this->rotationZ.get_matrix() *
+
         this->toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -180,9 +214,15 @@ namespace rigidAlignment{
 
       const arma::mat A =
         this->translation.get_derivative_tz() *
+
         this->toGlobal.get_matrix() *
-//        this->scaling.get_matrix() *
-        this->rotation.get_matrix() *
+
+        this->scaling.get_matrix() *
+
+        this->rotationX.get_matrix() *
+        this->rotationY.get_matrix() *
+        this->rotationZ.get_matrix() *
+
         this->toLocal.get_matrix();
 
       const arma::vec ph = convert_to_homogeneous(p);
@@ -216,9 +256,14 @@ namespace rigidAlignment{
     Translation toLocal;
     Translation toGlobal;
 
-    Rotation rotation;
-    Scaling scaling;
     Translation translation;
+
+    Scaling scaling;
+
+    Rotation rotationX;
+    Rotation rotationY;
+    Rotation rotationZ;
+
 
     /*--------------------------------------------------------------------------*/
 
