@@ -15,7 +15,13 @@ int main(int argc, char* argv[]) {
 
   const arma::vec left = ema.coil(settings.leftCoil).access().position(settings.timeFrame);
   const arma::vec right = ema.coil(settings.rightCoil).access().position(settings.timeFrame);
-  const arma::vec front = ema.coil(settings.frontCoil).access().position(settings.timeFrame);
+  arma::vec front = ema.coil(settings.frontCoil).access().position(settings.timeFrame);
+
+  if(settings.frontIsBack == true) {
+
+    front(1) *= -1;
+
+  }
 
   system.build_from(left, right, front);
 

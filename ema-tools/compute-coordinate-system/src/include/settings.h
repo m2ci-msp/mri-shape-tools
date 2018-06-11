@@ -2,7 +2,7 @@
 #define __SETTINGS_H__
 
 #include "flags/FlagSingle.h"
-#include "flags/FlagList.h"
+#include "flags/FlagNone.h"
 #include "flags/FlagsParser.h"
 
 #include <string>
@@ -16,6 +16,9 @@ public:
   std::string leftCoil;
   std::string rightCoil;
   std::string frontCoil;
+
+  bool frontIsBack = false;
+
   int timeFrame;
   std::string output;
 
@@ -26,6 +29,7 @@ public:
     FlagSingle<std::string> rightFlag("right", this->rightCoil);
     FlagSingle<std::string> frontFlag("front", this->frontCoil);
     FlagSingle<int> timeFrameFlag("timeFrame", this->timeFrame);
+    FlagNone frontIsBackFlag("frontIsBack", this->frontIsBack);
 
     FlagSingle<std::string> outputFlag("output", this->output);
 
@@ -37,6 +41,7 @@ public:
     parser.define_flag(&frontFlag);
     parser.define_flag(&timeFrameFlag);
     parser.define_flag(&outputFlag);
+    parser.define_flag(&frontIsBackFlag);
 
     parser.parse_from_command_line(argc, argv);
 
