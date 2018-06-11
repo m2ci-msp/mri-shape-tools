@@ -160,6 +160,7 @@ namespace matchTemplate{
         // - ( theta_i - theta_j ) / | theta_i - theta_j |
         //
         // taking the derivative with respect to theta_j changes the sign
+        // NOTE: absoluteValue will never be zero in this case
         const double derivative = - difference / absoluteValue;
 
         // complete derivative of ( 2 pi - | theta_i - theta_j | )^2 with respect to theta_i :
