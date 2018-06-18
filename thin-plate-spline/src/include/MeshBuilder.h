@@ -12,28 +12,15 @@ class MeshBuilder{
 
 public:
 
-  MeshBuilder& set_sample_amount_x(const int& sampleAmountX) {
+  MeshBuilder& set_spacing(const double& spacing) {
   
-    if(sampleAmountX < 0) {
+    if(spacing < 0) {
   
-      throw std::runtime_error("Error: negative sample amount.");
-  
-    }
-  
-    this->sampleAmountX = sampleAmountX;
-    return *this;
-  
-  }
-  
-  MeshBuilder& set_sample_amount_y(const int& sampleAmountY) {
-  
-    if(sampleAmountY < 0) {
-  
-      throw std::runtime_error("Error: negative sample amount.");
+      throw std::runtime_error("Error: negative spacing.");
   
     }
   
-    this->sampleAmountY = sampleAmountY;
+    this->spacing = spacing;
     return *this;
   
   }
@@ -48,9 +35,9 @@ public:
   Mesh create() {
   
     compute_grid_size();
-    compute_grid_spacing();
   
     Mesh mesh;
+
     mesh.set_vertices(sample_grid());
     mesh.set_faces(build_faces());
   
@@ -80,27 +67,19 @@ public:
   
   }
 
-  void compute_grid_spacing() {
-  
-    this->spacingX = (this->maxX - this->minX) / (this->sampleAmountX + 1);
-    this->spacingY = (this->maxY - this->minY) / (this->sampleAmountY + 1);
-  
-  }
-
   std::vector<arma::vec> sample_grid() const {
   
     std::vector<arma::vec> samples;
   
-    for(int i = 0; i <= this->sampleAmountX + 1; ++i) {
-      for(int j = 0; j <= this->sampleAmountY + 1; ++j) {
-  
-        const double x = this->minX + i * this->spacingX;
-        const double y = this->minY + j * this->spacingY;
-  
+    for(double x = this->minX; x <= this->maxX; x += this->spacing) {
+
+      for(double y = this->minY; y <= this->maxY; y += this->spacing) {
+
         const arma::vec sample({x, y, 0});
         samples.push_back(sample);
   
       }
+
     }
   
     return samples;
@@ -109,16 +88,19 @@ public:
 
   std::vector< std::vector<unsigned int> > build_faces() const {
   
+    const int sampleAmountX = ( this->maxX - this->minX ) / this->spacing + 1;
+    const int sampleAmountY = ( this->maxY - this->minY ) / this->spacing + 1;
+
     // stride for moving to next row of grid
-    const int stride = this->sampleAmountY + 2;
+    const int stride = sampleAmountY;
   
     std::vector< std::vector<unsigned int> > faces;
   
     // construct left triangles
     // leave out right border
-    for(int i = 0; i < sampleAmountX + 1; ++i) {
+    for(int i = 0; i < sampleAmountX - 1; ++i) {
       // and bottom border
-      for(int j = 0; j < sampleAmountY + 1; ++j) {
+      for(int j = 0; j < sampleAmountY - 1; ++j) {
   
         const unsigned int topLeft = i * stride + j;
         const unsigned int bottomLeft = i * stride + j + 1;
@@ -133,9 +115,9 @@ public:
   
     // construct right triangles
     // leave out left border
-    for(int i = 1; i < sampleAmountX + 2; ++i) {
+    for(int i = 1; i < sampleAmountX; ++i) {
       // and bottom border
-      for(int j = 0; j < sampleAmountY + 1; ++j) {
+      for(int j = 0; j < sampleAmountY - 1; ++j) {
   
         const unsigned int topRight = i * stride + j;
         const unsigned int topLeft = i * stride + j - stride;
@@ -154,17 +136,13 @@ public:
 
   std::vector<arma::vec> controlPoints;
 
-  int sampleAmountX = 100;
-  int sampleAmountY = 100;
+  double spacing = 1;
 
   double minX;
   double minY;
 
   double maxX;
   double maxY;
-
-  double spacingX;
-  double spacingY;
 
 };
 

@@ -14,8 +14,7 @@ public:
 
   std::string axisAccess = "XYZ";
 
-  int samplesX = 100;
-  int samplesY = 100;
+  double spacing = 1;
 
   double lambda = 0;
 
@@ -26,8 +25,7 @@ public:
     FlagSingle<std::string> inputFlag("input", this->input);
     FlagSingle<std::string> axisAccessFlag("axisAccess", this->axisAccess, true);
 
-    FlagSingle<int> samplesXFlag("samplesX", this->samplesX, true);
-    FlagSingle<int> samplesYFlag("samplesY", this->samplesY, true);
+    FlagSingle<double> spacingFlag("spacing", this->spacing, true);
 
     FlagSingle<double> lambdaFlag("lambda", this->lambda, true);
 
@@ -37,8 +35,7 @@ public:
     parser.define_flag(&inputFlag);
     parser.define_flag(&axisAccessFlag);
 
-    parser.define_flag(&samplesXFlag);
-    parser.define_flag(&samplesYFlag);
+    parser.define_flag(&spacingFlag);
 
     parser.define_flag(&lambdaFlag);
 

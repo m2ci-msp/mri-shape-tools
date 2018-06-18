@@ -28,8 +28,7 @@ int main(int argc, char* argv[]) {
 
   builder
     .set_control_points(controlPoints)
-    .set_sample_amount_x(settings.samplesX)
-    .set_sample_amount_y(settings.samplesY);
+    .set_spacing(settings.spacing);
 
   // generated mesh has XYZ access
   Mesh result = builder.create();
