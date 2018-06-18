@@ -39,12 +39,13 @@ public:
   }
 
   // returns the boundary points of the underlying point cloud
-  std::vector<arma::vec> get_boundary(const double& radius, const int& samplesX, const int& samplesY) {
+  std::vector<arma::vec> get_boundary(const double& spacing) {
 
     std::vector<arma::vec> boundary;
+    const double radius = spacing;
 
     // create sample points on grid
-    std::vector<arma::vec> samplePoints = generate_sample_points(samplesX, samplesY);
+    std::vector<arma::vec> samplePoints = generate_sample_points(spacing);
 
     for(arma::vec point : samplePoints) {
 
@@ -66,22 +67,14 @@ public:
 
 private:
 
-  std::vector<arma::vec> generate_sample_points(const int& samplesX, const int& samplesY) {
-
-    // determine spacings between sample points
-    const double spacingX = ( this->maxX - this->minX ) / (samplesX + 1);
-    const double spacingY = ( this->maxY - this->minY ) / (samplesY + 1);
+  std::vector<arma::vec> generate_sample_points(const double& spacing) const {
 
     // generate points on grid
     std::vector<arma::vec> samplePoints;
 
-    for(int i = 0; i < samplesX + 1; ++i) {
+    for(double x = this->minX; x < this->maxX; x += spacing) {
 
-      const double x = this->minX + spacingX * i;
-
-      for(int j = 0; j < samplesY + 1; ++j) {
-
-        const double y = this->minY + spacingY * j;
+      for(double y = this->minY; y < this->maxY; y += spacing) {
 
         const arma::vec samplePoint({x, y, 0});
         samplePoints.push_back(samplePoint);
@@ -133,7 +126,9 @@ private:
       this->maxY = (point( this->axisAccess.y() ) > this->maxY)? point( this->axisAccess.y() ) : this->maxY;
 
       point( this->axisAccess.z() ) = 0;
-      this->projectedPoints.push_back(point);
+
+      arma::vec projectedPoint( { point( this->axisAccess.x() ), point( this->axisAccess.y() ), 0 });
+      this->projectedPoints.push_back(projectedPoint);
 
     }
 
@@ -142,7 +137,7 @@ private:
   }
 
   // get nearest neighbors in projection circle
-  std::vector<int> get_nearest_neighbors(const arma::vec& point, const int& radius) {
+  std::vector<int> get_nearest_neighbors(const arma::vec& point, const double& radius) {
 
     return this->projectedPointsTree->get_nearest_neighbors_index(point, radius);
 

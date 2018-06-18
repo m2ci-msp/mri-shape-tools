@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 
   Mesh result;
 
-  result.set_vertices(contour.get_boundary(settings.radius, settings.samplesX, settings.samplesY));
+  result.set_vertices(contour.get_boundary(settings.spacing));
 
   MeshIO::write(result, settings.output);
 
