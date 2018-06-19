@@ -2,6 +2,8 @@
 #include "ExportRMS.h"
 #include "ExportSpeed.h"
 #include "ExportPosition.h"
+#include "ExportFrequency.h"
+#include "ExportMeanPosition.h"
 
 #include "settings.h"
 
@@ -32,6 +34,19 @@ int main(int argc, char* argv[]) {
 
     const EmaCoilAccess& coil = ema.coil(settings.coil).access();
     ExportPosition(coil, info).to(settings.output);
+
+  }
+  else if( settings.exportInfo == "frequency" ) {
+
+    const EmaCoilAccess& coil = ema.coil(settings.coil).access();
+    ExportFrequency(coil, info).to(settings.output);
+
+  }
+
+  else if( settings.exportInfo == "meanPosition" ) {
+
+    const EmaCoilAccess& coil = ema.coil(settings.coil).access();
+    ExportMeanPosition(coil, info).to(settings.output);
 
   }
 
