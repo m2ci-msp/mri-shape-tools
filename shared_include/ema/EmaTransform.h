@@ -3,7 +3,7 @@
 
 #include "ema/EmaData.h"
 
-#include "alignment/RigidTransformation.h"
+#include "matrix/Transformation.h"
 
 class EmaTransform{
 
@@ -53,13 +53,13 @@ public:
 
   }
 
-  void apply_rigid_motion(const RigidTransformation& transformation) {
+  void apply_rigid_transformation(const Transformation& transformation) {
 
     for(auto& mapObject: this->emaData.emaCoils ) {
 
       EmaCoil& coil = mapObject.second;
 
-      coil.transform().apply_rigid_motion(transformation);
+      coil.transform().apply_rigid_transformation(transformation);
 
     }
 

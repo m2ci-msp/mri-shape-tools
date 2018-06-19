@@ -4,7 +4,7 @@
 #include <armadillo>
 
 #include "ema/EmaCoilData.h"
-#include "alignment/RigidTransformation.h"
+#include "matrix/Transformation.h"
 #include "ema/EmaCoordinateSystem.h"
 
 // TODO: invalidate Euler angles after specific transformations
@@ -50,11 +50,11 @@ public:
   
   }
 
-  void apply_rigid_motion(const RigidTransformation& transformation) {
+  void apply_rigid_transformation(const Transformation& transformation) {
   
       for(arma::vec& position : this->emaCoilData.positions ) {
   
-        transformation.apply(position);
+        position = transformation.apply_matrix(position);
   
       }
   
