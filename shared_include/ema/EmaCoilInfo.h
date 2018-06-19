@@ -41,6 +41,12 @@ public:
   
   }
 
+  double sampling_frequency() const {
+
+    return this->emaCoilData.emaInfoData.samplingFrequency;
+
+  }
+
 private:
 
   // reference to corresponding EmaCoilData instance
