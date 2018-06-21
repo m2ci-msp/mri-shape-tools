@@ -45,10 +45,16 @@ public:
     for(int i = this->partitionStart; i < this->partitionEnd; ++i) {
   
       std::vector<unsigned int> combination = derive_combination(i);
-      fit_combination(combination);
+
+      // check if we have a valid combination
+      if( is_valid(combination) == true) {
+
+        fit_combination(combination);
+
+      }
   
     }
-  
+
     // translate combination entries to actual vertex indices
     convert_to_vertex_indices(this->bestCombination);
   
@@ -58,7 +64,14 @@ public:
   
   }
 
-  
+  bool is_valid(const std::vector<unsigned int>& combination) const {
+
+    // a combination is invalid if one vertex is ocurring multiple times
+    std::set<int> vertices(combination.begin(), combination.end());
+
+    return vertices.size() == combination.size();
+
+  }
 
   CorrespondenceSubsetFinder& get_best_correspondence(std::vector<unsigned int>& correspondence) {
   
