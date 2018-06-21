@@ -21,6 +21,7 @@ public:
   std::string model;
 
   std::string outputFile;
+  std::string coilsOutputFile;
 
   fitModel::MinimizerSettings minimizerSettings;
 
@@ -29,6 +30,7 @@ public:
   double shiftZ = 0;
 
   bool enforceMidsagittal = false;
+  bool outputCoils = false;
 
   double scaleFactor = 1;
 
@@ -42,6 +44,7 @@ public:
     FlagSingle<std::string> correspondenceFileFlag("correspondenceFile", this->correspondenceFile);
 
     FlagSingle<std::string> outputFileFlag("outputFile", this->outputFile);
+    FlagSingle<std::string> coilsOutputFileFlag("coilsOutputFile", this->coilsOutputFile, true);
 
     FlagSingle<int> timeFrameFlag("timeFrame", this->timeFrame);
 
@@ -79,6 +82,7 @@ public:
     parser.define_flag(&modelFlag);
     parser.define_flag(&correspondenceFileFlag);
     parser.define_flag(&outputFileFlag);
+    parser.define_flag(&coilsOutputFileFlag);
 
     // frame index
     parser.define_flag(&timeFrameFlag);
@@ -103,6 +107,8 @@ public:
 
     // use only one iteration
     this->minimizerSettings.iterationAmount = 1;
+
+    this->outputCoils = outputFileFlag.is_present();
 
   }
 

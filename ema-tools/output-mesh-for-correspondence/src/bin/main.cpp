@@ -67,6 +67,12 @@ int main(int argc, char* argv[]) {
 
     MeshIO::write(tongue, settings.outputFile);
 
+    if( settings.outputCoils == true) {
+
+      MeshIO::write(mesh, settings.coilsOutputFile);
+
+    }
+
     return 0;
 
 }
