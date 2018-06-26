@@ -35,13 +35,15 @@ private:
   // use old and new sampling frequency to determine the amount of samples to take
   int compute_sample_amount(const double& samplingFrequency) const {
   
-    const int newSamplingFrequency =
+    const int newSampleAmount =
       ( 
-       this->emaData.emaInfoData.timeStamps.size() /
+       // compute time of signal
+       ( this->emaData.emaInfoData.timeStamps.size() - 1 ) /
        this->emaData.emaInfoData.samplingFrequency
+       // multiply by new sampling frequency
         ) * samplingFrequency;
   
-    return newSamplingFrequency;
+    return newSampleAmount;
   
   }
 

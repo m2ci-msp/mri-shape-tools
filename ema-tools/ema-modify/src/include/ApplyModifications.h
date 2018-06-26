@@ -20,7 +20,7 @@ class ApplyModifications{
 public:
 
   ApplyModifications(Ema& ema) : ema(ema) {
-    
+
     this->handlers["filter"] = new FilterHandler();
     this->handlers["resample"] = new ResampleHandler();
     this->handlers["transform"] = new EmaTransformHandler();
