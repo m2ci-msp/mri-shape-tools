@@ -1,179 +1,156 @@
-#ifndef __VIDEO_H__
-#define __VIDEO_H__
+#ifndef __PGM_LIST_READER__
+#define __PGM_LIST_READER__
 
-/*
-  This code is based on http://dranger.com/ffmpeg
-*/
-
-#include <string>
-#include <stdexcept>
+#include <fstream>
 #include <vector>
-#include <iostream>
-
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libswscale/swscale.h>
+#include <string>
 
 #include "image/Image.h"
 
-class Video{
+class PGMListReader{
 
 private:
 
-  const std::string fileName;
+  std::vector<std::string> fileList;
 
-  Image image;
+  int width;
+  int height;
+
+  int maximum;
 
   std::vector<double> values;
 
-  int frameAmount;
-
-  int videoStream = -1;
-
-  AVCodecContext *pCodecCtx = nullptr;
-  AVFormatContext *pFormatCtx = nullptr;
 public:
 
-  Video(const std::string& fileName ) :
-
-    fileName(fileName) {
-
-  }
-
-  void process() {
-
-    open_stream();
-
-    process_frames();
-
+  PGMListReader(const std::vector<std::string>& fileList) :
+    fileList(fileList) {
 
   }
 
+  Image read_list() {
 
-private:
+    process_files();
 
-  // opens the stream and sets the codec context
-  void open_stream() {
+    Image original;
 
-    // try to open the provided video file
-    if(avformat_open_input(&pFormatCtx, this->fileName.c_str(), nullptr, nullptr ) != 0 ) {
+    original.create()\
+      .with_dimension(this->width, this->height, this->fileList.size())\
+      .with_boundary(0, 0, 0)\
+      .image_from(this->values);
 
-      throw std::runtime_error("Could not open video file.");
+    Image result(original);
 
-    }
+    for(int x = 0; x < this->width; ++x ) {
 
-    // find the first video stream
-    for(int i = 0; i < pFormatCtx->nb_streams; ++i) {
+      for( int y = 0; y < this->height; ++y) {
 
-      if(pFormatCtx->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO) {
+        for( int z = 0; z < this->fileList.size(); ++z) {
 
-        videoStream = i;
-        break;
+          result.access().at_grid(x, y, z) = original.access().at_grid(y, x, z);
+
+        }
 
       }
 
-    }
-
-    if( videoStream == -1) {
-
-      throw std::runtime_error("Could not find any video stream.");
 
     }
 
-    this->pCodecCtx = pFormatCtx->streams[videoStream]->codec;
+    return result;
 
   }
 
-  void process_frames() {
+private:
 
-    AVFrame *pFrame = nullptr;
-    AVFrame *pFrameRGB = nullptr;
+  void process_files() {
 
-    // Allocate video frame
-    pFrame=av_frame_alloc();
+    this->values.clear();
 
-    // Allocate an AVFrame structure
-    pFrameRGB=av_frame_alloc();
-    if(pFrameRGB == nullptr) {
+    std::string firstFile = this->fileList.front();
+    std::ifstream inFile(firstFile);
 
-      throw std::runtime_error("Could not allocate AVFrame.");
+    read_header(inFile);
+
+    inFile.close();
+
+    for(const std::string& fileName: this->fileList) {
+
+      std::cout << fileName << std::endl;
+      read_file(fileName);
 
     }
 
-    uint8_t *buffer = nullptr;
-    int numBytes;
+  }
 
-    // Determine required buffer size and allocate buffer
-    numBytes = avpicture_get_size(AV_PIX_FMT_RGB24, pCodecCtx->width,
-                                  pCodecCtx->height);
+  void read_file(const std::string& fileName) {
 
-    buffer = (uint8_t *) av_malloc(numBytes * sizeof(uint8_t));
+    std::ifstream inFile(fileName);
 
-    int height = pCodecCtx->height;
-    int width = pCodecCtx->width;
+    verify_header(inFile);
 
-    // Assign appropriate parts of buffer to image planes in pFrameRGB
-    // Note that pFrameRGB is an AVFrame, but AVFrame is a superset
-    // of AVPicture
-    avpicture_fill((AVPicture *) pFrameRGB, buffer, AV_PIX_FMT_RGB24,
-                   pCodecCtx->width, pCodecCtx->height);
+    unsigned char value;
+
+    value = inFile.get();
+
+    while( (inFile.eof() == false ) && ( inFile.fail() == false ) ) {
+
+      this->values.push_back(value);
+
+      value = inFile.get();
 
 
-    struct SwsContext *sws_ctx = nullptr;
-    int frameFinished;
-    AVPacket packet;
+    }
 
-    // initialize SWS context for software scaling
-    sws_ctx = sws_getContext(width,
-                             height,
-                             pCodecCtx->pix_fmt,
-                             width,
-                             height,
-                             AV_PIX_FMT_GRAY8,
-                             SWS_BILINEAR,
-                             nullptr,
-                             nullptr,
-                             nullptr
-                             );
+    inFile.close();
 
-    while( av_read_frame(pFormatCtx, &packet) >=0 ) {
+  }
 
-      // Is this a packet from the video stream?
-      if(packet.stream_index==videoStream) {
+  void verify_header(std::ifstream& inFile) {
 
-        // Decode video frame
-        avcodec_decode_video2(pCodecCtx, pFrame, &frameFinished, &packet);
+    std::string line;
 
-        // Did we get a video frame?
-        if(frameFinished) {
+    std::getline(inFile, line);
 
-          // convert the image from its native format to gray scale
-          sws_scale(sws_ctx, (uint8_t const * const *) pFrame->data,
-                    pFrame->linesize, 0, height,
-                    pFrameRGB->data, pFrameRGB->linesize);
+    if(line != "P5") {
 
-          for(int i = 0; i < width * height; ++i) {
+      throw std::runtime_error("Unsupported file.");
 
-            const double value = *(pFrame->data[0] + i);
+    }
 
-            this->values.push_back(value);
+    int width, height, maximum;
+    inFile >> width;
+    inFile >> height;
 
-          } // end for
+    inFile >> maximum;
 
-        } // end if frameFinished
+    if( width != this->width || height != this->height) {
 
-      } // end packet.stream_index
+      throw std::runtime_error("Incompatible files.");
 
-      // Free the packet that was allocated by av_read_frame
-      av_free_packet(&packet);
+    }
 
-    } // end while
+    inFile.get();
 
-    this->frameAmount = this->values.size() / ( width * height );
+  }
 
-    std::cout << this->frameAmount << std::endl;
 
-  } // end process_frames
+  void read_header(std::ifstream& inFile) {
+
+    std::string line;
+
+    std::getline(inFile, line);
+
+    if(line != "P5") {
+
+      throw std::runtime_error("Unsupported file.");
+
+    }
+
+    inFile >> this->width;
+    inFile >> this->height;
+
+    inFile >> this->maximum;
+
+  }
 
 };
 #endif
