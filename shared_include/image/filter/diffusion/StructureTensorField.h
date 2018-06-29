@@ -41,6 +41,10 @@ public:
 
   }
 
+  double get_hx() const { return this->imageData.hx; }
+  double get_hy() const { return this->imageData.hy; }
+  double get_hz() const { return this->imageData.hz; }
+
   void update() {
 
     // create copy

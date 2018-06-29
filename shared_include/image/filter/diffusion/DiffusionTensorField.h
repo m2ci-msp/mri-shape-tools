@@ -42,6 +42,10 @@ public:
 
   }
 
+  double get_hx() const { return this->structureTensors.get_hx(); }
+  double get_hy() const { return this->structureTensors.get_hy(); }
+  double get_hz() const { return this->structureTensors.get_hz(); }
+
   /*--------------------------------------------------------------------------*/
 
   void update() {
