@@ -102,8 +102,8 @@ public:
           const double X0YPZM = yp * zm * -0.5 * ryz * ( field.D23.at_grid(i, j+yp, k) + field.D23.at_grid(i, j, k-zm) );
 
           /* weights from homogeneous derivatives */
-          const double XPY0Z0 = xp * rxx * ( field.D11.at_grid(i+zp, j, k) + field.D11.at_grid(i, j, k) );
-          const double XMY0Z0 = xm * rxx * ( field.D11.at_grid(i-zm, j, k) + field.D11.at_grid(i, j, k) );
+          const double XPY0Z0 = xp * rxx * ( field.D11.at_grid(i+xp, j, k) + field.D11.at_grid(i, j, k) );
+          const double XMY0Z0 = xm * rxx * ( field.D11.at_grid(i-xm, j, k) + field.D11.at_grid(i, j, k) );
           const double X0YPZ0 = yp * ryy * ( field.D22.at_grid(i, j+yp, k) + field.D22.at_grid(i, j, k) );
           const double X0YMZ0 = ym * ryy * ( field.D22.at_grid(i, j-ym, k) + field.D22.at_grid(i, j, k) );
           const double X0Y0ZP = zp * rzz * ( field.D33.at_grid(i, j, k+zp) + field.D33.at_grid(i, j, k) );
