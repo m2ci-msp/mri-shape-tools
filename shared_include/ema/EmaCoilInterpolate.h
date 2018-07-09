@@ -12,7 +12,7 @@ class EmaCoilInterpolate{
 public:
 
   EmaCoilInterpolate(EmaCoilData& emaCoilData) : 
-  
+
     emaCoilData(emaCoilData),
     emaCoilAccess(emaCoilData) {
   
@@ -94,8 +94,8 @@ private:
     // map to interval [0, 1]
     const double normalizedFrame = ( timeStamp - startTime ) / totalDuration;
   
-    // rescale 
-    return normalizedFrame * this->emaCoilData.emaInfoData.timeStamps.size();
+    // rescale, make sure that last index is timeStamps.size() - 1
+    return normalizedFrame * ( this->emaCoilData.emaInfoData.timeStamps.size() - 1 );
   
   }
 
