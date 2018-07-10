@@ -40,6 +40,17 @@ public:
 
   }
 
+  void build_from(Json::Value& json) {
+
+    this->origin = read_vector(json["origin"]);
+    this->xAxis = read_vector(json["xAxis"]);
+    this->yAxis = read_vector(json["yAxis"]);
+    this->zAxis = read_vector(json["zAxis"]);
+
+    compute_mapping_matrix();
+
+  }
+
   void read_from(const std::string& fileName) {
 
     std::ifstream inFile(fileName);
