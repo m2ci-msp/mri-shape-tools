@@ -59,6 +59,14 @@ public:
     
   }
 
+  // assignment operator
+  Ema& operator=(const Ema& other) {
+
+    this->emaData = other.emaData;
+    return *this;
+
+  }
+
   EmaCoil& coil(const std::string& coilId) { return this->emaData.emaCoils.at(coilId); }
     
   EmaInfo& info() { return this->emaInfo; }
