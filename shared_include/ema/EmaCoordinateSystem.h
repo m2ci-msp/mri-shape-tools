@@ -106,6 +106,13 @@ public:
 
   }
 
+  // maps a position back to the original coordinate system
+  arma::vec map_back(const arma::vec& position) const {
+
+    return this->mappingMatrix.t() * position + this->origin;
+
+  }
+
 private:
 
   void compute_axis() {
