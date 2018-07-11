@@ -44,11 +44,22 @@ private:
 
   }
 
-  void apply(const std::string& jsonString) {
+  void apply(const std::string& inputFile) {
+
+    // try to open file
+    std::ifstream inFile(inputFile);
+
+    // throw exception if file can not be opened
+    if( inFile.is_open() == false ) {
+
+      throw std::runtime_error("Cannot open mesh modification file.");
+
+    }
 
     Json::Value root;
 
-    std::stringstream(jsonString) >> root;
+    inFile >> root;
+    inFile.close();
 
     // apply each modification to the mesh in order of occurence
     for(Json::Value& modification: root) {
