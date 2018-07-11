@@ -112,6 +112,16 @@ private:
     this->registeredEma.mirror().speaker_weights();
     this->registeredEma.mirror().phoneme_weights();
 
+    // adjust end time if needed, the ema files might be slightly shorter than the wanted end time
+    // TODO: raise exception if difference is above 0.5 seconds
+    this->endTime = ( this->registeredEma.info().time_stamps().back() < this->endTime) ?
+      this->registeredEma.info().time_stamps().back() :
+      this->endTime;
+
+    this->endTime = ( this->headMotion.info().time_stamps().back() < this->endTime) ?
+      this->headMotion.info().time_stamps().back() :
+      this->endTime;
+
   }
 
   Mesh reconstruct_mesh(const double& timeStamp) {

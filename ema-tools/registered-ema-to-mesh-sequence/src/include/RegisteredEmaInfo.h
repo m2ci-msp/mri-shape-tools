@@ -17,7 +17,7 @@ public:
 
   }
 
-  const std::vector<double>& timeStamps() const {
+  const std::vector<double>& time_stamps() const {
 
     return this->data.timeStamps;
 
