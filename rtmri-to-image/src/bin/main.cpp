@@ -8,7 +8,9 @@ int main(int argc, char* argv[]) {
 
   PGMListReader video(settings.fileList);
 
-  Image image = video.read_list();
+  video.set_spacings(settings.spacingX, settings.spacingY, settings.spacingT);
+
+  Image image = video.create_image();
 
   image.write().to(settings.outputFile);
 

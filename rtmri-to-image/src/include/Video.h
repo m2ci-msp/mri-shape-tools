@@ -20,6 +20,10 @@ private:
 
   std::vector<double> values;
 
+  double spacingX = 1;
+  double spacingY = 1;
+  double spacingT = 1;
+
 public:
 
   PGMListReader(const std::vector<std::string>& fileList) :
@@ -27,15 +31,27 @@ public:
 
   }
 
-  Image read_list() {
+  void set_spacings(
+                    const double& spacingX,
+                    const double& spacingY,
+                    const double& spacingT ) {
+
+    this->spacingX = spacingX;
+    this->spacingY = spacingY;
+    this->spacingT = spacingT;
+
+  }
+
+  Image create_image() {
 
     process_files();
 
     Image original;
 
-    original.create()\
-      .with_dimension(this->width, this->height, this->fileList.size())\
-      .with_boundary(0, 0, 0)\
+    original.create()                                                   \
+      .with_dimension(this->width, this->height, this->fileList.size()) \
+      .with_boundary(0, 0, 0)                                           \
+      .with_grid_spacing(this->spacingX, this->spacingY, this->spacingT)    \
       .image_from(this->values);
 
     Image result(original);
@@ -44,7 +60,7 @@ public:
 
       for( int y = 0; y < this->height; ++y) {
 
-        for( int z = 0; z < this->fileList.size(); ++z) {
+        for( size_t z = 0; z < this->fileList.size(); ++z) {
 
           result.access().at_grid(x, y, z) = original.access().at_grid(y, x, z);
 
