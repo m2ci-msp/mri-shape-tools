@@ -20,6 +20,7 @@ public:
   double startTime;
   double endTime;
   double samplingRate;
+  double scaleFactor;
 
   Settings(int argc, char* argv[]) {
 
@@ -32,6 +33,7 @@ public:
     FlagSingle<double> startTimeFlag("startTime", this->startTime);
     FlagSingle<double> endTimeFlag("endTime", this->endTime);
     FlagSingle<double> samplingRateFlag("samplingRate", this->samplingRate);
+    FlagSingle<double> scaleFactorFlag("scaleFactor", this->scaleFactor);
 
     FlagsParser parser(argv[0]);
 
@@ -43,6 +45,7 @@ public:
     parser.define_flag(&startTimeFlag);
     parser.define_flag(&endTimeFlag);
     parser.define_flag(&samplingRateFlag);
+    parser.define_flag(&scaleFactorFlag);
 
     parser.parse_from_command_line(argc, argv);
 

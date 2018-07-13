@@ -33,6 +33,7 @@ int main(int argc, char* argv[]) {
     .set_start_time(settings.startTime)
     .set_end_time(settings.endTime)
     .set_sampling_rate(settings.samplingRate)
+    .set_scale_factor(settings.scaleFactor)
     .build();
 
   std::vector< std::pair<double, Mesh> > result =
