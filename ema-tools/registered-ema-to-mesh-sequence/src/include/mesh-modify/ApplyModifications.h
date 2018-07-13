@@ -14,6 +14,7 @@
 #include "RotateHandler.h"
 #include "MapToCoordinateSystemHandler.h"
 #include "MapFromCoordinateSystemHandler.h"
+#include "ScaleHandler.h"
 
 class ApplyModifications{
 
@@ -31,6 +32,7 @@ private:
     this->handlers["rotate"] = new RotateHandler();
     this->handlers["map to coordinate system"] = new MapToCoordinateSystemHandler();
     this->handlers["map from coordinate system"] = new MapFromCoordinateSystemHandler();
+    this->handlers["scale"] = new ScaleHandler();
 
   }
 
