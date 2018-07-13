@@ -70,7 +70,7 @@ public:
 
   }
 
-  void write_to(const std::string& fileName) {
+  void write_to(const std::string& fileName) const {
 
     std::ofstream outFile(fileName);
 
@@ -143,7 +143,7 @@ private:
 
   }
 
-  arma::vec read_vector(Json::Value& value) {
+  arma::vec read_vector(const Json::Value& value) const {
 
     arma::vec result = arma::zeros(3);
 
@@ -157,7 +157,7 @@ private:
 
   }
 
-  Json::Value as_json(const arma::vec& vector) {
+  Json::Value as_json(const arma::vec& vector) const {
 
     Json::Value result(Json::arrayValue);
 
