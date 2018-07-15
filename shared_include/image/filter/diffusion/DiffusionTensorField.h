@@ -1,13 +1,7 @@
 #ifndef __DIFFUSION_TENSOR_FIELD_H__
 #define __DIFFUSION_TENSOR_FIELD_H__
 
-#include <cmath>
-
-#include <armadillo>
-
-#include "image/filter/diffusion/DiffusionSettings.h"
-#include "image/filter/diffusion/StructureTensorField.h"
-
+#include "image/ImageData.h"
 #include "image/ImageAccess.h"
 #include "image/ImageCreate.h"
 
@@ -18,39 +12,31 @@ public:
   /*--------------------------------------------------------------------------*/
 
   DiffusionTensorField(
-                       const StructureTensorField& structureTensorField,
-                       const DiffusionSettings& settings
+                       const int& nx,
+                       const int& ny,
+                       const int& nz,
+                       const double& hx,
+                       const double& hy,
+                       const double& hz
                        ) :
 
     // dimensions
-    nx(structureTensorField.nx),
-    ny(structureTensorField.ny),
-    nz(structureTensorField.nz),
+    nx(nx),
+    ny(ny),
+    nz(nz),
+    // spacings
+    hx(hx),
+    hy(hy),
+    hz(hz),
     // access to diffusion tensor
     D11(ImageAccess(D11Data)),
     D22(ImageAccess(D22Data)),
     D33(ImageAccess(D33Data)),
     D12(ImageAccess(D12Data)),
     D13(ImageAccess(D13Data)),
-    D23(ImageAccess(D23Data)),
-    // structure tensor field
-    structureTensors(structureTensorField),
-    // settings
-    settings(settings) {
+    D23(ImageAccess(D23Data)) {
 
     init_diffusion_tensors();
-
-  }
-
-  double get_hx() const { return this->structureTensors.get_hx(); }
-  double get_hy() const { return this->structureTensors.get_hy(); }
-  double get_hz() const { return this->structureTensors.get_hz(); }
-
-  /*--------------------------------------------------------------------------*/
-
-  void update() {
-
-    update_diffusion_tensors();
 
   }
 
@@ -59,6 +45,10 @@ public:
   const int& nx;
   const int& ny;
   const int& nz;
+
+  const double& hx;
+  const double& hy;
+  const double& hz;
 
   /*--------------------------------------------------------------------------*/
 
@@ -86,72 +76,6 @@ private:
     ImageCreate(this->D23Data).with_dimension(this->nx, this->ny, this->nz).empty_image();
 
   }
-
-  /*--------------------------------------------------------------------------*/
-
-  void update_diffusion_tensors() {
-
-    // squared contrast parameter
-    const double help = pow(this->settings.contrastLambda, 2.);
-
-    for(int x = 0; x < nx; ++x) {
-      for(int y = 0; y < ny; ++y) {
-        for(int z = 0; z < nz; ++z) {
-
-          const double& j11 = this->structureTensors.J11.at_grid(x, y, z);
-          const double& j22 = this->structureTensors.J22.at_grid(x, y, z);
-          const double& j33 = this->structureTensors.J33.at_grid(x, y, z);
-          const double& j12 = this->structureTensors.J12.at_grid(x, y, z);
-          const double& j13 = this->structureTensors.J13.at_grid(x, y, z);
-          const double& j23 = this->structureTensors.J23.at_grid(x, y, z);
-
-          arma::mat J({
-              { j11, j12, j13 },
-              { j12, j22, j23 },
-              { j13, j23, j33 }
-            } );
-
-          arma::vec eigval;
-          arma::mat eigvec;
-
-          arma::eig_sym(eigval, eigvec, J, "std");
-
-          // account for negative eigenvalues due to numerical errors
-          eigval.at(0) = ( eigval.at(0) < 0. )? 0: eigval.at(0);
-          eigval.at(1) = ( eigval.at(1) < 0. )? 0: eigval.at(1);
-          eigval.at(2) = ( eigval.at(2) < 0. )? 0: eigval.at(2);
-
-          /* apply perona-malik penaliser to the largest eigenvalue
-           * -> enhance surface boundaries
-           */
-          eigval.at(2) = 1. / ( 1. + eigval.at(2) / help);
-          /* set the other eigenvalues to 1 -> smooth along surface */
-          eigval.at(1) = 1.;
-          eigval.at(0) = 1.;
-
-          // transform back
-          arma::mat D = arma::zeros(3, 3);
-          D.diag() = eigval;
-
-          const arma::mat diffusionTensor = eigvec * D * eigvec.t();
-
-          this->D11.at_grid(x, y, z) = diffusionTensor.at(0, 0);
-          this->D22.at_grid(x, y, z) = diffusionTensor.at(1, 1);
-          this->D33.at_grid(x, y, z) = diffusionTensor.at(2, 2);
-          this->D12.at_grid(x, y, z) = diffusionTensor.at(0, 1);
-          this->D13.at_grid(x, y, z) = diffusionTensor.at(0, 2);
-          this->D23.at_grid(x, y, z) = diffusionTensor.at(1, 2);
-
-        } // end for z
-      } // end for y
-    } // end for x
-
-  }
-
-  /*--------------------------------------------------------------------------*/
-
-  const StructureTensorField& structureTensors;
-  const DiffusionSettings& settings;
 
   /*--------------------------------------------------------------------------*/
 

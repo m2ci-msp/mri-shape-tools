@@ -55,9 +55,13 @@ public:
 
   void update() {
 
-    const double hx = this->field.get_hx();
-    const double hy = this->field.get_hy();
-    const double hz = this->field.get_hz();
+    const double& hx = this->field.hx;
+    const double& hy = this->field.hy;
+    const double& hz = this->field.hz;
+
+    const int& nx = this->field.nx;
+    const int& ny = this->field.ny;
+    const int& nz = this->field.nz;
 
     // for computing derivatives
     const double rxx = 1. / ( 2. * hx * hx );
