@@ -1,5 +1,6 @@
 #ifndef __CHAN_VESE_H__
 #define __CHAN_VESE_H__
+
 #include "image/ImageData.h"
 #include "image/ImageAccess.h"
 #include "image/segmentation/chanvese/ChanVeseSettings.h"

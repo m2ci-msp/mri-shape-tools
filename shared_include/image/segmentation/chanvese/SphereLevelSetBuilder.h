@@ -29,7 +29,7 @@ private:
 
 public:
 
-  LevelSetBuilder& set_dimensions(
+  SphereLevelSetBuilder& with_dimensions(
                                   const int& nx,
                                   const int& ny,
                                   const int& nz) {
@@ -44,7 +44,7 @@ public:
 
   }
 
-  LevelSetBuilder& set_grid_spacings(
+  SphereLevelSetBuilder& with_grid_spacings(
                                      const double& hx,
                                      const double& hy,
                                      const double& hz) {
@@ -59,7 +59,7 @@ public:
 
   }
 
-  LevelSetBuilder& set_center(const arma::vec& center) {
+  SphereLevelSetBuilder& with_center(const arma::vec& center) {
 
     this->center = center;
 
@@ -69,7 +69,7 @@ public:
 
   }
 
-  LevelSetBuilder& set_radius(const double& radius) {
+  SphereLevelSetBuilder& with_radius(const double& radius) {
 
     this->radius = radius;
 
@@ -95,7 +95,9 @@ private:
 
   ImageData create_sphere() {
 
-    ImageData result = ImageCreate()
+    ImageData result;
+
+    ImageCreate(result)
       .with_dimension(this->nx, this->ny, this->nz)
       .with_boundary(0, 0, 0)
       .with_grid_spacing(this->hx, this->hy, this->hz)
@@ -109,11 +111,11 @@ private:
 
         for(int k = 0; k < this->nz; ++k) {
 
-          const arma::vec point({i, j, k});
+          const arma::vec point({(double) i, (double) j, (double) k});
 
           const double distance = arma::norm(point - this->center);
 
-          access.at_grid(i, j, k) = this->radius - distance;
+          access.at_grid(i, j, k) = - distance + this->radius;
 
         } // end for i
 

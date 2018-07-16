@@ -70,7 +70,8 @@ private:
 
   double compute_regularized_L1_norm(const arma::vec& value) const {
 
-    return sqrt(arma::dot(value, value) + this->settings.epsilon);
+    // FIXME: 0.0001 is currently hardcoded
+    return sqrt(arma::dot(value, value) + 0.0001);
 
   }
 
