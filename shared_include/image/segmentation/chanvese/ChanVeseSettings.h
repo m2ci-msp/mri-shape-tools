@@ -8,7 +8,7 @@ public:
   // time steps to take for the evolution
   int evolutionSteps = 1;
 
-  // epsilon value for calculating the regularized variants of the absolute value, Heaviside, and dirac delta
+  // epsilon value for calculating the regularized variants of the Heaviside and dirac delta
   // functions
   double epsilon = 0.0001;
 
