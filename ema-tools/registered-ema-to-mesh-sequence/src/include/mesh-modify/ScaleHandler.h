@@ -1,5 +1,5 @@
 #ifndef __SCALE_HANDLER_H__
-#define __SCALE_HANLDER_H__
+#define __SCALE_HANDLER_H__
 
 #include "mesh/Mesh.h"
 
