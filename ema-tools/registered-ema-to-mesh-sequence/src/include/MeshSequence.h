@@ -105,7 +105,7 @@ private:
   // we need a boundary size of 1 and von Neumann boundary conditions for the interpolation
   void prepare_data_structures() {
 
-    std::vector<std::string> coils({"left", "right", "front"});
+    std::vector<std::string> coils({"referenceLeft", "referenceRight", "referenceFront"});
 
     for(const std::string& coil: coils) {
 
@@ -150,9 +150,9 @@ private:
 
   void add_head_motion(Mesh& mesh, const double& timeStamp) {
 
-    const arma::vec left = this->headMotion.coil("left").interpolate().position_at_time(timeStamp);
-    const arma::vec right = this->headMotion.coil("right").interpolate().position_at_time(timeStamp);
-    const arma::vec front = this->headMotion.coil("front").interpolate().position_at_time(timeStamp);
+    const arma::vec left = this->headMotion.coil("referenceLeft").interpolate().position_at_time(timeStamp);
+    const arma::vec right = this->headMotion.coil("referenceRight").interpolate().position_at_time(timeStamp);
+    const arma::vec front = this->headMotion.coil("referenceFront").interpolate().position_at_time(timeStamp);
 
     EmaCoordinateSystem system;
     system.build_from(left, right, front);
