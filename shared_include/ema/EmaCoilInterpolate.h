@@ -86,8 +86,8 @@ private:
 
   double convert_to_frame(const double& timeStamp) const {
   
-    const double& startTime = *( this->emaCoilData.emaInfoData.timeStamps.begin() );
-    const double& endTime = *( this->emaCoilData.emaInfoData.timeStamps.end() - 1 );
+    const double& startTime = *( this->emaCoilData.emaInfoData.get().timeStamps.begin() );
+    const double& endTime = *( this->emaCoilData.emaInfoData.get().timeStamps.end() - 1 );
   
     const double totalDuration = endTime - startTime;
   
@@ -95,7 +95,7 @@ private:
     const double normalizedFrame = ( timeStamp - startTime ) / totalDuration;
   
     // rescale, make sure that last index is timeStamps.size() - 1
-    return normalizedFrame * ( this->emaCoilData.emaInfoData.timeStamps.size() - 1 );
+    return normalizedFrame * ( this->emaCoilData.emaInfoData.get().timeStamps.size() - 1 );
   
   }
 

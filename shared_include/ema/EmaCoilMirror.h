@@ -13,11 +13,11 @@ public:
     emaCoilData(emaCoilData),
     emaCoilAccess(emaCoilData) {
   
-    }
+  }
 
   void positions() {
   
-    const int sampleAmount = this->emaCoilData.emaInfoData.timeStamps.size();
+    const int sampleAmount = this->emaCoilData.emaInfoData.get().timeStamps.size();
     const int& boundarySize = this->emaCoilData.boundarySize;
   
     for(int i = 0; i < boundarySize; ++i) {
@@ -34,20 +34,20 @@ public:
 
   void euler_angles() {
   
-      const int sampleAmount = this->emaCoilData.emaInfoData.timeStamps.size();
-      const int& boundarySize = this->emaCoilData.boundarySize;
+    const int sampleAmount = this->emaCoilData.emaInfoData.get().timeStamps.size();
+    const int& boundarySize = this->emaCoilData.boundarySize;
   
-      for(int i = 0; i < boundarySize; ++i) {
+    for(int i = 0; i < boundarySize; ++i) {
   
-        // left boundary
-        this->emaCoilAccess.euler_angle(- i - 1) = this->emaCoilAccess.euler_angle(i);
+      // left boundary
+      this->emaCoilAccess.euler_angle(- i - 1) = this->emaCoilAccess.euler_angle(i);
   
-        // right boundary
-        this->emaCoilAccess.euler_angle(sampleAmount + i) = this->emaCoilAccess.euler_angle(sampleAmount - 1 - i);
-  
-      }
+      // right boundary
+      this->emaCoilAccess.euler_angle(sampleAmount + i) = this->emaCoilAccess.euler_angle(sampleAmount - 1 - i);
   
     }
+  
+  }
 
 private:
 

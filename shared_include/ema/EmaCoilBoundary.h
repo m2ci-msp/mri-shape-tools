@@ -25,7 +25,7 @@ public:
   
     EmaCoilInfo originalInfo(originalData);
   
-    const int sampleAmount = this->emaCoilData.emaInfoData.timeStamps.size();
+    const int sampleAmount = this->emaCoilData.emaInfoData.get().timeStamps.size();
   
     // update boundary size
     this->emaCoilData.boundarySize = size;

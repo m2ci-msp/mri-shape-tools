@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <functional>
 
 #include <armadillo>
 
@@ -15,7 +16,7 @@ public:
   // sets reference to the meta information
   EmaCoilData(const EmaInfoData& emaInfoData) :
   
-    emaInfoData(emaInfoData) {
+    emaInfoData(std::cref(emaInfoData)) {
   
   }
 
@@ -35,7 +36,7 @@ public:
   std::string id;
   
   // reference to main EmaInfoData instance
-  const EmaInfoData& emaInfoData;
+  std::reference_wrapper<const EmaInfoData> emaInfoData;
 
 };
 #endif

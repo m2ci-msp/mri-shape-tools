@@ -13,7 +13,7 @@ public:
 
   int sample_amount() const {
   
-    return this->emaCoilData.emaInfoData.timeStamps.size();
+    return this->emaCoilData.emaInfoData.get().timeStamps.size();
   
   }
 
@@ -21,7 +21,7 @@ public:
   
     return (
             ( this->emaCoilData.positions.size() - 2 * this->emaCoilData.boundarySize ) ==
-              this->emaCoilData.emaInfoData.timeStamps.size() 
+            this->emaCoilData.emaInfoData.get().timeStamps.size() 
             );
   
   }
@@ -30,20 +30,20 @@ public:
   
     return (
             ( this->emaCoilData.eulerAngles.size() - 2 * this->emaCoilData.boundarySize ) ==
-              this->emaCoilData.emaInfoData.timeStamps.size() 
+            this->emaCoilData.emaInfoData.get().timeStamps.size() 
             );
   
   }
 
   bool rms_values_present() const {
   
-    return this->emaCoilData.rmsValues.size() == this->emaCoilData.emaInfoData.timeStamps.size();
+    return this->emaCoilData.rmsValues.size() == this->emaCoilData.emaInfoData.get().timeStamps.size();
   
   }
 
   double sampling_frequency() const {
 
-    return this->emaCoilData.emaInfoData.samplingFrequency;
+    return this->emaCoilData.emaInfoData.get().samplingFrequency;
 
   }
 

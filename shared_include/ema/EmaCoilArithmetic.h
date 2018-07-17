@@ -17,7 +17,7 @@ public:
 
   void plus(const EmaCoilAccess& other) {
   
-    const int sampleAmount = this->emaCoilData.emaInfoData.timeStamps.size();
+    const int sampleAmount = this->emaCoilData.emaInfoData.get().timeStamps.size();
   
     for(int i = 0; i < sampleAmount; ++i) {
   
@@ -33,7 +33,7 @@ public:
   }
   void minus(const EmaCoilAccess& other) {
   
-    const int sampleAmount = this->emaCoilData.emaInfoData.timeStamps.size();
+    const int sampleAmount = this->emaCoilData.emaInfoData.get().timeStamps.size();
   
     for(int i = 0; i < sampleAmount; ++i) {
   

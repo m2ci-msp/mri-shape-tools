@@ -51,6 +51,14 @@ public:
   
     }
 
+  EmaCoil& operator=(const EmaCoil& other) {
+
+    // copy data of other coil
+    this->emaCoilData = other.emaCoilData;
+    return *this;
+
+  }
+
   const EmaCoilInfo& info() const { return this->emaCoilInfo; }
   
   EmaCoilAccess& access() { return this->emaCoilAccess; }
