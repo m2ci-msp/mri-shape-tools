@@ -31,6 +31,19 @@ public:
 
     }
 
+    arma::vec origin = arma::zeros(3);
+
+    const bool rotateAroundMeshCenter = (
+       options["rotate around mesh center"].empty() == false &&
+       options["rotate around mesh center"].asBool() == true
+       );
+
+    if( rotateAroundMeshCenter ) {
+
+      origin = mesh.get_center();
+
+    }
+
     // construct transformation depending on chosen rotation
     // axis
     Transformation transform;
@@ -54,7 +67,11 @@ public:
     // apply transformation to all vertices
     for( arma::vec& vertex: mesh.get_vertices() ) {
 
+      vertex -= origin;
+
       vertex = transform.apply_matrix(vertex);
+
+      vertex += origin;
 
     }
 
