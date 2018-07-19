@@ -65,6 +65,16 @@ public:
 
     }
 
+    arma::vec origin = arma::zeros(3);
+
+    if( options["origin"].empty() == false) {
+
+      origin(0) = options["origin"][0].asDouble();
+      origin(1) = options["origin"][1].asDouble();
+      origin(2) = options["origin"][2].asDouble();
+
+    }
+
     // construct transformation depending on chosen rotation
     // axis
     Transformation transform;
@@ -84,6 +94,8 @@ public:
       transform = Transformation(0, 0, angle);
 
     }
+
+    transform.set_origin(origin);
 
     ema.coil(coilName).transform().apply_rigid_transformation(transform);
 
