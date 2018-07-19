@@ -24,6 +24,7 @@ void output_json(
   rotate["options"]["origin"].append(origin(2));
   rotate["options"]["angle"] = angle;
   rotate["options"]["angleUnit"] = "degrees";
+  rotate["options"]["type"] = "rotate";
 
   root.append(rotate);
 
