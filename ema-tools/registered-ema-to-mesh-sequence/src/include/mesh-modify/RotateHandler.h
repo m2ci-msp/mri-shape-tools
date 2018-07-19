@@ -44,6 +44,15 @@ public:
 
     }
 
+    // FIXME: providing both 'rotate around mesh center' and 'origin' should lead to an exception
+    if( options["origin"].empty() == false) {
+
+      origin(0) = options["origin"][0].asDouble();
+      origin(1) = options["origin"][1].asDouble();
+      origin(2) = options["origin"][2].asDouble();
+
+    }
+
     // construct transformation depending on chosen rotation
     // axis
     Transformation transform;
