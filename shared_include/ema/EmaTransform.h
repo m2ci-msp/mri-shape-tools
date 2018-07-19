@@ -89,7 +89,17 @@ public:
 
   }
 
+  void map_from_coordinate_system(const EmaCoordinateSystem& system) {
 
+    for(auto& mapObject: this->emaData.emaCoils ) {
+
+      EmaCoil& coil = mapObject.second;
+
+      coil.transform().map_from_coordinate_system(system);
+
+    }
+
+  }
 
 };
 #endif

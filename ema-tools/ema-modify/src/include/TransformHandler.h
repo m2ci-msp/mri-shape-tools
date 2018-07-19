@@ -20,6 +20,7 @@ public:
     if      ( type == "translate") { translate(ema, options); }
     else if (type == "scale") { scale(ema, options); }
     else if ( type == "rotate") { rotate(ema, options) ;}
+    else if ( type == "project to midsagittal") { project_to_midsagittal(ema, options); }
 
   }
 
@@ -85,6 +86,14 @@ public:
     }
 
     ema.coil(coilName).transform().apply_rigid_transformation(transform);
+
+  }
+
+  void project_to_midsagittal(Ema& ema, Json::Value& options) {
+
+    const std::string coilName = options["coil"].asString();
+
+    ema.coil(coilName).transform().project_to_midsagittal();
 
   }
 

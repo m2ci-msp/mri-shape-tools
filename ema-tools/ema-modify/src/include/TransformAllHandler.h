@@ -19,7 +19,9 @@ public:
 
     if      ( type == "translate") { translate(ema, options); }
     else if ( type == "scale") { scale(ema, options); }
-    else if ( type == "rotate") { rotate(ema, options) ;}
+    else if ( type == "rotate") { rotate(ema, options); }
+    else if ( type == "map to coordinate system" ) { map_to_coordinate_system(ema, options); }
+    else if ( type == "map from coordinate system" ) { map_from_coordinate_system(ema, options); }
 
   }
 
@@ -81,6 +83,26 @@ public:
     }
 
     ema.transform_all_coils().apply_rigid_transformation(transform);
+
+  }
+
+  void map_to_coordinate_system(Ema& ema, Json::Value&  options) {
+
+    EmaCoordinateSystem system;
+
+    system.build_from(options);
+
+    ema.transform_all_coils().map_to_coordinate_system(system);
+
+  }
+
+  void map_from_coordinate_system(Ema& ema, Json::Value&  options) {
+
+    EmaCoordinateSystem system;
+
+    system.build_from(options);
+
+    ema.transform_all_coils().map_from_coordinate_system(system);
 
   }
 

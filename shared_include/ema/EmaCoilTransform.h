@@ -73,9 +73,19 @@ public:
 
   void map_to_coordinate_system(const EmaCoordinateSystem& system) {
 
-    for(arma::vec& position : this->emaCoilData.positions ) {
+    for(arma::vec& position : this->emaCoilData.positions) {
 
       position = system.map(position);
+
+    }
+
+  }
+
+  void map_from_coordinate_system(const EmaCoordinateSystem& system) {
+
+    for(arma::vec& position : this->emaCoilData.positions) {
+
+      position = system.map_back(position);
 
     }
 
