@@ -16,7 +16,7 @@ void output_json(
 
   Json::Value rotate(Json::objectValue);
 
-  rotate["action"] = "transform";
+  rotate["action"] = "transform all";
   rotate["options"] = Json::Value(Json::objectValue);
   rotate["options"]["origin"] = Json::Value(Json::arrayValue);
   rotate["options"]["origin"].append(origin(0));
