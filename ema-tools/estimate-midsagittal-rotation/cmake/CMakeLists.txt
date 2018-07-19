@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.7)
-PROJECT(adjust-ema-axes)
+PROJECT(estimate-midsagittal-rotation)
 
 SET(CMAKE_BUILD_TYPE release)
 SET(CMAKE_CXX_FLAGS_RELEASE "-O2 -std=c++11 -march=native -Wall -Wextra -pedantic")

@@ -1,45 +1,35 @@
-#ifndef __AXIS_ANALYSIS_H__
-#define __AXIS_ANALYSIS_H__
+#ifndef __MIDSAGITTAL_ROTATION_H__
+#define __MIDSAGITTAL_ROTATION_H__
 
 #include <armadillo>
 
-#include "ema/EmaCoordinateSystem.h"
-
 #include "mesh/Mesh.h"
 
-class AxisAnalysis{
+class MidsagittalRotation{
 
 private:
 
   Mesh pointCloud;
 
-  arma::vec xAxis;
-  arma::vec yAxis;
-  arma::vec zAxis;
-
 public:
 
-  AxisAnalysis(const Mesh& pointCloud) :
+  MidsagittalRotation(const Mesh& pointCloud) :
     pointCloud(pointCloud) {
 
   }
 
-  EmaCoordinateSystem get_data_aligned_coordinate_system() {
+  void estimate(arma::vec& origin, double& angle) {
 
-    analyze_in_x_y_plane();
+    angle = estimate_angle();
+    origin = this->pointCloud.get_center();
 
-    return EmaCoordinateSystem(
-                               this->pointCloud.get_center(),
-                               this->xAxis,
-                               this->yAxis,
-                               this->zAxis
-                               );
+    return;
 
   }
 
 private:
 
-  void analyze_in_x_y_plane() {
+  double estimate_angle() {
 
     // project point cloud into y-x-plane
     std::vector<arma::vec> points;
@@ -51,19 +41,20 @@ private:
 
     }
 
-    // use PCA to find a data aligned coordinate system
-    arma::vec firstAxis, secondAxis, thirdAxis;
+    // use PCA to find most dominant principal direction
+    arma::vec dominantAxis;
 
-    perform_pca(points, firstAxis, secondAxis, thirdAxis);
+    perform_pca(points, dominantAxis);
 
     // projected midsagittal data should vary the most in y-direction
-    this->yAxis = firstAxis;
 
-    // next dominating direction should be x
-    this->xAxis = secondAxis;
+    // compute angle in degrees between y-axis and most dominant principal direction
+    // and compute angle o
+    const arma::vec yAxis({0, 1, 0});
 
-    // z-Axis is the last one -> no variance because of projection
-    this->zAxis = thirdAxis;
+    const double angle = acos(arma::norm_dot(dominantAxis, yAxis)) * 180 / M_PI;
+
+    return angle;
 
   }
 
@@ -93,9 +84,7 @@ private:
 
   void perform_pca(
                    std::vector<arma::vec> points,
-                   arma::vec& firstAxis,
-                   arma::vec& secondAxis,
-                   arma::vec& thirdAxis
+                   arma::vec& dominantAxis
                    ) const {
 
     const arma::vec mean = compute_mean(points);
@@ -109,9 +98,7 @@ private:
 
     arma::eig_sym(eigval, eigvec, C, "std");
 
-    firstAxis = eigvec.col(2);
-    secondAxis = eigvec.col(1);
-    thirdAxis = eigvec.col(0);
+    dominantAxis = eigvec.col(2);
 
   }
 
