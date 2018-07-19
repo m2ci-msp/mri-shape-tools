@@ -49,10 +49,10 @@ private:
     // projected midsagittal data should vary the most in y-direction
 
     // compute angle in degrees between y-axis and most dominant principal direction
-    // and compute angle o
+    // and compute angle that rotates principal direction back to y-axis
     const arma::vec yAxis({0, 1, 0});
 
-    const double angle = acos(arma::norm_dot(dominantAxis, yAxis)) * 180 / M_PI;
+    const double angle = - acos(arma::norm_dot(dominantAxis, yAxis)) * 180 / M_PI;
 
     return angle;
 
