@@ -27,6 +27,34 @@ public:
 
   }
 
+  EmaCoordinateSystem(
+                      const arma::vec& origin,
+                      const arma::vec& xAxis,
+                      const arma::vec& yAxis,
+                      const arma::vec& zAxis
+                      ) :
+    origin(origin),
+    xAxis(xAxis),
+    yAxis(yAxis),
+    zAxis(zAxis) {
+
+    compute_mapping_matrix();
+
+  }
+
+  Json::Value get_json() const {
+
+    Json::Value root(Json::objectValue);
+
+    root["origin"] = as_json(this->origin);
+    root["xAxis"] = as_json(this->xAxis);
+    root["yAxis"] = as_json(this->yAxis);
+    root["zAxis"] = as_json(this->zAxis);
+
+    return root;
+
+  }
+
   void build_from(const arma::vec& left, const arma::vec& right, const arma::vec& front) {
 
     this->left = left;
@@ -74,12 +102,7 @@ public:
 
     std::ofstream outFile(fileName);
 
-    Json::Value root(Json::objectValue);
-
-    root["origin"] = as_json(this->origin);
-    root["xAxis"] = as_json(this->xAxis);
-    root["yAxis"] = as_json(this->yAxis);
-    root["zAxis"] = as_json(this->zAxis);
+    Json::Value root = get_json();
 
     outFile << root << std::endl;
 

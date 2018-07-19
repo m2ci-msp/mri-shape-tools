@@ -6,11 +6,11 @@
 
 class EmaPointCloud{
 
- private:
+private:
 
   const EmaData& emaData;
 
- public:
+public:
 
   EmaPointCloud(const EmaData& emaData) : emaData(emaData) {
 
@@ -24,6 +24,28 @@ class EmaPointCloud{
 
       const EmaCoil& coil = this->emaData.emaCoils.at(id);
       vertices.push_back(coil.access().position(sampleIndex));
+
+    }
+
+    Mesh mesh;
+    mesh.set_vertices(vertices);
+
+    return mesh;
+
+  }
+
+  // method for adding points from all time frames
+  Mesh from_all_time_frames(const std::vector<std::string>& coilIds) const {
+
+    std::vector<arma::vec> vertices;
+
+    for(size_t i = 0; i < this->emaData.emaInfoData.timeStamps.size(); ++i ) {
+      for(const std::string& id: coilIds) {
+
+        const EmaCoil& coil = this->emaData.emaCoils.at(id);
+        vertices.push_back(coil.access().position(i));
+
+      }
 
     }
 
