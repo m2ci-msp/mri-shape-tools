@@ -64,14 +64,12 @@ public:
 
     }
 
+    transform.set_origin(origin);
+
     // apply transformation to all vertices
     for( arma::vec& vertex: mesh.get_vertices() ) {
 
-      vertex -= origin;
-
       vertex = transform.apply_matrix(vertex);
-
-      vertex += origin;
 
     }
 
