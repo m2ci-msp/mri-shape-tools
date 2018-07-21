@@ -10,6 +10,7 @@
 #include "ema/EmaTransform.h"
 #include "ema/EmaCoilSubset.h"
 #include "ema/EmaPointCloud.h"
+#include "ema/EmaRename.h"
 
 
 class Ema{
@@ -25,6 +26,7 @@ private:
   EmaTransform emaTransform;
   EmaCoilSubset emaCoilSubset;
   EmaPointCloud emaPointCloud;
+  EmaRename emaRename;
 
 public:
 
@@ -39,7 +41,8 @@ public:
     emaHeadCorrection(emaData),
     emaTransform(emaData),
     emaCoilSubset(emaData),
-    emaPointCloud(emaData) {
+    emaPointCloud(emaData),
+    emaRename(emaData) {
 
   }
     
@@ -55,7 +58,8 @@ public:
     emaHeadCorrection(emaData),
     emaTransform(emaData),
     emaCoilSubset(emaData),
-    emaPointCloud(emaData) {
+    emaPointCloud(emaData),
+    emaRename(emaData) {
     
   }
 
@@ -84,6 +88,8 @@ public:
   EmaCoilSubset& reduce_coil_set() { return this->emaCoilSubset; }
 
   EmaPointCloud& point_cloud() { return this->emaPointCloud; }
+
+  EmaRename& rename_coils() { return this->emaRename; }
 
 };
 #endif

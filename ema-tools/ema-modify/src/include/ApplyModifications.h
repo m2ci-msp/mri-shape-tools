@@ -14,6 +14,7 @@
 #include "HeadCorrectionHandler.h"
 #include "ReduceCoilSetHandler.h"
 #include "ArithmeticHandler.h"
+#include "RenameCoilsHandler.h"
 
 class ApplyModifications{
 
@@ -28,6 +29,7 @@ public:
     this->handlers["head correction"] = new EmaHeadCorrectionHandler();
     this->handlers["reduce coil set"] = new EmaReduceCoilSetHandler();
     this->handlers["arithmetic"] = new EmaArithmeticHandler();
+    this->handlers["rename coils"] = new EmaRenameCoilsHandler();
 
   }
 
