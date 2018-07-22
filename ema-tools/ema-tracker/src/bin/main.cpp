@@ -1,6 +1,8 @@
 #include <armadillo>
 
 #include "ema/Ema.h"
+#include "ema-modify/ApplyModifications.h"
+
 
 #include "settings.h"
 #include "Tracker.h"
@@ -19,15 +21,10 @@ int main(int argc, char* argv[]) {
 
   // reduce ema data to selected coil subset
   ema.reduce_coil_set().to(settings.channels);
-  // scale data
-  ema.transform_all_coils().scale(settings.scaleFactor);
-  // translate data
-  ema.transform_all_coils().translate({settings.shiftX, settings.shiftY, settings.shiftZ});
 
-  // enforce midsagittal if wanted
-  if( settings.enforceMidsagittal == true ) {
+  if(settings.applyModifications == true) {
 
-    ema.transform_all_coils().project_to_midsagittal();
+    emaModify::ApplyModifications(ema).apply(settings.emaModifications);
 
   }
 

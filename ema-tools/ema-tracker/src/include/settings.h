@@ -12,7 +12,6 @@
 #include "optimization/fitmodel/MinimizerSettings.h"
 #include "optimization/fitmodel/EnergySettings.h"
 
-
 class Settings {
 
 public:
@@ -25,10 +24,11 @@ public:
   std::string fixedSpeakerWeights = "";
   bool fixSpeaker = false;
 
+  std::string emaModifications;
+  bool applyModifications = false;
+
   std::vector<std::string> channels;
   std::vector<int> sourceIds;
-
-  std::string reference;
 
   fitModel::MinimizerSettings minimizerSettings;
   fitModel::EnergySettings energySettings;
@@ -38,15 +38,6 @@ public:
 
   double meanBiasWeight = 0;
 
-  double scaleFactor = 1.;
-
-  double shiftX = 0;
-  double shiftY = 0;
-  double shiftZ = 0;
-
-  bool enforceMidsagittal = false;
-  bool referencePresent = false;
-
   Settings(int argc, char* argv[]) {
 
     // input and output
@@ -55,18 +46,12 @@ public:
     FlagSingle<std::string> outputFlag("output", this->outputFileName);
     FlagSingle<std::string> fixedSpeakerWeightsFlag("fixedSpeakerWeights", this->fixedSpeakerWeights, true);
 
+    // ema modifications
+    FlagSingle<std::string> emaModificationsFlag("emaModifications", this->emaModifications, true);
+
     // channel and vertex id correspondences
     FlagList<std::string> channelsFlag("channels", this->channels);
     FlagList<int> sourceIdsFlag("sourceIds", this->sourceIds);
-    FlagSingle<std::string> referenceFlag("reference", this->reference, true);
-
-    // shift
-    FlagSingle<double> shiftXFlag("shiftX", this->shiftX, true);
-    FlagSingle<double> shiftYFlag("shiftY", this->shiftY, true);
-    FlagSingle<double> shiftZFlag("shiftZ", this->shiftZ, true);
-
-    // scaling
-    FlagSingle<double> scaleFactorFlag("scaleFactor", this->scaleFactor, true);
 
     // smoothness for speaker and phoneme mode
     FlagSingle<double> speakerWeightFlag("speakerWeight", this->speakerWeight, true);
@@ -93,8 +78,6 @@ public:
 
     /////////////////////////////////////////////////////////////////////////
 
-    FlagNone enforceMidsagittalFlag("enforceMidsagittal", this->enforceMidsagittal);
-
 
     FlagsParser parser(argv[0]);
 
@@ -108,19 +91,8 @@ public:
     parser.define_flag(&channelsFlag);
     parser.define_flag(&sourceIdsFlag);
 
-    // reference coil
-    parser.define_flag(&referenceFlag);
-
-    // scaling
-    parser.define_flag(&scaleFactorFlag);
-
-    // shift
-    parser.define_flag(&shiftXFlag);
-    parser.define_flag(&shiftYFlag);
-    parser.define_flag(&shiftZFlag);
-
-    // enforce midsagittal
-    parser.define_flag(&enforceMidsagittalFlag);
+    // ema modifications
+    parser.define_flag(&emaModificationsFlag);
 
     // smoothness for speaker and phoneme mode
     parser.define_flag(&speakerWeightFlag);
@@ -135,8 +107,6 @@ public:
     parser.define_flag(&maxFunctionEvalsFlag);
 
     parser.parse_from_command_line(argc, argv);
-
-    this->referencePresent = referenceFlag.is_present();
 
     // set fixed settings
 
@@ -153,6 +123,8 @@ public:
     this->energySettings.weights["meanBiasTerm"] = meanBiasWeight;
 
     this->fixSpeaker = fixedSpeakerWeightsFlag.is_present();
+
+    this->applyModifications = emaModificationsFlag.is_present();
 
     // integrity check
     if( this->channels.size() != this->sourceIds.size()) {
@@ -181,5 +153,4 @@ public:
   }
 
 };
-
 #endif
