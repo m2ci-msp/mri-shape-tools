@@ -1,6 +1,7 @@
 #include "model/Model.h"
 #include "model/ModelReader.h"
 #include "ema/Ema.h"
+#include "ema-modify/ApplyModifications.h"
 
 #include "settings.h"
 #include "CorrespondenceSubsetFinder.h"
@@ -19,12 +20,10 @@ int main(int argc, char* argv[]) {
 
   ema.read().from(settings.emaFile);
   ema.reduce_coil_set().to(settings.channels);
-  ema.transform_all_coils().scale(settings.scaleFactor);
-  ema.transform_all_coils().translate({settings.shiftX, settings.shiftY, settings.shiftZ});
 
-  if(settings.enforceMidsagittal == true) {
+  if( settings.applyModifications == true) {
 
-    ema.transform_all_coils().project_to_midsagittal();
+    emaModify::ApplyModifications(ema).apply(settings.emaModifications);
 
   }
 

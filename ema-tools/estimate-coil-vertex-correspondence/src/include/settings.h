@@ -23,18 +23,13 @@ public:
 
   std::vector<std::string> subsets;
 
+  std::string emaModifications;
+  bool applyModifications = false;
+
   std::string outputFile;
 
   fitModel::MinimizerSettings minimizerSettings;
   fitModel::EnergySettings energySettings;
-
-  double shiftX = 0;
-  double shiftY = 0;
-  double shiftZ = 0;
-
-  bool enforceMidsagittal = false;
-
-  double scaleFactor = 1;
 
   int partitionAmount = 1;
   int partitionIndex = 1;
@@ -51,17 +46,12 @@ public:
 
     FlagList<std::string> subsetsFlag("subsets", this->subsets);
 
+    // ema modifications
+    FlagSingle<std::string> emaModificationsFlag("emaModifications", this->emaModifications, true);
+
     FlagSingle<int> timeFrameFlag("timeFrame", this->timeFrame);
 
     FlagList<std::string> channelsFlag("channels", this->channels);
-    FlagSingle<double> scaleFactorFlag("scaleFactor", this->scaleFactor, true);
-
-    // for shifting
-    FlagSingle<double> shiftXFlag("shiftX", this->shiftX, true);
-    FlagSingle<double> shiftYFlag("shiftY", this->shiftY, true);
-    FlagSingle<double> shiftZFlag("shiftZ", this->shiftZ, true);
-
-    FlagNone enforceMidsagittalFlag("enforceMidsagittal", this->enforceMidsagittal);
 
     FlagSingle<int> partitionAmountFlag("partitionAmount", this->partitionAmount, true);
     FlagSingle<int> partitionIndexFlag("partitionIndex", this->partitionIndex, true);
@@ -97,20 +87,14 @@ public:
     // frame index
     parser.define_flag(&timeFrameFlag);
 
+    // subsets
     parser.define_flag(&subsetsFlag);
 
-    // scaling
-    parser.define_flag(&scaleFactorFlag);
-
+    // ema modifications
+    parser.define_flag(&emaModificationsFlag);
 
     parser.define_flag(&partitionAmountFlag);
     parser.define_flag(&partitionIndexFlag);
-
-    parser.define_flag(&shiftXFlag);
-    parser.define_flag(&shiftYFlag);
-    parser.define_flag(&shiftZFlag);
-
-    parser.define_flag(&enforceMidsagittalFlag);
 
     // minimizer settings
     parser.define_flag(&priorSizeFlag);
@@ -125,6 +109,8 @@ public:
     // and fixed correspondences
     this->energySettings.searchStrategy =
       fitModel::EnergySettings::SearchStrategy::FIXED;
+
+    this->applyModifications = emaModificationsFlag.is_present();
 
   }
 
