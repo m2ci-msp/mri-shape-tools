@@ -36,8 +36,6 @@ private:
 
   double timeStepSize;
 
-  double scaleFactor;
-
 public:
 
   MeshSequence(
@@ -47,8 +45,7 @@ public:
                const Json::Value& globalTransformation,
                const double& startTime,
                const double& endTime,
-               const double& samplingRate,
-               const double& scaleFactor
+               const double& samplingRate
                ) :
 
     headMotion(headMotion),
@@ -57,8 +54,7 @@ public:
     globalTransformation(globalTransformation),
     startTime(startTime),
     endTime(endTime),
-    samplingRate(samplingRate),
-    scaleFactor(scaleFactor){
+    samplingRate(samplingRate) {
 
     prepare_data_structures();
 
@@ -80,8 +76,6 @@ public:
       apply_global_transformation(currentMesh);
 
       add_head_motion(currentMesh, currentTime);
-
-      rescale_mesh(currentMesh);
 
       result.push_back( std::make_pair(currentTime, currentMesh) );
 
@@ -160,16 +154,6 @@ private:
     for(arma::vec& vertex: mesh.get_vertices() ) {
 
       vertex = system.map_back(vertex);
-
-    }
-
-  }
-
-  void rescale_mesh(Mesh& mesh) {
-
-    for(arma::vec& vertex: mesh.get_vertices() ) {
-
-      vertex *= this->scaleFactor;
 
     }
 

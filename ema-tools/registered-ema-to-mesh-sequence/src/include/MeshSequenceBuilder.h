@@ -24,7 +24,6 @@ private:
   double endTime;
 
   double samplingRate;
-  double scaleFactor;
 
   bool headMotionSet = false;
   bool registeredEmaSet = false;
@@ -33,7 +32,6 @@ private:
   bool startTimeSet = false;
   bool endTimeSet = false;
   bool samplingRateSet = false;
-  bool scaleFactorSet =false;
 
 public:
 
@@ -52,8 +50,7 @@ public:
                         this->globalTransformation,
                         this->startTime,
                         this->endTime,
-                        this->samplingRate,
-                        this->scaleFactor
+                        this->samplingRate
                         );
 
   }
@@ -122,15 +119,6 @@ public:
 
   }
 
-  MeshSequenceBuilder& set_scale_factor(const double& scaleFactor) {
-
-    this->scaleFactor = scaleFactor;
-    this->scaleFactorSet = true;
-
-    return *this;
-
-  }
-
 private:
 
   bool is_valid() const {
@@ -143,8 +131,7 @@ private:
             globalTransformationSet &&
             startTimeSet &&
             endTimeSet &&
-            samplingRateSet &&
-            scaleFactorSet
+            samplingRateSet
 
             );
 
