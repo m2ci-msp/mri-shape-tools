@@ -13,7 +13,7 @@
 #include "ema/EmaCoordinateSystem.h"
 
 #include "mesh-modify/ApplyModifications.h"
-#include "RegisteredEma.h"
+#include "registered-ema/RegisteredEma.h"
 
 class MeshSequence{
 

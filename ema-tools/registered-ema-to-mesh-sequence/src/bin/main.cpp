@@ -7,7 +7,7 @@
 
 #include <json/json.h>
 
-#include "RegisteredEma.h"
+#include "registered-ema/RegisteredEma.h"
 #include "ema/Ema.h"
 #include "model/Model.h"
 #include "model/ModelReader.h"

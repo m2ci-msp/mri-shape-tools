@@ -5,7 +5,7 @@
 
 #include "ema/Ema.h"
 #include "model/Model.h"
-#include "RegisteredEma.h"
+#include "registered-ema/RegisteredEma.h"
 #include "MeshSequence.h"
 
 class MeshSequenceBuilder{
