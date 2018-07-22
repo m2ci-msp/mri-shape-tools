@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
 
     Mesh mesh = MeshIO::read(settings.input);
 
-    ApplyModifications(mesh).apply(settings.specifications);
+    meshModify::ApplyModifications(mesh).apply(settings.specifications);
 
     MeshIO::write(mesh, settings.output);
 
