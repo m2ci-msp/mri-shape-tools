@@ -1,5 +1,5 @@
 #include "settings.h"
-#include "ApplyModifications.h"
+#include "ema-modify/ApplyModifications.h"
 
 int main(int argc, char* argv[]) {
 
@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
     Ema ema;
     ema.read().from(settings.input);
 
-    ApplyModifications(ema).apply(settings.specifications);
+    emaModify::ApplyModifications(ema).apply(settings.specifications);
 
     ema.write().to(settings.output);
 
