@@ -25,7 +25,7 @@ private:
 
   Model tongueModel;
 
-  std::string globalTransformation;
+  const Json::Value globalTransformation;
 
   double startTime;
   double endTime;
@@ -44,7 +44,7 @@ public:
                const Ema& headMotion,
                const RegisteredEma& registeredEma,
                const Model& tongueModel,
-               const std::string& globalTransformation,
+               const Json::Value& globalTransformation,
                const double& startTime,
                const double& endTime,
                const double& samplingRate,
@@ -144,7 +144,7 @@ private:
 
   void apply_global_transformation(Mesh& mesh) {
 
-    ApplyModifications(mesh).apply(this->globalTransformation);
+    meshModify::ApplyModifications(mesh).apply(this->globalTransformation);
 
   }
 

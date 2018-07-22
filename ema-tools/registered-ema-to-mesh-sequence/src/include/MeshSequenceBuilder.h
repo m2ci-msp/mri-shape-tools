@@ -18,7 +18,7 @@ private:
 
   Model tongueModel;
 
-  std::string globalTransformation;
+  Json::Value globalTransformation;
 
   double startTime;
   double endTime;
@@ -86,7 +86,7 @@ public:
 
   }
 
-  MeshSequenceBuilder& set_global_transformation(const std::string& globalTransformation) {
+  MeshSequenceBuilder& set_global_transformation(const Json::Value& globalTransformation) {
 
     this->globalTransformation = globalTransformation;
     this->globalTransformationSet = true;

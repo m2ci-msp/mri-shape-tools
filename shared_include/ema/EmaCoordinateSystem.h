@@ -68,7 +68,7 @@ public:
 
   }
 
-  void build_from(Json::Value& json) {
+  void build_from(const Json::Value& json) {
 
     this->origin = read_vector(json["origin"]);
     this->xAxis = read_vector(json["xAxis"]);
