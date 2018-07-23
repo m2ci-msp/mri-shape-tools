@@ -1,5 +1,12 @@
 # Changelog
 
+## version 1.2
+
+- simplified computation of angular derivative in [match-template][13] tool
+- added tool for performing energy-based rigid alignment: [energy-rigid-alignment][14]
+- added feature to [match-template][13]: tool can now optionally apply a rigid alignment
+- fixed bugs in stencil computation for diffusion filtering
+
 ## version 1.1
 
 - major internal rewrite to unify scan and image data structures
@@ -34,3 +41,5 @@ initial release
 [10]:./dataFormats/rigidMotion.md
 [11]:./model-builder
 [12]:./dataFormats/modelJson.md
+[13]:./match-template
+[14]:./energy-rigid-alignment
