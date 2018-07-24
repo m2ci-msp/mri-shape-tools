@@ -20,12 +20,16 @@ public:
 
   double scale = 1;
 
+  bool applyModifications = false;
+  std::string emaModifications;
+
   std::string output;
 
   Settings(int argc, char* argv[]) {
 
     FlagList<std::string> inputFlag("input", this->input);
     FlagList<std::string> channelsFlag("channels", this->channels);
+    FlagSingle<std::string> emaModificationsFlag("emaModifications", this->emaModifications, true);
 
     FlagSingle<double> scaleFlag("scale", this->scale, true);
 
@@ -41,11 +45,14 @@ public:
     parser.define_flag(&spacingFlag);
 
     parser.define_flag(&scaleFlag);
+    parser.define_flag(&emaModificationsFlag);
     parser.define_flag(&axisAccessFlag);
 
     parser.define_flag(&outputFlag);
 
     parser.parse_from_command_line(argc, argv);
+
+    this->applyModifications = emaModificationsFlag.is_present();
 
   }
 

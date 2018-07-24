@@ -1,6 +1,7 @@
 #include "mesh/MeshIO.h"
 
 #include "ema/Ema.h"
+#include "ema-modify/ApplyModifications.h"
 
 #include "PalateContour.h"
 #include "settings.h"
@@ -15,6 +16,12 @@ int main(int argc, char* argv[]) {
   for(const std::string& fileName: settings.input) {
 
     ema.read().from(fileName);
+
+    if(settings.applyModifications == true) {
+
+      emaModify::ApplyModifications(ema).apply(settings.emaModifications);
+
+    }
 
     for(const std::string& channel: settings.channels) {
 
