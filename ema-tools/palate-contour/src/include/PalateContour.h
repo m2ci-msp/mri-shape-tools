@@ -53,11 +53,16 @@ public:
 
       if(currentNeighborhood.size() == 0) { continue; }
 
-      // use computed height for sample point
-      point( this->axisAccess.z() ) = get_boundary_height(currentNeighborhood);
+      arma::vec boundaryPoint = arma::zeros(3);
+
+      boundaryPoint(this->axisAccess.x() ) = point(0);
+      boundaryPoint(this->axisAccess.y() ) = point(1);
+
+      // use computed height for boundary point
+      boundaryPoint(this->axisAccess.z() ) = get_boundary_height(currentNeighborhood);
 
       // and add to boundary
-      boundary.push_back(point);
+      boundary.push_back(boundaryPoint);
 
     }
 
