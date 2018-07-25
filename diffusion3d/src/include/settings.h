@@ -31,6 +31,7 @@ public:
     FlagSingle<double> rhoFlag("rho", this->integrationRho, true);
     FlagSingle<double> lambdaFlag("lambda", this->contrastLambda, true);
     FlagSingle<int> iterFlag("iter", this->timeSteps, true);
+    FlagSingle<double> stepSizeFlag("stepSize", this->stepSize, true);
 
     FlagsParser parser(argv[0]);
     parser.define_flag(&inputScanFlag);
@@ -40,6 +41,7 @@ public:
     parser.define_flag(&rhoFlag);
     parser.define_flag(&lambdaFlag);
     parser.define_flag(&iterFlag);
+    parser.define_flag(&stepSizeFlag);
 
     parser.parse_from_command_line(argc, argv);
   }
