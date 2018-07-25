@@ -115,7 +115,7 @@ private:
 
           const double distance = arma::norm(point - this->center);
 
-          access.at_grid(i, j, k) = - distance + this->radius;
+          access.at_grid(i, j, k) = 1 - distance / this->radius;
 
         } // end for i
 

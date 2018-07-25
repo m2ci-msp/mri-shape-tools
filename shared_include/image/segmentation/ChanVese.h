@@ -37,13 +37,13 @@ public:
            const ChanVeseSettings& settings
            ) :
     imageData(imageData),
-    imageAccess(imageData),
+    imageAccess(this->imageData),
     levelSetData(levelSetData),
-    levelSetAccess(levelSetData),
-    levelSetBoundary(levelSetData),
-    levelSetMirror(levelSetData),
+    levelSetAccess(this->levelSetData),
+    levelSetBoundary(this->levelSetData),
+    levelSetMirror(this->levelSetData),
     settings(settings),
-    diffusionTensors(levelSetData, settings),
+    diffusionTensors(this->levelSetData, settings),
     stencils(diffusionTensors.get_field()) {
 
     // reset boundary size
