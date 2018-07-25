@@ -25,12 +25,12 @@ public:
     ny(imageData.ny),
     nz(imageData.nz),
     // structure tensor access
-    J11(ImageAccess(J11Data)),
-    J22(ImageAccess(J22Data)),
-    J33(ImageAccess(J33Data)),
-    J12(ImageAccess(J12Data)),
-    J13(ImageAccess(J13Data)),
-    J23(ImageAccess(J23Data)),
+    J11(this->J11Data),
+    J22(this->J22Data),
+    J33(this->J33Data),
+    J12(this->J12Data),
+    J13(this->J13Data),
+    J23(this->J23Data),
     // image data
     imageData(imageData),
     // diffusion settings

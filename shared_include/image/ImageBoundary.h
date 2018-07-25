@@ -12,7 +12,7 @@ public:
   // and creates the ImageAccess object
   ImageBoundary(ImageData& imageData) :
     imageData(imageData),
-    imageAccess(ImageAccess(imageData)) {
+    imageAccess(imageData) {
   }
 
   void change(

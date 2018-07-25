@@ -17,9 +17,9 @@ public:
                  const double& stdDev
     ) :
     imageData(imageData),
-    imageAccess(ImageAccess(imageData)),
-    imageBoundary(ImageBoundary(imageData)),
-    imageMirror(ImageMirror(imageData)),
+    imageAccess(imageData),
+    imageBoundary(imageData),
+    imageMirror(imageData),
     stdDev(stdDev) {
 
     init_gauss_kernel();

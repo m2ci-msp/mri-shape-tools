@@ -29,12 +29,12 @@ public:
     hy(hy),
     hz(hz),
     // access to diffusion tensor
-    D11(ImageAccess(D11Data)),
-    D22(ImageAccess(D22Data)),
-    D33(ImageAccess(D33Data)),
-    D12(ImageAccess(D12Data)),
-    D13(ImageAccess(D13Data)),
-    D23(ImageAccess(D23Data)) {
+    D11(this->D11Data),
+    D22(this->D22Data),
+    D33(this->D33Data),
+    D12(this->D12Data),
+    D13(this->D13Data),
+    D23(this->D23Data) {
 
     init_diffusion_tensors();
 

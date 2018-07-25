@@ -17,7 +17,7 @@ public:
                   ImageData& imageData
                   ) :
     imageData(imageData),
-    imageAccess(ImageAccess(imageData)) {
+    imageAccess(imageData) {
   
   }
 

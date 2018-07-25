@@ -14,7 +14,7 @@ public:
   // and creates the ImageAccess object
   ImageMirror(ImageData& imageData) :
     imageData(imageData),
-    imageAccess(ImageAccess(imageData)) {
+    imageAccess(imageData) {
   }
 
   void all() {

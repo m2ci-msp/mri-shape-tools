@@ -15,7 +15,7 @@ public:
   // and creates the ImageAccess object
   ImageCalculus(ImageData& imageData) :
     imageData(imageData),
-    imageAccess(ImageAccess(imageData)) {
+    imageAccess(imageData) {
   }
 
   double dx(

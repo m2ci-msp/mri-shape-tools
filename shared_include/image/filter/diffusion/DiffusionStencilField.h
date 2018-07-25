@@ -19,29 +19,29 @@ public:
     ny(diffusionTensors.ny),
     nz(diffusionTensors.nz),
     // stencil access
-    X0Y0Z0(ImageAccess(X0Y0Z0Data)),
+    X0Y0Z0(this->X0Y0Z0Data),
 
-    XMYMZ0(ImageAccess(XMYMZ0Data)),
-    XMYPZ0(ImageAccess(XMYPZ0Data)),
-    XPYMZ0(ImageAccess(XPYMZ0Data)),
-    XPYPZ0(ImageAccess(XPYPZ0Data)),
+    XMYMZ0(this->XMYMZ0Data),
+    XMYPZ0(this->XMYPZ0Data),
+    XPYMZ0(this->XPYMZ0Data),
+    XPYPZ0(this->XPYPZ0Data),
 
-    XMY0ZM(ImageAccess(XMY0ZMData)),
-    XMY0ZP(ImageAccess(XMY0ZPData)),
-    XPY0ZM(ImageAccess(XPY0ZMData)),
-    XPY0ZP(ImageAccess(XPY0ZPData)),
+    XMY0ZM(this->XMY0ZMData),
+    XMY0ZP(this->XMY0ZPData),
+    XPY0ZM(this->XPY0ZMData),
+    XPY0ZP(this->XPY0ZPData),
 
-    X0YMZM(X0YMZMData),
-    X0YMZP(X0YMZPData),
-    X0YPZM(X0YPZMData),
-    X0YPZP(X0YPZPData),
+    X0YMZM(this->X0YMZMData),
+    X0YMZP(this->X0YMZPData),
+    X0YPZM(this->X0YPZMData),
+    X0YPZP(this->X0YPZPData),
 
-    XMY0Z0(ImageAccess(XMY0Z0Data)),
-    XPY0Z0(ImageAccess(XPY0Z0Data)),
-    X0YMZ0(ImageAccess(X0YMZ0Data)),
-    X0YPZ0(ImageAccess(X0YPZ0Data)),
-    X0Y0ZM(ImageAccess(X0Y0ZMData)),
-    X0Y0ZP(ImageAccess(X0Y0ZPData)),
+    XMY0Z0(this->XMY0Z0Data),
+    XPY0Z0(this->XPY0Z0Data),
+    X0YMZ0(this->X0YMZ0Data),
+    X0YPZ0(this->X0YPZ0Data),
+    X0Y0ZM(this->X0Y0ZMData),
+    X0Y0ZP(this->X0Y0ZPData),
     // diffusion tensors
     field(diffusionTensors)
 
