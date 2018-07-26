@@ -32,7 +32,9 @@ namespace rigidAlignment{
       const double& tz = x[TZ];
 
       // read scaling
-      const double& s = x[S];
+      const double& sx = x[SX];
+      const double& sy = x[SY];
+      const double& sz = x[SZ];
 
       // read rotation angles
       const double& alpha = x[ALPHA];
@@ -40,7 +42,7 @@ namespace rigidAlignment{
       const double& gamma = x[GAMMA];
 
       Translation translation(tx, ty, tz);
-      Scaling scaling(s);
+      Scaling scaling(sx, sy, sz);
 
       transformation = Transformation(
                                       translation,

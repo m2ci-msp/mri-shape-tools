@@ -43,7 +43,7 @@ namespace rigidAlignment{
 
     /*--------------------------------------------------------------------------*/
 
-    const int transformationAmount = 7;
+    const int transformationAmount = 9;
 
     /*--------------------------------------------------------------------------*/
 

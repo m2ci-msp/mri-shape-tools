@@ -128,7 +128,9 @@ namespace rigidAlignment{
       }
 
       // avoid decimation
-      lowerBounds[S] = 0.1;
+      lowerBounds[SX] = 0.1;
+      lowerBounds[SY] = 0.1;
+      lowerBounds[SZ] = 0.1;
 
       if( this->settings.noRotation == true ) {
 
@@ -159,9 +161,14 @@ namespace rigidAlignment{
       if( this->settings.noScaling == true ) {
 
         // leave scaling at 1
-        lowerBounds[S] = 1;
-        upperBounds[S] = 1;
+        lowerBounds[SX] = 1;
+        upperBounds[SX] = 1;
 
+        lowerBounds[SY] = 1;
+        upperBounds[SY] = 1;
+
+        lowerBounds[SZ] = 1;
+        upperBounds[SZ] = 1;
       }
 
 

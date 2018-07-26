@@ -140,14 +140,59 @@ namespace rigidAlignment{
     /*--------------------------------------------------------------------------*/
 
 
-    arma::vec apply_derivative_s(const arma::vec& p) const {
+    arma::vec apply_derivative_sx(const arma::vec& p) const {
 
       const arma::mat A =
         this->translation.get_matrix() *
 
         this->toGlobal.get_matrix() *
 
-        this->scaling.get_derivative_s() *
+        this->scaling.get_derivative_sx() *
+
+        this->rotationX.get_matrix() *
+        this->rotationY.get_matrix() *
+        this->rotationZ.get_matrix() *
+
+        this->toLocal.get_matrix();
+
+      const arma::vec ph = convert_to_homogeneous(p);
+
+      return convert_to_euclidean(A * ph);
+
+    }
+    /*--------------------------------------------------------------------------*/
+
+    arma::vec apply_derivative_sy(const arma::vec& p) const {
+
+      const arma::mat A =
+        this->translation.get_matrix() *
+
+        this->toGlobal.get_matrix() *
+
+        this->scaling.get_derivative_sy() *
+
+        this->rotationX.get_matrix() *
+        this->rotationY.get_matrix() *
+        this->rotationZ.get_matrix() *
+
+        this->toLocal.get_matrix();
+
+      const arma::vec ph = convert_to_homogeneous(p);
+
+      return convert_to_euclidean(A * ph);
+
+    }
+
+    /*--------------------------------------------------------------------------*/
+
+    arma::vec apply_derivative_sz(const arma::vec& p) const {
+
+      const arma::mat A =
+        this->translation.get_matrix() *
+
+        this->toGlobal.get_matrix() *
+
+        this->scaling.get_derivative_sz() *
 
         this->rotationX.get_matrix() *
         this->rotationY.get_matrix() *

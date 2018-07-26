@@ -27,7 +27,9 @@ public:
 
   bool useNoProjection = false;
 
-  bool initializeWithLandmarks = false;
+  bool noInitializationWithLandmarks = false;
+  bool noCombinedOptimization = false;
+  bool noDataOnlyOptimization = false;
 
   Settings(int argc, char* argv[]) {
 
@@ -76,7 +78,9 @@ public:
 
     FlagNone useNoProjectionFlag("useNoProjection", this->useNoProjection);
 
-    FlagNone initializeWithLandmarksFlag("initializeWithLandmarks", this->initializeWithLandmarks);
+    FlagNone noInitializationWithLandmarksFlag("noInitializationWithLandmarks", this->noInitializationWithLandmarks);
+    FlagNone noCombinedOptimizationFlag("noCombinedOptimization", this->noCombinedOptimization);
+    FlagNone noDataOnlyOptimizationFlag("noDataOnlyOptimization", this->noDataOnlyOptimization);
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -99,7 +103,10 @@ public:
     parser.define_flag(&maxAngleFlag);
     parser.define_flag(&searchRadiusFlag);
     parser.define_flag(&useNoProjectionFlag);
-    parser.define_flag(&initializeWithLandmarksFlag);
+
+    parser.define_flag(&noInitializationWithLandmarksFlag);
+    parser.define_flag(&noCombinedOptimizationFlag);
+    parser.define_flag(&noDataOnlyOptimizationFlag);
 
     parser.define_flag(&noRotationFlag);
     parser.define_flag(&noTranslationFlag);

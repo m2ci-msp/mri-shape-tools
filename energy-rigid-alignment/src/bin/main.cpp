@@ -47,13 +47,67 @@ int main(int argc, char* argv[]) {
 
   }
 
-  if( settings.initializeWithLandmarks == true ) {
+  // first initialize with landmark information alone
+  if( settings.noInitializationWithLandmarks == false && settings.landmarksPresent == true) {
 
     rigidAlignment::EnergyData data(source, target);
     data.landmarks = landmarks;
 
     settings.energySettings.weights["dataTerm"] = 0;
     settings.energySettings.weights["landmarkTerm"] = 1;
+
+    // do not optimize rotation: might drastically shrink the template
+    const bool noScaling = settings.minimizerSettings.noScaling;
+
+    // only use one iteration: landmarks do not change between iterations
+    const int iterationAmount = settings.minimizerSettings.iterationAmount;
+
+
+    settings.minimizerSettings.noScaling = true;
+    settings.minimizerSettings.iterationAmount = 1;
+
+    rigidAlignment::Energy energy(data, settings.energySettings);
+    rigidAlignment::EnergyMinimizer minimizer(energy, settings.minimizerSettings);
+
+    minimizer.minimize();
+
+    // replace source with aligned one
+    source = energy.derived_data().source;
+
+    // restore old settings
+    settings.minimizerSettings.noScaling = noScaling;
+    settings.minimizerSettings.iterationAmount = iterationAmount;
+
+  }
+
+  // now use both, data and landmarks
+  if( settings.noCombinedOptimization == false && settings.landmarksPresent == true) {
+
+    rigidAlignment::EnergyData data(source, target);
+
+    data.landmarks = landmarks;
+
+    settings.energySettings.weights["dataTerm"] = 1;
+    settings.energySettings.weights["landmarkTerm"] = 1;
+
+    rigidAlignment::Energy energy(data, settings.energySettings);
+    rigidAlignment::EnergyMinimizer minimizer(energy, settings.minimizerSettings);
+
+    minimizer.minimize();
+
+    // replace source with aligned one
+    source = energy.derived_data().source;
+
+
+  }
+
+  // final step: only use data
+  if( settings.noDataOnlyOptimization == false) {
+
+    rigidAlignment::EnergyData data(source, target);
+
+    settings.energySettings.weights["dataTerm"] = 1;
+    settings.energySettings.weights["landmarkTerm"] = 0;
 
     rigidAlignment::Energy energy(data, settings.energySettings);
     rigidAlignment::EnergyMinimizer minimizer(energy, settings.minimizerSettings);
@@ -65,20 +119,7 @@ int main(int argc, char* argv[]) {
 
   }
 
-  rigidAlignment::EnergyData data(source, target);
-
-  data.landmarks = landmarks;
-
-  settings.energySettings.weights["dataTerm"] = 1;
-  settings.energySettings.weights["landmarkTerm"] = 1;
-
-  rigidAlignment::Energy energy(data, settings.energySettings);
-
-  rigidAlignment::EnergyMinimizer minimizer(energy, settings.minimizerSettings);
-
-  minimizer.minimize();
-
-  MeshIO::write(energy.derived_data().source, settings.output);
+  MeshIO::write(source, settings.output);
 
   return 0;
 
