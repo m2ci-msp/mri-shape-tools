@@ -63,33 +63,64 @@ public:
     // initialize with landmarks
     if( this->settings.landmarksPresent == true) {
 
-      rigidAlignment::EnergyData data(source, target);
-      data.landmarks = landmarks;
+      // use scopes to avoid name clashes
+      {
 
-      this->settings.rigidAlignmentEnergySettings.weights["dataTerm"] = 0;
-      this->settings.rigidAlignmentEnergySettings.weights["landmarkTerm"] = 1;
+        rigidAlignment::EnergyData data(source, target);
+        data.landmarks = landmarks;
 
-      const int iterationAmount = this->settings.rigidAlignmentMinimizerSettings.iterationAmount;
-      this->settings.rigidAlignmentMinimizerSettings.iterationAmount = 1;
+        this->settings.rigidAlignmentEnergySettings.weights["dataTerm"] = 0;
+        this->settings.rigidAlignmentEnergySettings.weights["landmarkTerm"] = 1;
 
-      rigidAlignment::Energy energy(data, settings.rigidAlignmentEnergySettings);
-      rigidAlignment::EnergyMinimizer minimizer(energy, settings.rigidAlignmentMinimizerSettings);
+        // do not optimize rotation: might drastically shrink the template
+        const bool noScaling = this->settings.rigidAlignmentMinimizerSettings.noScaling;
 
-      minimizer.minimize();
+        // only use one iteration: landmarks do not change between iterations
+        const int iterationAmount = this->settings.rigidAlignmentMinimizerSettings.iterationAmount;
 
-      // replace source with aligned one
-      this->source = energy.derived_data().source;
+        this->settings.rigidAlignmentMinimizerSettings.noScaling = true;
+        this->settings.rigidAlignmentMinimizerSettings.iterationAmount = 1;
 
-      // restore original iteration amount
-      this->settings.rigidAlignmentMinimizerSettings.iterationAmount = iterationAmount;
+        rigidAlignment::Energy energy(data, settings.rigidAlignmentEnergySettings);
+        rigidAlignment::EnergyMinimizer minimizer(energy, settings.rigidAlignmentMinimizerSettings);
+
+        minimizer.minimize();
+
+        // replace source with aligned one
+        this->source = energy.derived_data().source;
+
+        // restore original settings
+        this->settings.rigidAlignmentMinimizerSettings.iterationAmount = iterationAmount;
+        this->settings.rigidAlignmentMinimizerSettings.noScaling = noScaling;
+
+      }
+
+      {
+        // perform combined optimization
+        rigidAlignment::EnergyData data(source, target);
+        data.landmarks = landmarks;
+
+        this->settings.rigidAlignmentEnergySettings.weights["dataTerm"] = 1;
+        this->settings.rigidAlignmentEnergySettings.weights["landmarkTerm"] = 1;
+
+        rigidAlignment::Energy energy(data, settings.rigidAlignmentEnergySettings);
+
+        rigidAlignment::EnergyMinimizer minimizer(energy, settings.rigidAlignmentMinimizerSettings);
+
+        minimizer.minimize();
+
+        // replace source with aligned one
+        this->source = energy.derived_data().source;
+
+      }
 
     }
 
-    this->settings.rigidAlignmentEnergySettings.weights["dataTerm"] = 1;
-    this->settings.rigidAlignmentEnergySettings.weights["landmarkTerm"] = 1;
-
+    // only use data
     rigidAlignment::EnergyData data(source, target);
-    data.landmarks = landmarks;
+
+    this->settings.rigidAlignmentEnergySettings.weights["dataTerm"] = 1;
+    this->settings.rigidAlignmentEnergySettings.weights["landmarkTerm"] = 0;
 
     rigidAlignment::Energy energy(data, settings.rigidAlignmentEnergySettings);
 
