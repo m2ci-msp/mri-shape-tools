@@ -115,20 +115,26 @@ public:
       }
 
     }
+    else {
 
-    // only use data
-    rigidAlignment::EnergyData data(source, target);
+      // only use data
+      rigidAlignment::EnergyData data(source, target);
 
-    this->settings.rigidAlignmentEnergySettings.weights["dataTerm"] = 1;
-    this->settings.rigidAlignmentEnergySettings.weights["landmarkTerm"] = 0;
+      this->settings.rigidAlignmentEnergySettings.weights["dataTerm"] = 1;
+      this->settings.rigidAlignmentEnergySettings.weights["landmarkTerm"] = 0;
 
-    rigidAlignment::Energy energy(data, settings.rigidAlignmentEnergySettings);
+      rigidAlignment::Energy energy(data, settings.rigidAlignmentEnergySettings);
 
-    rigidAlignment::EnergyMinimizer minimizer(energy, settings.rigidAlignmentMinimizerSettings);
+      rigidAlignment::EnergyMinimizer minimizer(energy, settings.rigidAlignmentMinimizerSettings);
 
-    minimizer.minimize();
+      minimizer.minimize();
 
-    return energy.derived_data().source;
+      // replace source with aligned one
+      this->source = energy.derived_data().source;
+
+    }
+
+    return this->source;
 
   }
 
