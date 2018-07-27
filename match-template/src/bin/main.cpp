@@ -127,10 +127,10 @@ int main(int argc, char* argv[]) {
 
   Mesh result = energy.derived_data().source;
 
-  MeshSmooth(result).apply(settings.meshSmoothIterations);
-
   // remove normals
-  energy.derived_data().source.get_vertex_normals().clear();
+  result.get_vertex_normals().clear();
+
+  MeshSmooth(result).apply(settings.meshSmoothIterations);
 
   MeshIO::write(result, settings.output);
 
