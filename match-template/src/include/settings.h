@@ -49,6 +49,8 @@ public:
   double landmarkTermWeightEnd = 1;
   double landmarkTermChange = 0;
 
+  int meshSmoothIterations = 0;
+
   bool landmarksPresent = false;
 
   bool fixedNeighbors = false;
@@ -64,6 +66,10 @@ public:
     FlagSingle<std::string> outputFlag("output", this->output);
     FlagSingle<std::string> landmarksFlag("landmarks", this->landmarks, true);
     FlagSingle<std::string> meshNeighborhoodFlag("meshNeighborhood", this->meshNeighborhood, true);
+
+    /////////////////////////////////////////////////////////////////////////
+
+    FlagSingle<int> meshSmoothIterationsFlag("meshSmoothIterations", this->meshSmoothIterations, true);
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -122,6 +128,8 @@ public:
     parser.define_flag(&outputFlag);
     parser.define_flag(&landmarksFlag);
     parser.define_flag(&meshNeighborhoodFlag);
+
+    parser.define_flag(&meshSmoothIterationsFlag);
 
     // energy settings
     parser.define_flag(&smoothnessTermWeightFlag);

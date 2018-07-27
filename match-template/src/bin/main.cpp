@@ -14,6 +14,8 @@
 #include "mesh/MeshSphericalNeighborsBuilder.h"
 #include "mesh/MeshResolution.h"
 
+#include "mesh/MeshSmooth.h"
+
 #include "optimization/matchtemplate/Energy.h"
 #include "optimization/matchtemplate/EnergyMinimizer.h"
 #include "optimization/matchtemplate/MinimizerSettings.h"
@@ -123,7 +125,11 @@ int main(int argc, char* argv[]) {
     vertex /= scaleFactor;
   }
 
-  MeshIO::write(energy.derived_data().source, settings.output);
+  Mesh result = energy.derived_data().source;
+
+  MeshSmooth(result).apply(settings.meshSmoothIterations);
+
+  MeshIO::write(result, settings.output);
 
   return 0;
 
