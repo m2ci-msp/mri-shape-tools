@@ -25,6 +25,8 @@ public:
 
   double landmarkTermWeight = 1;
 
+  int meshSmoothIterations = 0;
+
   bool fixedNeighbors = false;
   bool useNoProjection = false;
   bool landmarksPresent = false;
@@ -39,6 +41,11 @@ public:
     FlagSingle<std::string> landmarksFlag("landmarks", this->landmarks, true);
 
     /////////////////////////////////////////////////////////////////////////
+
+    FlagSingle<int> meshSmoothIterationsFlag("meshSmoothIterations", this->meshSmoothIterations, true);
+
+    /////////////////////////////////////////////////////////////////////////
+
 
     // energy settings
     FlagSingle<double> landmarkTermWeightFlag("landmarkTermWeight", this->landmarkTermWeight, true);
@@ -92,6 +99,8 @@ public:
     parser.define_flag(&modelFlag);
     parser.define_flag(&outputFlag);
     parser.define_flag(&landmarksFlag);
+
+    parser.define_flag(&meshSmoothIterationsFlag);
 
     // energy settings
     parser.define_flag(&landmarkTermWeightFlag);

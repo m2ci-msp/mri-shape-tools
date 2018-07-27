@@ -8,6 +8,7 @@
 #include "model/ModelReader.h"
 #include "mesh/MeshIO.h"
 #include "mesh/Mesh.h"
+#include "mesh/MeshSmooth.h"
 
 #include "optimization/fitmodel/Energy.h"
 #include "optimization/fitmodel/EnergyMinimizer.h"
@@ -76,10 +77,14 @@ int main(int argc, char* argv[]) {
 
   minimizer.minimize();
 
-  // remove normals
-  energy.derived_data().source.get_vertex_normals().clear();
+  Mesh result = energy.derived_data().source;
 
-  MeshIO::write(energy.derived_data().source, settings.output);
+  // remove normals
+  result.get_vertex_normals().clear();
+
+  MeshSmooth(result).apply(settings.meshSmoothIterations);
+
+  MeshIO::write(result, settings.output);
 
   return 0;
 
