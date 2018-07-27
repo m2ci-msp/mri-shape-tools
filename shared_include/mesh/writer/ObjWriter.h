@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <iomanip>
 
 #include <armadillo>
 
@@ -24,6 +25,9 @@ class ObjWriter : public MeshWriter {
       ) {
 
       this->meshFile.open(fileName);
+
+      // use higher precision than default (6)
+      this->meshFile << std::setprecision(12);
 
       write_vertex_data();
       write_face_data();
