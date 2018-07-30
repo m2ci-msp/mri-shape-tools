@@ -23,6 +23,7 @@ public:
     if      (type == "threshold") { threshold(image, options); }
     else if (type == "otsu" ) { otsu(image); }
     else if (type == "iterated otsu" ) { iterated_otsu(image, options); }
+    else if (type == "weighted otsu" ) { weighted_otsu(image, options); }
     else if (type == "with landmarks" ) { with_landmarks(image, options); }
     else if (type == "chan vese") { chan_vese(image, options); }
 
@@ -47,6 +48,15 @@ public:
     const int iterations = options["iterations"].asInt();
 
     image.segment().iterated_otsu(iterations);
+
+  }
+
+  void weighted_otsu(Image& image, Json::Value& options) {
+
+    const double weightInside = options["weightInside"].asDouble();
+    const double weightOutside = options["weightOutside"].asDouble();
+
+    image.segment().weighted_otsu(weightInside, weightOutside);
 
   }
 
