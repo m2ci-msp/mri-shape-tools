@@ -23,14 +23,21 @@ public:
   bool createCloud = false;
   bool flip = false;
 
+  double integrationRho = 1;
+  double presmoothSigma = 1;
+
   Settings(int argc, char* argv[]) {
 
     FlagSingle<std::string> inputFlag("input", this->input);
     FlagSingle<std::string> outputFlag("output", this->output);
     FlagSingle<std::string> outputCloudFlag("cloud", this->outputCloud, true);
+
     FlagSingle<double> thresholdFlag("threshold", this->threshold);
     FlagNone scaleFlag("scale_to_8bit", this->scaleTo8Bit);
     FlagNone flipFlag("flip", this->flip);
+
+    FlagSingle<double> presmoothSigmaFlag("presmoothSigma", this->presmoothSigma, true);
+    FlagSingle<double> integrationRhoFlag("integrationRho", this->integrationRho, true);
 
     FlagsParser parser(argv[0]);
     parser.define_flag(&inputFlag);
@@ -39,6 +46,9 @@ public:
     parser.define_flag(&thresholdFlag);
     parser.define_flag(&scaleFlag);
     parser.define_flag(&flipFlag);
+
+    parser.define_flag(&presmoothSigmaFlag);
+    parser.define_flag(&integrationRhoFlag);
 
     parser.parse_from_command_line(argc, argv);
 
