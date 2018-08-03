@@ -38,8 +38,6 @@ public:
 
   }
 
-private:
-
   double find_threshold() {
 
     ImageAccess access(this->imageData);
