@@ -37,6 +37,8 @@ public:
 
     prepare_subset_collection();
 
+    prepare_mesh_collection();
+
   }
 
   /*-----------------------------------------------------------------------*/
@@ -93,10 +95,33 @@ private:
 
   /*-----------------------------------------------------------------------*/
 
+  void prepare_mesh_collection() {
+
+    // by default, only use all meshes of the training data
+    this->meshCollection = this->database.get_all_meshes();
+
+    // check if we want to add additional meshes
+    if( this->settings.useAdditionalData == true) {
+
+      SampleDataBase additionalData = SampleFileReader::read_from(settings.additionalData);
+
+      // add meshes
+      for(const Mesh& mesh: additionalData.get_all_meshes() ) {
+
+        this->meshCollection.push_back(mesh);
+
+      }
+
+    }
+
+  }
+
+  /*-----------------------------------------------------------------------*/
+
   void measure_speaker_specificity() {
 
     // evaluate specificity for speaker
-    SpeakerSpecificityMeasurer speakerMeasurer(this->database.get_all_meshes(), this->builder);
+    SpeakerSpecificityMeasurer speakerMeasurer(this->meshCollection, this->builder);
     speakerMeasurer.set_sample_amount(this->settings.sampleAmount);
     speakerMeasurer.set_max_components(this->database.get_speaker_ids().size());
     speakerMeasurer.set_truncated_pose_mode(this->settings.truncatedPoseMode);
@@ -115,7 +140,7 @@ private:
   void measure_phoneme_specificity() {
 
     // evaluate specificity for phoneme
-    PoseSpecificityMeasurer phonemeMeasurer(this->database.get_all_meshes(), this->builder);
+    PoseSpecificityMeasurer phonemeMeasurer(this->meshCollection, this->builder);
     phonemeMeasurer.set_sample_amount(this->settings.sampleAmount);
     phonemeMeasurer.set_max_components(this->database.get_phoneme_ids().size());
     phonemeMeasurer.set_truncated_speaker_mode(this->settings.truncatedSpeakerMode);
@@ -131,6 +156,7 @@ private:
 
   /*-----------------------------------------------------------------------*/
 
+  // ATTENTION: this measurement does not use any additional meshes
   void measure_speaker_specificity_with_fixed_phoneme() {
 
     const arma::mat originalWeights = this->model.data().get_original_phoneme_weights();
@@ -183,6 +209,7 @@ private:
 
   Model model;
   SubsetCollection subsetCollection;
+  std::vector<Mesh> meshCollection;
 
   /*-----------------------------------------------------------------------*/
 
