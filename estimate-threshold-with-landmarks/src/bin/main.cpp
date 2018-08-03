@@ -34,6 +34,16 @@ int main(int argc, char* argv[]) {
 
     }
 
+    Json::Value root;
+
+    root["threshold"] = bestThreshold;
+
+    std::ofstream outFile(settings.output);
+
+    outFile << root << std::endl;
+
+    outFile.close();
+
     return 0;
 
 }
