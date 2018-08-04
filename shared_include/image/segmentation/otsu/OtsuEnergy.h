@@ -38,10 +38,12 @@ public:
 
   double get_energy(const double& threshold) {
 
-    return
+    const double result =
 
       pow(this->meanTotal * this->zeroMoments.at(threshold) - this->means.at(threshold), 2) /
-      this->zeroMoments.at(threshold) * ( 1. - this->zeroMoments.at(threshold));
+      ( this->zeroMoments.at(threshold) * ( 1. - this->zeroMoments.at(threshold) ) );
+
+    return result;
 
   }
 
