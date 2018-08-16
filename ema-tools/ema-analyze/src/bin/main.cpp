@@ -4,6 +4,7 @@
 #include "ExportPosition.h"
 #include "ExportFrequency.h"
 #include "ExportMeanPosition.h"
+#include "ExportBoundingBox.h"
 
 #include "settings.h"
 
@@ -47,6 +48,13 @@ int main(int argc, char* argv[]) {
 
     const EmaCoilAccess& coil = ema.coil(settings.coil).access();
     ExportMeanPosition(coil, info).to(settings.output);
+
+  }
+
+  else if( settings.exportInfo == "boundingBox") {
+
+    const EmaCoilAccess& coil = ema.coil(settings.coil).access();
+    ExportBoundingBox(coil, info).to(settings.output);
 
   }
 
