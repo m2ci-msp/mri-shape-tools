@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
 
       Mesh current = ema.point_cloud().from_all_time_frames(settings.midsagittalCoils);
 
-      MeshCombiner::combine(midsagittalCloud, current);
+      midsagittalCloud = MeshCombiner::combine(midsagittalCloud, current);
 
     }
 
