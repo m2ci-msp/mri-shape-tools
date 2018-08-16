@@ -51,6 +51,7 @@ int main(int argc, char* argv[]) {
         if(position(1) < min) {
 
           front = position;
+          min = position(1);
 
         }
 
