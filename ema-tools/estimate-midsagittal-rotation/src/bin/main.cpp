@@ -2,6 +2,7 @@
 
 #include "ema/Ema.h"
 #include "mesh/Mesh.h"
+#include "mesh/MeshCombiner.h"
 
 #include "settings.h"
 #include "MidsagittalRotation.h"
@@ -41,10 +42,18 @@ int main(int argc, char* argv[]) {
 
     Settings settings(argc, argv);
 
-    Ema ema;
-    ema.read().from(settings.input);
+    Mesh midsagittalCloud;
 
-    Mesh midsagittalCloud = ema.point_cloud().from_all_time_frames(settings.midsagittalCoils);
+    for(const std::string fileName: settings.input) {
+
+      Ema ema;
+      ema.read().from(fileName);
+
+      Mesh current = ema.point_cloud().from_all_time_frames(settings.midsagittalCoils);
+
+      MeshCombiner::combine(midsagittalCloud, current);
+
+    }
 
     MidsagittalRotation midsagittalRotation(midsagittalCloud);
 

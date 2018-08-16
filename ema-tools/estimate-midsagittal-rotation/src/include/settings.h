@@ -12,14 +12,14 @@ class Settings {
 public:
 
   // input and output
-  std::string input;
+  std::vector<std::string> input;
   std::string output;
 
   std::vector<std::string> midsagittalCoils;
 
   Settings(int argc, char* argv[]) {
 
-    FlagSingle<std::string> inputFlag("input", this->input);
+    FlagList<std::string> inputFlag("input", this->input);
     FlagSingle<std::string> outputFlag("output", this->output);
     FlagList<std::string> midsagittalFlag("midsagittalCoils", this->midsagittalCoils);
 
