@@ -36,7 +36,27 @@ private:
 
   double timeStepSize;
 
+  bool basic = true;
+
 public:
+
+  MeshSequence(
+               const RegisteredEma& registeredEma,
+               const Model& tongueModel,
+               const double& samplingRate
+               ) :
+    registeredEma(registeredEma),
+    tongueModel(tongueModel),
+    samplingRate(samplingRate) {
+
+    this->basic = true;
+
+    prepare_data_structures_basic();
+
+    compute_time_step_size();
+
+
+  }
 
   MeshSequence(
                const Ema& headMotion,
@@ -56,7 +76,9 @@ public:
     endTime(endTime),
     samplingRate(samplingRate) {
 
-    prepare_data_structures();
+    this->basic = false;
+
+    prepare_data_structures_extended();
 
     compute_time_step_size();
 
@@ -73,9 +95,14 @@ public:
 
       Mesh currentMesh = reconstruct_mesh(currentTime);
 
-      apply_global_transformation(currentMesh);
+      // transform mesh if needed
+      if( this->basic == false ) {
 
-      add_head_motion(currentMesh, currentTime);
+        apply_global_transformation(currentMesh);
+
+        add_head_motion(currentMesh, currentTime);
+
+      }
 
       result.push_back( std::make_pair(currentTime, currentMesh) );
 
@@ -97,7 +124,8 @@ private:
 
   // adjust boundaries and mirror data accordingly
   // we need a boundary size of 1 and von Neumann boundary conditions for the interpolation
-  void prepare_data_structures() {
+  // extended setup -> generate meshes and transform them afterwards
+  void prepare_data_structures_extended() {
 
     std::vector<std::string> coils({"referenceLeft", "referenceRight", "referenceFront"});
 
@@ -122,6 +150,18 @@ private:
     this->endTime = ( this->headMotion.info().time_stamps().back() < this->endTime) ?
       this->headMotion.info().time_stamps().back() :
       this->endTime;
+
+  }
+
+  // data structures for generating only the meshes
+  void prepare_data_structures_basic() {
+
+    this->registeredEma.boundary().change_size(1);
+    this->registeredEma.mirror().speaker_weights();
+    this->registeredEma.mirror().phoneme_weights();
+
+    this->endTime = this->registeredEma.info().time_stamps().back();
+    this->startTime = 0;
 
   }
 

@@ -17,20 +17,22 @@ public:
   std::string globalTransformation;
   std::string headMotionEma;
 
-  double startTime;
-  double endTime;
+  double startTime = 0;
+  double endTime = 0;
   double samplingRate;
+
+  bool basic = false;
 
   Settings(int argc, char* argv[]) {
 
     FlagSingle<std::string> inputFlag("input", this->input);
     FlagSingle<std::string> tongueModelFlag("tongueModel", this->tongueModel);
     FlagSingle<std::string> outputBaseFlag("outputBase", this->outputBase);
-    FlagSingle<std::string> globalTransformationFlag("globalTransformation", this->globalTransformation);
-    FlagSingle<std::string> headMotionEmaFlag("headMotionEma", this->headMotionEma);
+    FlagSingle<std::string> globalTransformationFlag("globalTransformation", this->globalTransformation, true);
+    FlagSingle<std::string> headMotionEmaFlag("headMotionEma", this->headMotionEma, true);
 
-    FlagSingle<double> startTimeFlag("startTime", this->startTime);
-    FlagSingle<double> endTimeFlag("endTime", this->endTime);
+    FlagSingle<double> startTimeFlag("startTime", this->startTime, true);
+    FlagSingle<double> endTimeFlag("endTime", this->endTime, true);
     FlagSingle<double> samplingRateFlag("samplingRate", this->samplingRate);
 
     FlagsParser parser(argv[0]);
@@ -45,6 +47,13 @@ public:
     parser.define_flag(&samplingRateFlag);
 
     parser.parse_from_command_line(argc, argv);
+
+    this->basic =
+
+      ( headMotionEmaFlag.is_present() == false ) ||
+      ( globalTransformationFlag.is_present() == false ) ||
+      ( startTimeFlag.is_present() == false ) ||
+      ( endTimeFlag.is_present() == false );
 
   }
 

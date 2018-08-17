@@ -24,38 +24,55 @@ int main(int argc, char* argv[]) {
 
   Model tongueModel = ModelReader(settings.tongueModel).get_model();
   Ema headMotion;
+  Json::Value modifications;
   RegisteredEma registeredEma;
 
-  headMotion.read().from(settings.headMotionEma);
   registeredEma.read().from(settings.input);
 
-  Json::Value modifications;
+  if(settings.basic == false) {
 
-  std::ifstream modFile(settings.globalTransformation);
+    headMotion.read().from(settings.headMotionEma);
 
-  // throw exception if file can not be opened
-  if( modFile.is_open() == false ) {
+    std::ifstream modFile(settings.globalTransformation);
 
-    throw std::runtime_error("Cannot open global transformation file.");
+    // throw exception if file can not be opened
+    if( modFile.is_open() == false ) {
+
+      throw std::runtime_error("Cannot open global transformation file.");
+
+    }
+
+    modFile >> modifications;
+    modFile.close();
 
   }
 
-  modFile >> modifications;
-  modFile.close();
+  std::vector< std::pair<double, Mesh> > result;
 
-  MeshSequence sequence =
-    MeshSequenceBuilder()
-    .set_head_motion(headMotion)
-    .set_registered_ema(registeredEma)
-    .set_tongue_model(tongueModel)
-    .set_global_transformation(modifications)
-    .set_start_time(settings.startTime)
-    .set_end_time(settings.endTime)
-    .set_sampling_rate(settings.samplingRate)
-    .build();
+  // initialize basic version
+  if(settings.basic == true) {
 
-  std::vector< std::pair<double, Mesh> > result =
-    sequence.build();
+    MeshSequence sequence(registeredEma, tongueModel, settings.samplingRate);
+
+    result = sequence.build();
+
+  } else {
+
+    // switch to full version if needed
+    MeshSequence sequence =
+      MeshSequenceBuilder()
+      .set_head_motion(headMotion)
+      .set_registered_ema(registeredEma)
+      .set_tongue_model(tongueModel)
+      .set_global_transformation(modifications)
+      .set_start_time(settings.startTime)
+      .set_end_time(settings.endTime)
+      .set_sampling_rate(settings.samplingRate)
+      .build();
+
+    result = sequence.build();
+
+  }
 
   MeshSequenceOutput(result, settings.outputBase).output();
 
