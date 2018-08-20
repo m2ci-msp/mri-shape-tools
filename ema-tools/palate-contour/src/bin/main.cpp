@@ -51,11 +51,15 @@ int main(int argc, char* argv[]) {
 
     result.get_bounding_box(min, max) ;
 
+    const int originX = max(0) - min(0);
+    const int originY = max(1) - min(1);
+    const int originZ = max(2) - min(2);
+
     Image image;
     image.create()
       .with_dimension(max(0) - min(0), max(1) - min(1), max(2) - min(2))
       .with_grid_spacing(1, 1, 1)
-      .with_origin(min(0), min(1), min(2))
+      .with_origin(originX, originY, originZ)
       .empty_image();
 
     ProjectMesh projection(result, image, 5);
