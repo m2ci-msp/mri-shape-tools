@@ -21,9 +21,13 @@ public:
   double scale = 1;
 
   bool applyModifications = false;
+
   std::string emaModifications;
 
+  bool outputImage = false;
+
   std::string output;
+  std::string imageOutput;
 
   Settings(int argc, char* argv[]) {
 
@@ -38,6 +42,7 @@ public:
     FlagSingle<std::string> axisAccessFlag("axisAccess", this->axisAccess, true);
 
     FlagSingle<std::string> outputFlag("output", this->output);
+    FlagSingle<std::string> imageOutputFlag("outputImage", this->imageOutput, true);
 
     FlagsParser parser(argv[0]);
     parser.define_flag(&inputFlag);
@@ -49,10 +54,12 @@ public:
     parser.define_flag(&axisAccessFlag);
 
     parser.define_flag(&outputFlag);
+    parser.define_flag(&imageOutputFlag);
 
     parser.parse_from_command_line(argc, argv);
 
     this->applyModifications = emaModificationsFlag.is_present();
+    this->outputImage = imageOutputFlag.is_present();
 
   }
 
