@@ -51,9 +51,9 @@ int main(int argc, char* argv[]) {
 
     result.get_bounding_box(min, max) ;
 
-    const int originX = max(0) - min(0);
-    const int originY = max(1) - min(1);
-    const int originZ = max(2) - min(2);
+    const int originX = min(0);
+    const int originY = min(1);
+    const int originZ = min(2);
 
     Image image;
     image.create()

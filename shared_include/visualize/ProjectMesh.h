@@ -17,6 +17,12 @@ public:
 
     this->max = this->scan.extrema().get_max();
 
+    if(this->max == this->scan.extrema().get_min() ) {
+
+      this->max = this->max + 1;
+
+    }
+
   }
 
   /*------------------------------------------------------------------------*/
