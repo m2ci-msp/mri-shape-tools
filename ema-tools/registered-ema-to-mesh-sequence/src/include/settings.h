@@ -17,11 +17,15 @@ public:
   std::string globalTransformation;
   std::string headMotionEma;
 
+  std::string coilMesh;
+
   double startTime = 0;
   double endTime = 0;
   double samplingRate;
 
   bool basic = false;
+
+  bool showCoils = false;
 
   Settings(int argc, char* argv[]) {
 
@@ -30,6 +34,7 @@ public:
     FlagSingle<std::string> outputBaseFlag("outputBase", this->outputBase);
     FlagSingle<std::string> globalTransformationFlag("globalTransformation", this->globalTransformation, true);
     FlagSingle<std::string> headMotionEmaFlag("headMotionEma", this->headMotionEma, true);
+    FlagSingle<std::string> coilMeshFlag("coilMesh", this->coilMesh, true);
 
     FlagSingle<double> startTimeFlag("startTime", this->startTime, true);
     FlagSingle<double> endTimeFlag("endTime", this->endTime, true);
@@ -42,6 +47,7 @@ public:
     parser.define_flag(&outputBaseFlag);
     parser.define_flag(&globalTransformationFlag);
     parser.define_flag(&headMotionEmaFlag);
+    parser.define_flag(&coilMeshFlag);
     parser.define_flag(&startTimeFlag);
     parser.define_flag(&endTimeFlag);
     parser.define_flag(&samplingRateFlag);
@@ -54,6 +60,8 @@ public:
       ( globalTransformationFlag.is_present() == false ) ||
       ( startTimeFlag.is_present() == false ) ||
       ( endTimeFlag.is_present() == false );
+
+    this->showCoils = coilMeshFlag.is_present();
 
   }
 

@@ -12,6 +12,8 @@
 #include "model/Model.h"
 #include "model/ModelReader.h"
 
+#include "mesh/MeshIO.h"
+
 #include "MeshSequence.h"
 #include "MeshSequenceBuilder.h"
 #include "MeshSequenceOutput.h"
@@ -54,7 +56,15 @@ int main(int argc, char* argv[]) {
 
     MeshSequence sequence(registeredEma, tongueModel, settings.samplingRate);
 
+    if(settings.showCoils == true) {
+
+      Mesh coilMesh = MeshIO::read(settings.coilMesh);
+      sequence.set_coil_mesh(coilMesh);
+
+    }
+
     result = sequence.build();
+
 
   } else {
 
@@ -69,6 +79,13 @@ int main(int argc, char* argv[]) {
       .set_end_time(settings.endTime)
       .set_sampling_rate(settings.samplingRate)
       .build();
+
+    if(settings.showCoils == true) {
+
+      Mesh coilMesh = MeshIO::read(settings.coilMesh);
+      sequence.set_coil_mesh(coilMesh);
+
+    }
 
     result = sequence.build();
 

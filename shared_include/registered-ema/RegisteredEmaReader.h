@@ -62,9 +62,12 @@ private:
 
       const double timeStamp = get_time_stamp(frame);
 
+      std::vector<arma::vec> targetPoints = get_target_points(frame);
+
       this->data.speakerWeights.push_back(speakerWeight);
       this->data.phonemeWeights.push_back(phonemeWeight);
       this->data.timeStamps.push_back(timeStamp);
+      this->data.targetPoints.push_back(targetPoints);
 
     }
 
@@ -85,6 +88,24 @@ private:
   double get_time_stamp(const Json::Value& frame) const {
 
     return frame["timeStamp"].asDouble();
+
+  }
+
+  std::vector<arma::vec> get_target_points(const Json::Value& frame) const {
+
+    std::vector<arma::vec> targetPoints;
+
+    for(const Json::Value& jsonPoint: frame["target"] ) {
+
+      const double x = jsonPoint["x"].asDouble();
+      const double y = jsonPoint["y"].asDouble();
+      const double z = jsonPoint["z"].asDouble();
+
+      targetPoints.push_back({x, y, z});
+
+    }
+
+    return targetPoints;
 
   }
 

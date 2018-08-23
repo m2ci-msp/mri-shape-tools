@@ -9,6 +9,7 @@
 
 #include "model/Model.h"
 #include "mesh/Mesh.h"
+#include "mesh/MeshCombiner.h"
 #include "ema/Ema.h"
 #include "ema/EmaCoordinateSystem.h"
 
@@ -37,6 +38,10 @@ private:
   double timeStepSize;
 
   bool basic = true;
+
+  Mesh coilMesh;
+
+  bool showCoils = false;
 
 public:
 
@@ -84,6 +89,13 @@ public:
 
   }
 
+  void set_coil_mesh(const Mesh& mesh) {
+
+    this->coilMesh = mesh;
+    this->showCoils = true;
+
+  }
+
   std::vector< std::pair<double, Mesh> > build() {
 
     // result contains the generated meshes with corresponding time stamps
@@ -94,6 +106,13 @@ public:
     while( currentTime < this->endTime ) {
 
       Mesh currentMesh = reconstruct_mesh(currentTime);
+
+      // add coil information if needed
+      if(this->showCoils == true) {
+
+        add_coils(currentMesh, currentTime);
+
+      }
 
       // transform mesh if needed
       if( this->basic == false ) {
@@ -115,6 +134,30 @@ public:
   }
 
 private:
+
+  void add_coils(Mesh& mesh, const double& time) {
+
+    std::vector<arma::vec> targetPoints = this->registeredEma.interpolate().target_points_at_time(time);
+
+    for(const arma::vec& point: targetPoints) {
+
+      // center coil mesh at current target point
+      Mesh coil = this->coilMesh;
+
+      arma::vec center = coil.get_center();
+
+      for(arma::vec& vertex: coil.get_vertices()) {
+
+        vertex = vertex - center + point;
+
+      }
+
+      // fuse with result mesh
+      mesh = MeshCombiner::combine(mesh, coil);
+
+    }
+
+  }
 
   void compute_time_step_size() {
 
@@ -140,6 +183,7 @@ private:
     this->registeredEma.boundary().change_size(1);
     this->registeredEma.mirror().speaker_weights();
     this->registeredEma.mirror().phoneme_weights();
+    this->registeredEma.mirror().target_points();
 
     // adjust end time if needed, the ema files might be slightly shorter than the wanted end time
     // TODO: raise exception if difference is above 0.5 seconds

@@ -35,12 +35,14 @@ public:
     // resize data storages
     this->data.speakerWeights.resize(sampleAmount + 2 * size);
     this->data.phonemeWeights.resize(sampleAmount + 2 * size);
+    this->data.targetPoints.resize(sampleAmount + 2 * size);
 
     // copy original data
     for(int i = 0; i < sampleAmount; ++i) {
 
       this->access.speaker_weight(i) = originalAccess.speaker_weight(i);
       this->access.phoneme_weight(i) = originalAccess.phoneme_weight(i);
+      this->access.target_points(i) = originalAccess.target_points(i);
 
     }
 

@@ -33,6 +33,15 @@ public:
 
   }
 
+  std::vector<arma::vec>& target_points(const int& index) {
+
+    // consider boundary
+    const int& boundarySize = this->data.boundarySize;
+
+    return this->data.targetPoints.at(boundarySize + index);
+
+  }
+
   // const versions
   const arma::vec& speaker_weight(const int& index) const {
 
@@ -49,6 +58,15 @@ public:
     const int& boundarySize = this->data.boundarySize;
 
     return this->data.phonemeWeights.at(boundarySize + index);
+
+  }
+
+  const std::vector<arma::vec>& target_points(const int& index) const {
+
+    // consider boundary
+    const int& boundarySize = this->data.boundarySize;
+
+    return this->data.targetPoints.at(boundarySize + index);
 
   }
 

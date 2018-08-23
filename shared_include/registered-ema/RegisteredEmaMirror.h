@@ -54,5 +54,22 @@ public:
 
   }
 
+  void target_points() {
+
+    const int sampleAmount = this->data.timeStamps.size();
+    const int& boundarySize = this->data.boundarySize;
+
+    for(int i = 0; i < boundarySize; ++i) {
+
+      // left boundary
+      this->access.target_points(- i - 1) = this->access.target_points(i);
+
+      // right boundary
+      this->access.target_points(sampleAmount + i) = this->access.target_points(sampleAmount - 1 - i);
+
+    }
+
+  }
+
 };
 #endif

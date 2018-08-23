@@ -12,6 +12,8 @@ public:
   std::vector<arma::vec> speakerWeights;
   std::vector<arma::vec> phonemeWeights;
 
+  std::vector< std::vector<arma::vec> > targetPoints;
+
   std::vector<double> timeStamps;
 
   double samplingFrequency;

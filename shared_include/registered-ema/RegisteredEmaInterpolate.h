@@ -81,6 +81,43 @@ public:
 
   }
 
+  std::vector<arma::vec> target_points_at_time(const double& timeStamp) const {
+
+    const double timeFrame = convert_to_frame(timeStamp);
+
+    return target_points_at_frame(timeFrame);
+
+  }
+
+  std::vector<arma::vec> target_points_at_frame(const double& timeFrame) const {
+
+    const int integerPart = (int) timeFrame;
+    const double subIntegerPart = timeFrame - integerPart;
+
+    // get values at participating frames
+    const std::vector<arma::vec>& left = this->access.target_points(integerPart);
+
+    // skip interpolation if sub integer part is 0
+    if( subIntegerPart == 0 ) {
+
+      return left;
+
+    }
+
+    const std::vector<arma::vec>& right = this->access.target_points(integerPart + 1);
+
+    std::vector<arma::vec> result = left;
+
+    for(size_t i = 0; i < result.size(); ++i) {
+
+      result[i] = left[i] + subIntegerPart * ( right[i] - left[i] );
+
+    }
+
+    return result;
+
+  }
+
 private:
 
   double convert_to_frame(const double& timeStamp) const {
