@@ -43,7 +43,8 @@ public:
     arma::cx_mat frequencyY = arma::fft(y);
     arma::cx_mat frequencyZ = arma::fft(z);
  
-    for(int i = 0; i < this->info.sample_amount(); ++i) {
+    // only output the meaningful frequencies, 0 to sampleAmount / 2
+    for(int i = 0; i <= this->info.sample_amount() / 2; ++i) {
   
       Json::Value entry(Json::objectValue);
 
