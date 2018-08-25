@@ -19,6 +19,8 @@ public:
   std::string emaFile;
   std::string model;
 
+  std::string coilMesh;
+
   std::vector<std::string> channels;
 
   std::vector<std::string> subsets;
@@ -36,6 +38,8 @@ public:
 
   int timeFrame = 0;
 
+  bool showCoils = false;
+
   Settings(int argc, char* argv[]) {
 
     // input and output
@@ -45,6 +49,8 @@ public:
     FlagSingle<std::string> outputFileFlag("outputFile", this->outputFile);
 
     FlagList<std::string> subsetsFlag("subsets", this->subsets);
+
+    FlagSingle<std::string> coilMeshFlag("coilMesh", this->coilMesh, true);
 
     // ema modifications
     FlagSingle<std::string> emaModificationsFlag("emaModifications", this->emaModifications, true);
@@ -80,6 +86,7 @@ public:
     parser.define_flag(&emaFileFlag);
     parser.define_flag(&modelFlag);
     parser.define_flag(&outputFileFlag);
+    parser.define_flag(&coilMeshFlag);
 
     // channels
     parser.define_flag(&channelsFlag);
@@ -112,6 +119,7 @@ public:
 
     this->applyModifications = emaModificationsFlag.is_present();
 
+    this->showCoils = coilMeshFlag.is_present();
   }
 
 };

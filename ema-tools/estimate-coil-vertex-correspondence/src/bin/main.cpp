@@ -2,6 +2,7 @@
 #include "model/ModelReader.h"
 #include "ema/Ema.h"
 #include "ema-modify/ApplyModifications.h"
+#include "mesh/MeshIO.h"
 
 #include "settings.h"
 #include "CorrespondenceSubsetFinder.h"
@@ -37,7 +38,10 @@ int main(int argc, char* argv[]) {
   std::vector<unsigned int> vertexIndices;
   double energy;
 
-  CorrespondenceSubsetFinderBuilder() \
+  // mesh for output correspondence
+  Mesh mesh;
+
+  CorrespondenceSubsetFinder finder = CorrespondenceSubsetFinderBuilder() \
     .set_ema_data(emaData) \
     .set_energy_settings(settings.energySettings) \
     .set_minimizer_settings(settings.minimizerSettings) \
@@ -45,10 +49,20 @@ int main(int argc, char* argv[]) {
     .set_subsets(subset) \
     .set_partition_index(settings.partitionIndex) \
     .set_partition_amount(settings.partitionAmount) \
-    .build() \
-    .find_best_correspondence() \
+    .build();
+
+  if( settings.showCoils == true) {
+
+    Mesh coilMesh = MeshIO::read(settings.coilMesh);
+    finder.set_coil_mesh(coilMesh);
+
+  }
+
+  finder
+    .find_best_correspondence()             \
     .get_best_correspondence(vertexIndices) \
-    .get_best_energy(energy);
+    .get_best_energy(energy)                \
+    .get_best_mesh(mesh);
 
   // output result
   OutputResult() \
@@ -57,6 +71,8 @@ int main(int argc, char* argv[]) {
     .set_energy(energy) \
     .set_partition_amount(settings.partitionAmount) \
     .set_partition_index(settings.partitionIndex) \
-    .write(settings.outputFile);
+    .write(settings.outputFile + ".json");
+
+  MeshIO::write(mesh, settings.outputFile + ".ply");
 
 }

@@ -5,6 +5,9 @@
 #include <utility>
 #include <armadillo>
 
+#include "mesh/Mesh.h"
+#include "mesh/MeshCombiner.h"
+
 #include "optimization/fitmodel/Energy.h"
 #include "optimization/fitmodel/EnergyMinimizer.h"
 #include "optimization/fitmodel/EnergySettings.h"
@@ -64,6 +67,15 @@ public:
   
   }
 
+  CorrespondenceSubsetFinder& set_coil_mesh(const Mesh& mesh) {
+
+    this->coilMesh = mesh;
+    this->showCoils = true;
+
+    return *this;
+
+  }
+
   bool is_valid(const std::vector<unsigned int>& combination) const {
 
     // a combination is invalid if one vertex is ocurring multiple times
@@ -94,6 +106,19 @@ public:
 
     }
     energy = this->bestEnergy;
+    return *this;
+  
+  }
+
+  CorrespondenceSubsetFinder& get_best_mesh(Mesh& mesh) {
+
+    if( this->resultComputed == false) {
+
+      throw std::runtime_error("Best correspondence was not computed.");
+
+    }
+
+    mesh = this->bestMesh;
     return *this;
   
   }
@@ -327,14 +352,55 @@ private:
   
       this->bestEnergy = endEnergy;
       this->bestCombination = combination;
+
+      reconstruct_mesh(energy.data().speakerWeights, energy.data().phonemeWeights, targetPoints);
   
     }
   
   }
 
+  void reconstruct_mesh(
+                        const arma::vec& speakerWeights,
+                        const arma::vec& phonemeWeights,
+                        const std::vector<arma::vec>& targetPoints) {
+
+    this->bestMesh = this->model.reconstruct_mesh().for_weights(speakerWeights, phonemeWeights);
+
+    if(this->showCoils == true) {
+
+      for(const arma::vec& point: targetPoints) {
+
+        // center coil mesh at current target point
+        Mesh coil = this->coilMesh;
+
+        arma::vec center = coil.get_center();
+
+        for(arma::vec& vertex: coil.get_vertices()) {
+
+          vertex = vertex - center + point;
+
+        }
+
+        // fuse with result mesh
+        this->bestMesh = MeshCombiner::combine(this->bestMesh, coil);
+
+      }
+
+    }
+
+  }
+
   // energy for best combination
   double bestEnergy = DBL_MAX;
   
+  // mesh for best combination
+  Mesh bestMesh;
+
+  // mesh for visualizing coils
+  Mesh coilMesh;
+
+  bool showCoils = false;
+
   // currently best combination
   std::vector<unsigned int> bestCombination;
   
