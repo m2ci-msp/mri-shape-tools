@@ -45,6 +45,9 @@ public:
     this->data.speakerWeights.clear();
     this->data.phonemeWeights.clear();
     this->data.timeStamps.clear();
+    this->data.targetPoints.clear();
+    this->data.speakerVariations.clear();
+    this->data.phonemeVariations.clear();
     this->data.boundarySize = 0;
 
     process_frame_list(json);
@@ -60,12 +63,17 @@ private:
       const arma::vec speakerWeight = get_speaker_weight(frame);
       const arma::vec phonemeWeight = get_phoneme_weight(frame);
 
+      const arma::vec speakerVariation = get_speaker_variation(frame);
+      const arma::vec phonemeVariation = get_phoneme_variation(frame);
+
       const double timeStamp = get_time_stamp(frame);
 
       std::vector<arma::vec> targetPoints = get_target_points(frame);
 
       this->data.speakerWeights.push_back(speakerWeight);
       this->data.phonemeWeights.push_back(phonemeWeight);
+      this->data.speakerVariations.push_back(speakerVariation);
+      this->data.phonemeVariations.push_back(phonemeVariation);
       this->data.timeStamps.push_back(timeStamp);
       this->data.targetPoints.push_back(targetPoints);
 
@@ -82,6 +90,18 @@ private:
   arma::vec get_phoneme_weight(const Json::Value& frame) const {
 
     return build_vector(frame["phonemeWeights"]);
+
+  }
+
+  arma::vec get_speaker_variation(const Json::Value& frame) const {
+
+    return build_vector(frame["speakerVariations"]);
+
+  }
+
+  arma::vec get_phoneme_variation(const Json::Value& frame) const {
+
+    return build_vector(frame["phonemeVariations"]);
 
   }
 

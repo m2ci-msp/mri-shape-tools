@@ -54,6 +54,40 @@ public:
 
   }
 
+  void speaker_variations() {
+
+    const int sampleAmount = this->data.timeStamps.size();
+    const int& boundarySize = this->data.boundarySize;
+
+    for(int i = 0; i < boundarySize; ++i) {
+
+      // left boundary
+      this->access.speaker_variation(- i - 1) = this->access.speaker_variation(i);
+
+      // right boundary
+      this->access.speaker_variation(sampleAmount + i) = this->access.speaker_variation(sampleAmount - 1 - i);
+
+    }
+
+  }
+
+  void phoneme_variations() {
+
+    const int sampleAmount = this->data.timeStamps.size();
+    const int& boundarySize = this->data.boundarySize;
+
+    for(int i = 0; i < boundarySize; ++i) {
+
+      // left boundary
+      this->access.phoneme_variation(- i - 1) = this->access.phoneme_variation(i);
+
+      // right boundary
+      this->access.phoneme_variation(sampleAmount + i) = this->access.phoneme_variation(sampleAmount - 1 - i);
+
+    }
+
+  }
+
   void target_points() {
 
     const int sampleAmount = this->data.timeStamps.size();

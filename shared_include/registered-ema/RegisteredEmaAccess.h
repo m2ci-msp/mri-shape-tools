@@ -33,6 +33,24 @@ public:
 
   }
 
+  arma::vec& speaker_variation(const int& index) {
+
+    // consider boundary
+    const int& boundarySize = this->data.boundarySize;
+
+    return this->data.speakerVariations.at(boundarySize + index);
+
+  }
+
+  arma::vec& phoneme_variation(const int& index) {
+
+    // consider boundary
+    const int& boundarySize = this->data.boundarySize;
+
+    return this->data.phonemeVariations.at(boundarySize + index);
+
+  }
+
   std::vector<arma::vec>& target_points(const int& index) {
 
     // consider boundary
@@ -58,6 +76,24 @@ public:
     const int& boundarySize = this->data.boundarySize;
 
     return this->data.phonemeWeights.at(boundarySize + index);
+
+  }
+
+  const arma::vec& speaker_variation(const int& index) const {
+
+    // consider boundary
+    const int& boundarySize = this->data.boundarySize;
+
+    return this->data.speakerVariations.at(boundarySize + index);
+
+  }
+
+  const arma::vec& phoneme_variation(const int& index) const {
+
+    // consider boundary
+    const int& boundarySize = this->data.boundarySize;
+
+    return this->data.phonemeVariations.at(boundarySize + index);
 
   }
 

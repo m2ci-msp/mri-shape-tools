@@ -81,6 +81,66 @@ public:
 
   }
 
+  arma::vec speaker_variation_at_frame(const double& timeFrame) const {
+
+    const int integerPart = (int) timeFrame;
+    const double subIntegerPart = timeFrame - integerPart;
+
+    // get values at participating frames
+    const arma::vec& left = this->access.speaker_variation(integerPart);
+
+    // skip interpolation if sub integer part is 0
+    if( subIntegerPart == 0 ) {
+
+      return left;
+
+    }
+
+    const arma::vec& right = this->access.speaker_variation(integerPart + 1);
+
+    // interpolate
+    return left + subIntegerPart * ( right - left );
+
+  }
+
+  arma::vec speaker_variation_at_time(const double& timeStamp) const {
+
+    const double timeFrame = convert_to_frame(timeStamp);
+
+    return speaker_variation_at_frame(timeFrame);
+
+  }
+
+  arma::vec phoneme_variation_at_frame(const double& timeFrame) const {
+
+    const int integerPart = (int) timeFrame;
+    const double subIntegerPart = timeFrame - integerPart;
+
+    // get values at participating frames
+    const arma::vec& left = this->access.phoneme_variation(integerPart);
+
+    // skip interpolation if sub integer part is 0
+    if( subIntegerPart == 0 ) {
+
+      return left;
+
+    }
+
+    const arma::vec& right = this->access.phoneme_variation(integerPart + 1);
+
+    // interpolate
+    return left + subIntegerPart * ( right - left );
+
+  }
+
+  arma::vec phoneme_variation_at_time(const double& timeStamp) const {
+
+    const double timeFrame = convert_to_frame(timeStamp);
+
+    return phoneme_variation_at_frame(timeFrame);
+
+  }
+
   std::vector<arma::vec> target_points_at_time(const double& timeStamp) const {
 
     const double timeFrame = convert_to_frame(timeStamp);
