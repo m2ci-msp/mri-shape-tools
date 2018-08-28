@@ -60,6 +60,13 @@ public:
       const double hy = spacings[1].asDouble();
       const double hz = spacings[2].asDouble();
 
+      // update step size if needed
+      if( options["stepSize"] == "automatic" ) {
+
+        stepSize = 0.5 / ( pow(hx, -2) + pow(hy, -2) + pow(hz, -2) );
+
+      }
+
       image.filter().diffusion(timeSteps, stepSize, contrastLambda, integrationRho, presmoothSigma, hx, hy, hz);
 
     }
