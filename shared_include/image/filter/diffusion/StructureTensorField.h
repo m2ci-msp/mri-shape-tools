@@ -41,9 +41,26 @@ public:
 
   }
 
-  const double& get_hx() const { return this->imageData.hx; }
-  const double& get_hy() const { return this->imageData.hy; }
-  const double& get_hz() const { return this->imageData.hz; }
+  const double& get_hx() const {
+
+    return
+      ( this->settings.useDifferentSpacings )? settings.hx: this->imageData.hx;
+
+  }
+
+  const double& get_hy() const {
+
+    return
+      ( this->settings.useDifferentSpacings )? settings.hy: this->imageData.hy;
+
+  }
+
+  const double& get_hz() const {
+
+    return
+      ( this->settings.useDifferentSpacings )? settings.hz: this->imageData.hz;
+
+  }
 
   void update() {
 
