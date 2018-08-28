@@ -53,7 +53,21 @@ public:
     const double integrationRho = options["integrationRho"].asDouble();
     const double presmoothSigma = options["presmoothSigma"].asDouble();
 
-    image.filter().diffusion(timeSteps, stepSize, contrastLambda, integrationRho, presmoothSigma);
+    if( options.isMember("spacings") == true ) {
+
+      Json::Value spacings = options["spacings"];
+      const double hx = spacings[0].asDouble();
+      const double hy = spacings[1].asDouble();
+      const double hz = spacings[2].asDouble();
+
+      image.filter().diffusion(timeSteps, stepSize, contrastLambda, integrationRho, presmoothSigma, hx, hy, hz);
+
+    }
+    else {
+
+      image.filter().diffusion(timeSteps, stepSize, contrastLambda, integrationRho, presmoothSigma);
+
+    }
 
   }
 

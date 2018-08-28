@@ -53,6 +53,37 @@ public:
   
   }
 
+  void diffusion(
+                 const int& timeSteps,
+                 const double& stepSize,
+                 const double& contrastLambda,
+                 const double& integrationRho,
+                 const double& presmoothSigma,
+                 const double& hx,
+                 const double& hy,
+                 const double& hz
+                 ) {
+  
+    DiffusionSettings settings;
+    settings.timeSteps = timeSteps;
+    settings.stepSize = stepSize;
+    settings.contrastLambda = contrastLambda;
+    settings.integrationRho = integrationRho;
+    settings.presmoothSigma = presmoothSigma;
+
+    settings.useDifferentSpacings = true;
+    settings.hx = hx;
+    settings.hy = hy;
+    settings.hz = hz;
+
+
+
+    DiffusionFilter filter(this->imageData, settings);
+    filter.apply();
+  
+  }
+
+
 private:
 
   ImageData& imageData;
