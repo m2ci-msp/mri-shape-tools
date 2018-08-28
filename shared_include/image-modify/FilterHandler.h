@@ -32,7 +32,23 @@ public:
   void diffusion(Image& image, Json::Value& options) {
 
     const int timeSteps = options["timeSteps"].asInt();
-    const double stepSize = options["stepSize"].asDouble();
+    double stepSize = 0;
+
+    if( options["stepSize"] == "automatic" ) {
+
+      const double& hx = image.info().get_hx();
+      const double& hy = image.info().get_hy();
+      const double& hz = image.info().get_hz();
+
+      stepSize = 0.5 / ( pow(hx, -2) + pow(hy, -2) + pow(hz, -2) );
+
+    }
+    else {
+
+      stepSize = options["stepSize"].asDouble();
+
+    }
+
     const double contrastLambda = options["contrastLambda"].asDouble();
     const double integrationRho = options["integrationRho"].asDouble();
     const double presmoothSigma = options["presmoothSigma"].asDouble();
