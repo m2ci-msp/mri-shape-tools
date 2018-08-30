@@ -114,7 +114,7 @@ namespace fitModel{
       }
 
       // update normals for result
-      if( this->energy.data().model.data().is_truncated() == false ) {
+      if( this->energy.data().model.data().faces_are_invalid() == false ) {
         this->energy.update().source_normals();
       }
 

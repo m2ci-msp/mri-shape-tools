@@ -223,14 +223,25 @@ public:
 
   /*--------------------------------------------------------------------------*/
 
-  void mark_as_truncated() {
-    this->isTruncated = true;
+  void mark_faces_as_invalid() {
+
+    this->facesAreInvalid = true;
+
   }
 
   /*--------------------------------------------------------------------------*/
 
-  bool is_truncated() const {
-    return this->isTruncated;
+  void mark_faces_as_valid() {
+
+    this->facesAreInvalid = false;
+
+  }
+  /*--------------------------------------------------------------------------*/
+
+  bool faces_are_invalid() const {
+
+    return this->facesAreInvalid;
+
   }
 
   /*--------------------------------------------------------------------------*/
@@ -270,7 +281,7 @@ private:
   bool isSamplingPossible = false;
   bool areOriginalWeightsAvailable = false;
 
-  bool isTruncated  = false;
+  bool facesAreInvalid  = false;
 
   /*--------------------------------------------------------------------------*/
 
