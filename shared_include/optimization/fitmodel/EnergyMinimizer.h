@@ -47,7 +47,7 @@ namespace fitModel{
         lowerSpeaker, lowerPhoneme, upperSpeaker, upperPhoneme);
 
       // check for PCA model
-      if( (dimensionSpeaker == 1 || dimensionPhoneme == 1) && settings.noPCA == false ) {
+      if( dimensionSpeaker == 1 || dimensionPhoneme == 1 ) {
         adapt_box_to_pca(
           lowerSpeaker, lowerPhoneme, upperSpeaker, upperPhoneme);
       }
@@ -208,13 +208,15 @@ namespace fitModel{
 
       const Model& model = this->energy.data().model;
 
-      if( lowerSpeaker.n_elem == 1) {
+      // only limit box for speaker if PCA behaviour is not deactivated
+      if( lowerSpeaker.n_elem == 1 && this->settings.noSpeakerPCA == false ) {
         // do not optimize speaker component -> stays on the mean
         lowerSpeaker(0) = model.data().get_speaker_mean_weights()(0);
         upperSpeaker(0) = model.data().get_speaker_mean_weights()(0);
       }
 
-      if( lowerPhoneme.n_elem == 1) {
+      // only limit box for phoneme if PCA behaviour is not deactivated
+      if( lowerPhoneme.n_elem == 1 && this->settings.noPhonemePCA == false) {
         // do not optimize phoneme component -> stays on the mean
         lowerPhoneme(0) = model.data().get_phoneme_mean_weights()(0);
         upperPhoneme(0) = model.data().get_phoneme_mean_weights()(0);

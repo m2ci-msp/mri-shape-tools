@@ -35,7 +35,9 @@ public:
     this->minimizerSettings.iterationAmount = 1;
 
     // deactivate PCA behaviour
-    this->minimizerSettings.noPCA = true;
+    this->minimizerSettings.noSpeakerPCA = true;
+    this->minimizerSettings.noPhonemePCA = true;
+
 
     /////////////////////////////////////////////////////////////////////////
 
