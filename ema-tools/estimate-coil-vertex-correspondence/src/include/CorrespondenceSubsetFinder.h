@@ -79,9 +79,18 @@ public:
   bool is_valid(const std::vector<unsigned int>& combination) const {
 
     // a combination is invalid if one vertex is ocurring multiple times
-    std::set<int> vertices(combination.begin(), combination.end());
 
-    return vertices.size() == combination.size();
+    // first create copy of combination vector
+    std::vector<unsigned int> copy = combination;
+
+    // convert combination to vertex indices
+    convert_to_vertex_indices(copy);
+
+    // create a set to remove duplicate entries
+    std::set<int> vertices(copy.begin(), copy.end());
+
+    // compare sizes
+    return vertices.size() == copy.size();
 
   }
 
