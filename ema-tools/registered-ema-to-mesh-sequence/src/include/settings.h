@@ -23,6 +23,9 @@ public:
   double endTime = 0;
   double samplingRate;
 
+  bool startTimeSet = false;
+  bool endTimeSet = false;
+
   bool basic = false;
 
   bool showCoils = false;
@@ -62,6 +65,9 @@ public:
       ( endTimeFlag.is_present() == false );
 
     this->showCoils = coilMeshFlag.is_present();
+
+    this->startTimeSet = startTimeFlag.is_present();
+    this->endTimeSet = endTimeFlag.is_present();
 
   }
 

@@ -96,6 +96,18 @@ public:
 
   }
 
+  void set_start_time(const double& time) {
+
+    this->startTime = time;
+
+  }
+
+  void set_end_time(const double& time) {
+
+    this->endTime = time;
+
+  }
+
   std::vector< std::pair<double, Mesh> > build() {
 
     // result contains the generated meshes with corresponding time stamps

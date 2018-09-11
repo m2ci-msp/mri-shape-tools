@@ -63,6 +63,19 @@ int main(int argc, char* argv[]) {
 
     }
 
+    // set start and/or end time if provided
+    if(settings.startTimeSet == true) {
+
+      sequence.set_start_time(settings.startTime);
+
+    }
+
+    if(settings.endTimeSet == true) {
+
+      sequence.set_end_time(settings.endTime);
+
+    }
+
     result = sequence.build();
 
 
