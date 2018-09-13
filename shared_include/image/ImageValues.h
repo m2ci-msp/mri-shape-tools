@@ -119,6 +119,13 @@ public:
     // get new minimum and maximum
     const double newMin = sortedVector.at(lowerIndex);
     const double newMax = sortedVector.at(upperIndex);
+
+    // avoid creating an image with only one color
+    if( newMin == newMax ) {
+
+      return;
+
+    }
   
     // discard colors
     for(double& value: this->imageData.values) {
