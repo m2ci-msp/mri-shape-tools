@@ -91,6 +91,7 @@ int main(int argc, char* argv[]) {
       .set_start_time(settings.startTime)
       .set_end_time(settings.endTime)
       .set_sampling_rate(settings.samplingRate)
+      .set_only_translation(settings.onlyTranslation)
       .build();
 
     if(settings.showCoils == true) {

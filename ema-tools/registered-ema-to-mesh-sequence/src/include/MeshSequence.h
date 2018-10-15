@@ -43,6 +43,8 @@ private:
 
   bool showCoils = false;
 
+  bool onlyTranslation = false;
+
 public:
 
   MeshSequence(
@@ -70,7 +72,8 @@ public:
                const Json::Value& globalTransformation,
                const double& startTime,
                const double& endTime,
-               const double& samplingRate
+               const double& samplingRate,
+               const bool& onlyTranslation
                ) :
 
     headMotion(headMotion),
@@ -79,7 +82,8 @@ public:
     globalTransformation(globalTransformation),
     startTime(startTime),
     endTime(endTime),
-    samplingRate(samplingRate) {
+    samplingRate(samplingRate),
+    onlyTranslation(onlyTranslation) {
 
     this->basic = false;
 
@@ -126,12 +130,30 @@ public:
 
       }
 
+      Mesh copy = currentMesh;
+
       // transform mesh if needed
       if( this->basic == false ) {
 
         apply_global_transformation(currentMesh);
 
         add_head_motion(currentMesh, currentTime);
+
+      }
+
+      // estimate translation between original mesh and transformed mesh
+      // and apply only this transformation to mesh if needed
+      if( this->onlyTranslation == true) {
+
+        arma::vec originalCenter = copy.get_center();
+        arma::vec newCenter = currentMesh.get_center();
+
+        currentMesh = copy;
+        for(arma::vec& vertex: currentMesh.get_vertices()) {
+
+          vertex += newCenter - originalCenter;
+
+        }
 
       }
 

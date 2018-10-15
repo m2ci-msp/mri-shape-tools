@@ -2,6 +2,7 @@
 #define __SETTINGS_H__
 
 #include "flags/FlagSingle.h"
+#include "flags/FlagNone.h"
 #include "flags/FlagsParser.h"
 
 #include <string>
@@ -28,6 +29,8 @@ public:
 
   bool basic = false;
 
+  bool onlyTranslation = false;
+
   bool showCoils = false;
 
   Settings(int argc, char* argv[]) {
@@ -38,6 +41,7 @@ public:
     FlagSingle<std::string> globalTransformationFlag("globalTransformation", this->globalTransformation, true);
     FlagSingle<std::string> headMotionEmaFlag("headMotionEma", this->headMotionEma, true);
     FlagSingle<std::string> coilMeshFlag("coilMesh", this->coilMesh, true);
+    FlagNone onlyTranslationFlag("onlyTranslation", this->onlyTranslation);
 
     FlagSingle<double> startTimeFlag("startTime", this->startTime, true);
     FlagSingle<double> endTimeFlag("endTime", this->endTime, true);
@@ -54,6 +58,7 @@ public:
     parser.define_flag(&startTimeFlag);
     parser.define_flag(&endTimeFlag);
     parser.define_flag(&samplingRateFlag);
+    parser.define_flag(&onlyTranslationFlag);
 
     parser.parse_from_command_line(argc, argv);
 
