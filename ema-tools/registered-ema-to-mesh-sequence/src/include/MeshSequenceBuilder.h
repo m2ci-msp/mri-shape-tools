@@ -25,8 +25,6 @@ private:
 
   double samplingRate;
 
-  bool onlyTranslation;
-
   bool headMotionSet = false;
   bool registeredEmaSet = false;
   bool tongueModelSet = false;
@@ -34,7 +32,6 @@ private:
   bool startTimeSet = false;
   bool endTimeSet = false;
   bool samplingRateSet = false;
-  bool onlyTranslationSet = false;
 
 public:
 
@@ -46,16 +43,17 @@ public:
 
     }
 
-    return MeshSequence(
+    MeshSequence sequence = MeshSequence(
                         this->headMotion,
                         this->registeredEma,
                         this->tongueModel,
                         this->globalTransformation,
                         this->startTime,
                         this->endTime,
-                        this->samplingRate,
-                        this->onlyTranslation
+                        this->samplingRate
                         );
+
+    return sequence;
 
   }
 
@@ -123,15 +121,6 @@ public:
 
   }
 
-  MeshSequenceBuilder& set_only_translation(const bool& onlyTranslation) {
-
-    this->onlyTranslation = onlyTranslation;
-    this->onlyTranslationSet = true;
-
-    return *this;
-
-  }
-
 private:
 
   bool is_valid() const {
@@ -144,8 +133,7 @@ private:
             globalTransformationSet &&
             startTimeSet &&
             endTimeSet &&
-            samplingRateSet &&
-            onlyTranslationSet
+            samplingRateSet
 
             );
 

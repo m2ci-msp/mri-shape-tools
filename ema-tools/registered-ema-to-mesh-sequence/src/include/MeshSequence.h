@@ -27,6 +27,9 @@ private:
   Model tongueModel;
 
   const Json::Value globalTransformation;
+  Json::Value customTransformation;
+
+  bool customTransformationPresent = false;
 
   double startTime;
   double endTime;
@@ -43,7 +46,6 @@ private:
 
   bool showCoils = false;
 
-  bool onlyTranslation = false;
 
 public:
 
@@ -72,8 +74,7 @@ public:
                const Json::Value& globalTransformation,
                const double& startTime,
                const double& endTime,
-               const double& samplingRate,
-               const bool& onlyTranslation
+               const double& samplingRate
                ) :
 
     headMotion(headMotion),
@@ -82,8 +83,7 @@ public:
     globalTransformation(globalTransformation),
     startTime(startTime),
     endTime(endTime),
-    samplingRate(samplingRate),
-    onlyTranslation(onlyTranslation) {
+    samplingRate(samplingRate) {
 
     this->basic = false;
 
@@ -109,6 +109,13 @@ public:
   void set_end_time(const double& time) {
 
     this->endTime = time;
+
+  }
+
+  void set_custom_transformation(Json::Value& customTransformation) {
+
+    this->customTransformation = customTransformation;
+    this->customTransformationPresent = true;
 
   }
 
@@ -141,17 +148,20 @@ public:
 
       }
 
-      // estimate translation between original mesh and transformed mesh
-      // and apply only this transformation to mesh if needed
-      if( this->onlyTranslation == true) {
+      // estimate translation between mesh with custom transformation and transformed mesh
+      // and apply this transformation to custom mesh if needed
+      if( this->customTransformationPresent == true) {
 
-        arma::vec originalCenter = copy.get_center();
+        meshModify::ApplyModifications(copy).apply(this->customTransformation);
+
+        arma::vec customCenter = copy.get_center();
         arma::vec newCenter = currentMesh.get_center();
 
         currentMesh = copy;
+
         for(arma::vec& vertex: currentMesh.get_vertices()) {
 
-          vertex += newCenter - originalCenter;
+          vertex += newCenter - customCenter;
 
         }
 

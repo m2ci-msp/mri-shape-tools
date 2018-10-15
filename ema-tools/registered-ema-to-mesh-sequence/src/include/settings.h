@@ -29,7 +29,8 @@ public:
 
   bool basic = false;
 
-  bool onlyTranslation = false;
+  std::string customTransformation;
+  bool customTransformationSet = false;
 
   bool showCoils = false;
 
@@ -41,7 +42,7 @@ public:
     FlagSingle<std::string> globalTransformationFlag("globalTransformation", this->globalTransformation, true);
     FlagSingle<std::string> headMotionEmaFlag("headMotionEma", this->headMotionEma, true);
     FlagSingle<std::string> coilMeshFlag("coilMesh", this->coilMesh, true);
-    FlagNone onlyTranslationFlag("onlyTranslation", this->onlyTranslation);
+    FlagSingle<std::string> customTransformationFlag("customTransformation", this->customTransformation, true);
 
     FlagSingle<double> startTimeFlag("startTime", this->startTime, true);
     FlagSingle<double> endTimeFlag("endTime", this->endTime, true);
@@ -58,9 +59,10 @@ public:
     parser.define_flag(&startTimeFlag);
     parser.define_flag(&endTimeFlag);
     parser.define_flag(&samplingRateFlag);
-    parser.define_flag(&onlyTranslationFlag);
+    parser.define_flag(&customTransformationFlag);
 
     parser.parse_from_command_line(argc, argv);
+
 
     this->basic =
 
@@ -73,6 +75,7 @@ public:
 
     this->startTimeSet = startTimeFlag.is_present();
     this->endTimeSet = endTimeFlag.is_present();
+    this->customTransformationSet = customTransformationFlag.is_present();
 
   }
 

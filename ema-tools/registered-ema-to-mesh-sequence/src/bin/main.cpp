@@ -29,6 +29,8 @@ int main(int argc, char* argv[]) {
   Json::Value modifications;
   RegisteredEma registeredEma;
 
+  Json::Value customTransformation;
+
   registeredEma.read().from(settings.input);
 
   if(settings.basic == false) {
@@ -45,6 +47,22 @@ int main(int argc, char* argv[]) {
     }
 
     modFile >> modifications;
+    modFile.close();
+
+  }
+
+  if( settings.customTransformationSet == true) {
+
+    std::ifstream modFile(settings.customTransformation);
+
+    // throw exception if file can not be opened
+    if( modFile.is_open() == false ) {
+
+      throw std::runtime_error("Cannot open custom transformation file.");
+
+    }
+
+    modFile >> customTransformation;
     modFile.close();
 
   }
@@ -82,17 +100,24 @@ int main(int argc, char* argv[]) {
   } else {
 
     // switch to full version if needed
-    MeshSequence sequence =
-      MeshSequenceBuilder()
+    MeshSequenceBuilder builder;
+
+    builder
       .set_head_motion(headMotion)
       .set_registered_ema(registeredEma)
       .set_tongue_model(tongueModel)
       .set_global_transformation(modifications)
       .set_start_time(settings.startTime)
       .set_end_time(settings.endTime)
-      .set_sampling_rate(settings.samplingRate)
-      .set_only_translation(settings.onlyTranslation)
-      .build();
+      .set_sampling_rate(settings.samplingRate);
+
+    MeshSequence sequence = builder.build();
+
+    if(settings.customTransformationSet == true) {
+
+      sequence.set_custom_transformation(customTransformation);
+
+    }
 
     if(settings.showCoils == true) {
 
