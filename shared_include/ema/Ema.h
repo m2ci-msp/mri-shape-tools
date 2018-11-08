@@ -11,6 +11,7 @@
 #include "ema/EmaCoilSubset.h"
 #include "ema/EmaPointCloud.h"
 #include "ema/EmaRename.h"
+#include "ema/EmaBuilder.h"
 
 
 class Ema{
@@ -27,8 +28,11 @@ private:
   EmaCoilSubset emaCoilSubset;
   EmaPointCloud emaPointCloud;
   EmaRename emaRename;
+  EmaBuilder emaBuilder;
 
 public:
+
+
 
   // the constructor ensures that all corresponding objects store
   // a reference to the emaData member
@@ -42,7 +46,8 @@ public:
     emaTransform(emaData),
     emaCoilSubset(emaData),
     emaPointCloud(emaData),
-    emaRename(emaData) {
+    emaRename(emaData),
+    emaBuilder(emaData) {
 
   }
     
@@ -59,7 +64,8 @@ public:
     emaTransform(emaData),
     emaCoilSubset(emaData),
     emaPointCloud(emaData),
-    emaRename(emaData) {
+    emaRename(emaData),
+    emaBuilder(emaData) {
     
   }
 
@@ -70,6 +76,8 @@ public:
     return *this;
 
   }
+
+  EmaBuilder& build() { return this->emaBuilder; }
 
   EmaCoil& coil(const std::string& coilId) { return this->emaData.emaCoils.at(coilId); }
     
