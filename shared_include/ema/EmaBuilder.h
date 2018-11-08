@@ -12,10 +12,21 @@ public:
 
   }
 
-  void from(const EmaData& emaData) {
+  void from(const std::vector<double>& timeStamps, const double& samplingFrequency, std::vector< std::vector<arma::vec> > positions, const std::vector<std::string> & coilIds) {
 
-    this->emaData.emaInfoData = emaData.emaInfoData;
-    this->emaData.emaCoils = emaData.emaCoils;
+    this->emaData.emaInfoData.timeStamps = timeStamps;
+    this->emaData.emaInfoData.samplingFrequency = samplingFrequency;
+    this->emaData.emaInfoData.coilIds = coilIds;
+    this->emaData.emaCoils.clear();
+
+    for(size_t i = 0; i < coilIds.size(); ++i) {
+
+      EmaCoilData data(emaData.emaInfoData);
+      data.positions = positions.at(i);
+      data.id = coilIds.at(i);
+      this->emaData.emaCoils.emplace(coilIds.at(i), EmaCoil(data));
+
+    }
 
   }
 

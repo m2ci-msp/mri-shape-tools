@@ -112,7 +112,7 @@ public:
 
   std::vector< std::vector<arma::vec> > build_target_points() {
 
-    std::vector< std::vector<arma::vec> > targetPoints;
+    std::vector< std::vector<arma::vec> > targetPoints(this->coilIds.size());
 
     for( const double& currentTime : this->timeStamps) {
 
@@ -159,7 +159,7 @@ public:
       // add points to data structure
       for(size_t i = 0; i < currentPoints.size(); ++i) {
 
-        targetPoints[i].push_back(currentPoints.at(i));
+        targetPoints.at(i).push_back(currentPoints.at(i));
 
       }
 
@@ -171,11 +171,6 @@ public:
 
   Ema build() {
 
-    EmaData emaData;
-
-    emaData.emaInfoData.timeStamps = this->timeStamps;
-    emaData.emaInfoData.samplingFrequency = this->samplingRate;
-    emaData.emaInfoData.coilIds = this->coilIds;
 
     std::vector< std::vector<arma::vec> > targetPoints = build_target_points();
 
@@ -185,22 +180,9 @@ public:
 
     }
 
-    std::map<std::string, EmaCoil> emaCoils;
-
-    for(size_t i = 0; i < this->coilIds.size(); ++i) {
-
-      EmaCoilData data(emaData.emaInfoData);
-      data.positions = targetPoints.at(i);
-      data.id = this->coilIds.at(i);
-      emaCoils.emplace(this->coilIds.at(i), EmaCoil(data));
-
-    }
-
-    emaData.emaCoils = emaCoils;
-
     Ema result;
 
-    result.build().from(emaData);
+    result.build().from(this->timeStamps, this->samplingRate, targetPoints, this->coilIds);
 
     return result;
 
