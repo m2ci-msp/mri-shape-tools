@@ -87,6 +87,11 @@ public:
 
     }
 
+    // scale center to scan space coordinates
+    this->center(0) *= this->hx;
+    this->center(1) *= this->hy;
+    this->center(2) *= this->hz;
+
     return create_sphere();
 
   }
@@ -111,11 +116,12 @@ private:
 
         for(int k = 0; k < this->nz; ++k) {
 
-          const arma::vec point({(double) i, (double) j, (double) k});
+          // scale to scan space coordinates
+          const arma::vec point({(double) i * this->hx, (double) j * this->hy, (double) k * this->hz});
 
           const double distance = arma::norm(point - this->center);
 
-          access.at_grid(i, j, k) = 1 - distance / this->radius;
+          access.at_grid(i, j, k) = 1.0 - distance / this->radius;
 
         } // end for i
 
