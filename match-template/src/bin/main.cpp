@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
     if( settings.addSpherical == true ) {
 
       MeshSphericalNeighborsBuilder builder(
-        source, resolution.get_resolution() * settings.geodesicNeighborhoodSize);
+        source, resolution.get_resolution() * settings.sphericalNeighborhoodSize);
       neighbors = neighbors + builder.get_neighbors();
 
     }
