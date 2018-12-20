@@ -79,7 +79,7 @@ private:
 
       std::vector<int> indices;
       std::string name = "all";
-      const Mesh& mesh = this->database.get_all_meshes().at(0);
+      const Mesh mesh = this->database.get_all_meshes().at(0);
 
       for(unsigned int i = 0; i < mesh.get_vertices().size(); ++i) {
         indices.push_back(i);
