@@ -17,9 +17,9 @@ public:
                  const double& radius
     ) :
     imageData(imageData),
-    imageAccess(ImageAccess(imageData)),
-    imageBoundary(ImageBoundary(imageData)),
-    imageMirror(ImageMirror(imageData)),
+    imageAccess(imageData),
+    imageBoundary(imageData),
+    imageMirror(imageData),
     radius(radius) {
 
     adjust_image_boundaries();

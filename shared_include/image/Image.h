@@ -91,7 +91,7 @@ public:
 
   }
 
-  // getters for all members except for data
+  // reference getters for all members except for data
   ImageAccess& access() { return this->imageAccess; }
   ImageNeumannAccess& neumann_access() { return this->imageNeumannAccess; }
   ImageArithmetic& arithmetic() { return this->imageArithmetic; }
@@ -114,6 +114,9 @@ public:
   ImageStatistics& statistics() { return this->imageStatistics; }
   ImageEdge& edge() { return this->imageEdge; }
   ImageInterpolateSlice& interpolate_slice() { return this->imageInterpolateSlice; }
+
+  // get copy of data
+  ImageData data() const { return this->imageData; }
 
 private:
 

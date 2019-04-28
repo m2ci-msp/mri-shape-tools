@@ -21,10 +21,10 @@ namespace rigidAlignment{
 
     /* converts from a vnl_vector to transformation */
     static void vnl_vector_to_transformation(
-      const vnl_vector<double>& x,
-      Transformation& transformation,
-      const Mesh& mesh
-      ) {
+                                             const vnl_vector<double>& x,
+                                             Transformation& transformation,
+                                             const Mesh& mesh
+                                             ) {
 
       // first read translation
       const double& tx = x[TX];
@@ -32,25 +32,25 @@ namespace rigidAlignment{
       const double& tz = x[TZ];
 
       // read scaling
-      const double& s = 1;
+      const double& sx = x[SX];
+      const double& sy = x[SY];
+      const double& sz = x[SZ];
 
-      // read rotation angle
-      const double& theta = x[THETA];
-
-      // read rotation axis
-      const double& ax = x[AX];
-      const double& ay = x[AY];
-      const double& az = x[AZ];
+      // read rotation angles
+      const double& alpha = x[ALPHA];
+      const double& beta = x[BETA];
+      const double& gamma = x[GAMMA];
 
       Translation translation(tx, ty, tz);
-      Scaling scaling(s);
-      Rotation rotation(ax, ay, az, theta);
+      Scaling scaling(sx, sy, sz);
 
       transformation = Transformation(
-          rotation,
-          scaling,
-          translation
-          );
+                                      translation,
+                                      scaling,
+                                      alpha,
+                                      beta,
+                                      gamma
+                                      );
 
       transformation.set_origin(mesh.get_center());
 

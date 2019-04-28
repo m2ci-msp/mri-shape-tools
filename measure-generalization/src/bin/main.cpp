@@ -17,6 +17,13 @@ int main(int argc, char* argv[]){
   // evaluate generalization for speaker mode if we have at least two speakers
   if( database.get_speaker_amount() > 1 ) {
 
+    // activate PCA behaviour if only one phoneme component is present
+    if( database.get_phoneme_amount() == 1 ) {
+
+      settings.minimizerSettings.noPhonemePCA = false;
+
+    }
+
     SpeakerGeneralizationMeasurer speakerMeasurer(database);
     speakerMeasurer.set_energy_settings(settings.energySettings);
     speakerMeasurer.set_minimizer_settings(settings.minimizerSettings);
@@ -33,6 +40,13 @@ int main(int argc, char* argv[]){
 
   // evaluate generalization for phoneme mode if we have at least two phonemes
   if( database.get_phoneme_amount() > 1 ) {
+
+    // activate PCA behaviour if only one speaker component is present
+    if( database.get_speaker_amount() == 1 ) {
+
+      settings.minimizerSettings.noSpeakerPCA = false;
+
+    }
 
     PhonemeGeneralizationMeasurer phonemeMeasurer(database);
     phonemeMeasurer.set_energy_settings(settings.energySettings);

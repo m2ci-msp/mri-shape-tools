@@ -28,6 +28,19 @@ public:
 
   /*--------------------------------------------------------------------------*/
 
+  Transformation(
+                 const double& alpha,
+                 const double& beta,
+                 const double& gamma
+                 ) :
+    rotationX(1, 0, 0, alpha),
+    rotationY(0, 1, 0, beta),
+    rotationZ(0, 0, 1, gamma) {
+
+  }
+
+  /*--------------------------------------------------------------------------*/
+
   Transformation() {
   }
 

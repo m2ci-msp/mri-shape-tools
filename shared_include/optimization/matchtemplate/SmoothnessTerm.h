@@ -120,75 +120,55 @@ namespace matchTemplate{
       double neighborAngle =
         this->energy.data().transformations[neighborTransformationId];
 
-        //fmod( this->energy.data().transformations[neighborTransformationId], 2 * M_PI );
+      // map both angles to the interval [0, 2 pi]
       while( vertexAngle < 0 ) { vertexAngle += 2 * M_PI; }
       while( vertexAngle > 2 *  M_PI ) { vertexAngle -= 2 * M_PI; }
 
       while( neighborAngle < 0 ) { neighborAngle += 2 * M_PI; }
       while( neighborAngle > 2 *  M_PI ) { neighborAngle -= 2 * M_PI; }
 
+      // evaluate theta_i - theta_j
+      const double difference = vertexAngle - neighborAngle;
 
-//        fmod( this->energy.data().transformations[vertexTransformationId], 2 * M_PI );
+      // compute absolute value of difference
+      const double absoluteValue = fabs(difference);
 
+      // compute | theta_i - theta_j |^2 or ( 2 pi - |theta_i - theta_j| )^2
+      // depending on which is smaller
+      if( absoluteValue < 2 * M_PI - absoluteValue ) {
 
+        // | theta_i - theta_j |^2 = ( theta_i - theta_j )^2
 
-      //  vertexAngle   = ( vertexAngle   < 0 ) ? vertexAngle   + 2 * M_PI : vertexAngle;
-      //neighborAngle = ( neighborAngle < 0 ) ? neighborAngle + 2 * M_PI : neighborAngle;
+        // add energy
+        energy += weight * pow(difference, 2);
 
-      if( vertexAngle > neighborAngle ) {
-
-        double difference = vertexAngle - neighborAngle;
-
-        if( difference < 2 * M_PI - difference ) {
-
-          // add energy
-          energy += weight * pow(difference, 2);
-
-          // add gradients
-          gradient[vertexTransformationId]   +=   2 * weight * difference;
-          gradient[neighborTransformationId] += - 2 * weight * difference;
-
-        }
-        else {
-
-          difference = 2 * M_PI - difference;
-
-          // add energy
-          energy += weight * pow(difference, 2);
-
-          // add gradients
-          gradient[vertexTransformationId]   += - 2 * weight * difference;
-          gradient[neighborTransformationId] +=   2 * weight * difference;
-
-        }
+        // add gradients
+        gradient[vertexTransformationId]   +=   2 * weight * difference;
+        gradient[neighborTransformationId] += - 2 * weight * difference;
 
       } else {
 
-        double difference = neighborAngle - vertexAngle;
+        // 2 pi - | theta_i - theta_j |
+        const double smallestDifference = 2 * M_PI - absoluteValue;
 
-        if( difference < 2 * M_PI - difference ) {
+        // add energy
+        energy += weight * pow(smallestDifference, 2);
 
-          // add energy
-          energy += weight * pow(difference, 2);
+        // derivative of
+        // - | theta_i - theta_j | with respect to theta_i :
+        //
+        // - ( theta_i - theta_j ) / | theta_i - theta_j |
+        //
+        // taking the derivative with respect to theta_j changes the sign
+        // NOTE: absoluteValue will never be zero in this case
+        const double derivative = - difference / absoluteValue;
 
-          // add gradients
-          gradient[vertexTransformationId]   += - 2 * weight * difference;
-          gradient[neighborTransformationId] +=   2 * weight * difference;
+        // complete derivative of ( 2 pi - | theta_i - theta_j | )^2 with respect to theta_i :
+        //
+        // 2 ( 2 pi - | theta_i - theta_j | ) ( - (theta_i - theta_j ) / | theta_i - theta_j |))
 
-        }
-        else {
-
-          difference = 2 * M_PI - difference;
-
-          // add energy
-          energy += weight * pow(difference, 2);
-
-          // add gradients
-          gradient[vertexTransformationId]   +=   2 * weight * difference;
-          gradient[neighborTransformationId] += - 2 * weight * difference;
-
-        }
-
+        gradient[vertexTransformationId]   +=   2 * weight * smallestDifference * derivative;
+        gradient[neighborTransformationId] += - 2 * weight * smallestDifference * derivative;
 
       }
 

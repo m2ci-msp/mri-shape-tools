@@ -4,8 +4,9 @@
 #include "image/ImageData.h"
 #include "image/ImageAccess.h"
 #include "image/filter/diffusion/DiffusionSettings.h"
-#include "image/filter/diffusion/DiffusionTensorField.h"
+#include "image/filter/diffusion/FilterDiffusionTensorFieldBuilder.h"
 #include "image/filter/diffusion/DiffusionStencilField.h"
+#include "image/filter/diffusion/StructureTensorField.h"
 
 class DiffusionFilter{
 
@@ -21,9 +22,9 @@ public:
     imageAccess(imageData),
     imageBoundary(imageData),
     settings(settings),
-    structureTensors(StructureTensorField(imageData, settings)),
-    diffusionTensors(DiffusionTensorField(structureTensors, settings)),
-    stencils(diffusionTensors) {
+    structureTensors(imageData, settings),
+    diffusionTensors(structureTensors, settings),
+    stencils(diffusionTensors.get_field()) {
 
     // reset boundary size
     this->imageBoundary.change(1, 1, 1);
@@ -108,7 +109,7 @@ private:
   const DiffusionSettings& settings;
 
   StructureTensorField structureTensors;
-  DiffusionTensorField diffusionTensors;
+  FilterDiffusionTensorFieldBuilder diffusionTensors;
   DiffusionStencilField stencils;
 
   /*--------------------------------------------------------------------------*/

@@ -23,9 +23,6 @@ namespace rigidAlignment{
 
       this->transformation = vnl_vector<double>(this->transformationAmount, 0.);
 
-      // initialize rotation axis to x-axis
-      this->transformation[AX] = 1;
-
     }
 
     /*--------------------------------------------------------------------------*/
@@ -46,7 +43,7 @@ namespace rigidAlignment{
 
     /*--------------------------------------------------------------------------*/
 
-    const int transformationAmount = 7;
+    const int transformationAmount = 9;
 
     /*--------------------------------------------------------------------------*/
 

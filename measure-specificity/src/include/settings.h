@@ -14,6 +14,7 @@ public:
 
   // input and output
   std::string input;
+  std::string additionalData;
   std::string output;
   int sampleAmount = 1000;
 
@@ -26,10 +27,12 @@ public:
   bool deactivateSpeaker = false;
   bool deactivatePhoneme = false;
   bool evaluateFixedPhoneme = false;
+  bool useAdditionalData = false;
 
   Settings(int argc, char* argv[]) {
 
     FlagSingle<std::string> inputFlag("input", this->input);
+    FlagSingle<std::string> additionalDataFlag("additionalData", this->additionalData, true);
     FlagSingle<std::string> outputFlag("output", this->output);
     FlagSingle<int> sampleAmountFlag("sampleAmount", this->sampleAmount, true);
     FlagSingle<int> truncatedSpeakerModeFlag("truncatedSpeaker", this->truncatedSpeakerMode);
@@ -42,6 +45,7 @@ public:
 
     FlagsParser parser(argv[0]);
     parser.define_flag(&inputFlag);
+    parser.define_flag(&additionalDataFlag);
     parser.define_flag(&outputFlag);
     parser.define_flag(&sampleAmountFlag);
     parser.define_flag(&truncatedSpeakerModeFlag);
@@ -55,6 +59,7 @@ public:
     parser.parse_from_command_line(argc, argv);
 
     this->subsetsPresent = subsetsFlag.is_present();
+    this->useAdditionalData = additionalDataFlag.is_present();
 
   }
 

@@ -17,6 +17,12 @@ public:
 
     this->max = this->scan.extrema().get_max();
 
+    if(this->max == this->scan.extrema().get_min() ) {
+
+      this->max = this->max + 1;
+
+    }
+
   }
 
   /*------------------------------------------------------------------------*/
@@ -36,8 +42,21 @@ private:
 
   void project_mesh_to_scan() {
 
-    for( const auto& face: this->mesh.get_faces() ) {
-      draw_face(face);
+    if( this->mesh.get_faces().size() > 0 ) {
+
+      for( const auto& face: this->mesh.get_faces() ) {
+        draw_face(face);
+      }
+
+    }
+    else{
+
+      for( const arma::vec& vertex: this->mesh.get_vertices() ) {
+
+        draw_point(vertex);
+
+      }
+
     }
 
   }
@@ -66,6 +85,23 @@ private:
 
   /*------------------------------------------------------------------------*/
 
+  void draw_point(const arma::vec& point) {
+
+    try{
+
+      this->scan.access().at_coordinate(point(0), point(1), point(2) ) = this->max;
+
+    }
+    catch (std::out_of_range& exception) {
+
+      std::cerr << "Warning: attempt to draw at invalid position." << std::endl;
+
+    }
+
+  }
+
+  /*------------------------------------------------------------------------*/
+
   void draw_edge(arma::vec start, arma::vec end) {
 
     // compute normalized direction vector representing the edge
@@ -82,16 +118,7 @@ private:
       arma::vec coordinate =
         start + i * sampleDistance * direction;
 
-      try{
-
-        this->scan.access().at_coordinate(coordinate(0), coordinate(1), coordinate(2) ) = this->max;
-
-      }
-      catch (std::out_of_range exception) {
-
-        std::cerr << "Warning: attempt to draw at invalid position." << std::endl;
-
-      }
+      draw_point(coordinate);
 
     } // end for
 

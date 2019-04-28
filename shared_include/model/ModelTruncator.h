@@ -111,7 +111,7 @@ public:
     this->modelData.get_core_tensor().truncate().mode_three(indicesVertex);
     this->modelData.set_shape_space_origin(truncatedShapeSpaceOrigin);
 
-    this->modelData.mark_as_truncated();
+    this->modelData.mark_faces_as_invalid();
 
     this->modelSpace.update();
 

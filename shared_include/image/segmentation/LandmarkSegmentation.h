@@ -38,49 +38,22 @@ public:
 
   }
 
-private:
-
   double find_threshold() {
 
-    for(int i = 254; i > 0; --i) {
+    ImageAccess access(this->imageData);
 
-      ImageData imageCopy = this->imageData;
-
-      // remove boundary in copy
-      ImageBoundary(imageCopy).change(0, 0, 0);
-
-      Threshold(imageCopy, i).apply();
-
-      if(all_landmarks_inside(imageCopy)) {
-
-        return i;
-
-      }
-
-    }
-
-    return 0;
-
-  }
-
-  bool all_landmarks_inside(ImageData& segmentation) const {
-
-    ImageAccess access(segmentation);
+    double threshold = 255;
 
     for(const arma::vec& landmark: this->landmarks) {
 
-      if( access.at_grid(landmark(0), landmark(1), landmark(2)) != 255) {
-
-        return false;
-
-      }
+      const double& currentColor = access.at_grid(landmark(0), landmark(1), landmark(2));
+      threshold = (currentColor < threshold )? currentColor: threshold;
 
     }
 
-    return true;
+    return threshold;
 
   }
-
 
 };
 #endif

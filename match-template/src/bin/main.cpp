@@ -1,6 +1,7 @@
 #include <armadillo>
 
 #include "settings.h"
+#include "RigidAlignment.h"
 
 #include "landmark/LandmarkIO.h"
 
@@ -13,6 +14,8 @@
 #include "mesh/MeshSphericalNeighborsBuilder.h"
 #include "mesh/MeshResolution.h"
 
+#include "mesh/MeshSmooth.h"
+
 #include "optimization/matchtemplate/Energy.h"
 #include "optimization/matchtemplate/EnergyMinimizer.h"
 #include "optimization/matchtemplate/MinimizerSettings.h"
@@ -24,6 +27,12 @@ int main(int argc, char* argv[]) {
   // read input data
   Mesh source = MeshIO::read(settings.source);
   Mesh target = MeshIO::read(settings.target);
+
+  if( settings.performRigidAlignment == true) {
+
+    source = RigidAlignment(source, target, settings).perform();
+
+  }
 
   // deal with target meshes that do not provide normals
   if( settings.fixedNeighbors == false && target.has_normals() == false ) {
@@ -72,7 +81,7 @@ int main(int argc, char* argv[]) {
     if( settings.addSpherical == true ) {
 
       MeshSphericalNeighborsBuilder builder(
-        source, resolution.get_resolution() * settings.geodesicNeighborhoodSize);
+        source, resolution.get_resolution() * settings.sphericalNeighborhoodSize);
       neighbors = neighbors + builder.get_neighbors();
 
     }
@@ -116,7 +125,14 @@ int main(int argc, char* argv[]) {
     vertex /= scaleFactor;
   }
 
-  MeshIO::write(energy.derived_data().source, settings.output);
+  Mesh result = energy.derived_data().source;
+
+  // remove normals
+  result.get_vertex_normals().clear();
+
+  MeshSmooth(result).apply(settings.meshSmoothIterations);
+
+  MeshIO::write(result, settings.output);
 
   return 0;
 

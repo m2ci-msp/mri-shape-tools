@@ -19,6 +19,14 @@ public:
   // Gaussian convolution
   double presmoothSigma = 1;
 
+  // use spacings that are different from the image ones?
+  bool useDifferentSpacings = false;
+
+  // custom spacings that are used if the above flag is set to true
+  double hx = 1;
+  double hy = 1;
+  double hz = 1;
+
 };
 
 #endif

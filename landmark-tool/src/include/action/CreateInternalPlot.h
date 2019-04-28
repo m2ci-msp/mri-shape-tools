@@ -155,8 +155,9 @@ class CreateInternalPlot : public Action {
     void plot_position(const Point& position, Cairo::RefPtr<Cairo::Context> cr) {
 
       const double zoom = get_zoom_factor();
-      const double x = position.get_x() * zoom; 
-      const double y = position.get_y() * zoom; 
+      // show at center of voxel
+      const double x = ( position.get_x() + 0.5 ) * zoom;
+      const double y = ( position.get_y() + 0.5 ) * zoom;
 
       cr->set_line_width(2.);
       cr->set_source_rgb(1, 0, 0);
@@ -196,8 +197,9 @@ class CreateInternalPlot : public Action {
 
       const double zoom = get_zoom_factor();
 
-      const double x = point.get_x() * zoom; 
-      const double y = point.get_y() * zoom; 
+      // show at center of voxel
+      const double x = ( point.get_x() + 0.5 ) * zoom;
+      const double y = ( point.get_y() + 0.5 ) * zoom;
 
       cr->move_to( x - 6, y);
       cr->line_to( x + 6, y);

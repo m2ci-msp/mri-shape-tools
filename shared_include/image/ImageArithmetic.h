@@ -14,7 +14,7 @@ public:
   // constructor that initializes the ImageAccess object
   ImageArithmetic(ImageData& imageData) :
     imageData(imageData),
-    imageAccess(ImageAccess(imageData)) {
+    imageAccess(imageData) {
   } 
 
   void plus(const ImageAccess& otherAccess, const ImageInfo& otherInfo ) {

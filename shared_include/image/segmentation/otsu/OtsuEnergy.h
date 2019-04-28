@@ -4,104 +4,135 @@
 #include <cmath>
 
 #include "image/ImageData.h"
-#include "image/segmentation/Threshold.h"
 
 class OtsuEnergy{
 
+private:
+
+  const ImageData& imageData;
+
+  ImageAccess imageAccess;
+
+  std::vector<double> histogram;
+
+  std::vector<double> zeroMoments;
+
+  std::vector<double> means;
+
+  double meanTotal;
+
 public:
 
-OtsuEnergy(const ImageData& imageData) : imageData(imageData) {
-}
+  // IMPORTANT: colors have to be in the range [0, 255]
+  OtsuEnergy(ImageData& imageData) : imageData(imageData), imageAccess(imageData) {
 
-double get_energy(const double& threshold) {
+    compute_histogram();
 
-    // compute segmentation
-    this->segmentation = this->imageData;
-    Threshold(this->segmentation, threshold).apply();
+    compute_zero_order_cumulative_moments();
 
-    // compute region means
     compute_means();
 
-    // compute sum of variances
-    const double energy = compute_variance_sum();
+    compute_mean_total();
 
-    return energy;
+  }
 
-}
+  double get_energy(const double& threshold) {
+
+    const double result =
+
+      pow(this->meanTotal * this->zeroMoments.at(threshold) - this->means.at(threshold), 2) /
+      ( this->zeroMoments.at(threshold) * ( 1. - this->zeroMoments.at(threshold) ) );
+
+    return result;
+
+  }
 
 private:
 
+  void compute_mean_total() {
+
+    this->meanTotal = 0;
+
+    for(int i = 0; i < 256; ++i) {
+
+      this->meanTotal += i * this->histogram.at(i);
+
+    }
+
+  }
+
+  void compute_zero_order_cumulative_moments() {
+
+    this->zeroMoments.resize(256, 0);
+
+    for(int k = 0; k < 256; ++k) {
+
+      double moment = 0;
+
+      for(int i = 0; i <= k; ++i) {
+
+        moment += this->histogram.at(i);
+
+      }
+
+      this->zeroMoments.at(k) = moment;
+
+    }
+
+
+
+  }
+
+  void compute_histogram() {
+
+    const int& nx = this->imageData.nx;
+    const int& ny = this->imageData.ny;
+    const int& nz = this->imageData.nz;
+
+    this->histogram.resize(256, 0);
+
+    for(int i = 0; i < nx; ++i) {
+      for(int j = 0; j < ny; ++j) {
+        for( int k = 0; k < nz; ++k) {
+
+          const double value = this->imageAccess.at_grid(i, j, k);
+          this->histogram[(int) value] += 1;
+
+        }
+
+      }
+
+    }
+
+    const int size = nx * ny * nz;
+
+    for(double& value: this->histogram) {
+
+      value /= size;
+
+    }
+
+  }
+
   void compute_means() {
 
-    this->meanOutside = 0;
-    this->meanInside = 0;
+    this->means.resize(256, 0);
 
-    const auto& indicator = this->segmentation.values;
-    const auto& values = this->imageData.values;
+    for(int k = 0; k < 256; ++k) {
 
-    int amountOutside = 0;
-    int amountInside = 0;
+      double mean = 0;
 
-    for(unsigned int i = 0; i < values.size(); ++i) {
-      if( indicator.at(i) == 0 ) {
-        ++amountOutside;
-        this->meanOutside += values.at(i);
+      for(int i = 0; i <= k; ++i) {
+
+        mean += i * this->histogram.at(i);
 
       }
-      else {
-        ++amountInside;
-        this->meanInside += values.at(i);
-      }
+
+      this->means.at(k) = mean;
+
     }
 
-    this->meanOutside /= amountOutside;
-    this->meanInside /= amountInside;
-
   }
-
-  double compute_variance_sum() {
-
-    const auto& indicator = this->segmentation.values;
-    const auto& values = this->imageData.values;
-
-    double varOutside = 0;
-    double varInside = 0;
-    int amountOutside = 0;
-    int amountInside = 0;
-
-    // compute variances inside the regions
-    for(unsigned int i = 0; i < values.size(); ++i) {
-      if( indicator.at(i) == 0 ) {
-
-        const double dist = values.at(i) - this->meanOutside;
-
-        ++amountOutside;
-        varOutside += pow(dist, 2);
-
-      }
-      else {
-
-        const double dist = values.at(i) - this->meanInside;
-
-        ++amountInside;
-        varInside += pow(dist, 2);
-
-      }
-    }
-
-    const double varianceSum =
-      varOutside / amountOutside + varInside / amountInside;
-
-    return  varianceSum;
-
-  }
-
-const ImageData& imageData;
-
-ImageData segmentation;
-
-double meanInside;
-double meanOutside;
 
 };
 #endif

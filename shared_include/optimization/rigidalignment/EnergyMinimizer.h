@@ -127,27 +127,48 @@ namespace rigidAlignment{
         upperBounds[i] =   DBL_MAX;
       }
 
-      if( this->settings.noRotation ) {
-        // stay at x-axis
-        lowerBounds[AX] = 1;
-        upperBounds[AX] = 1;
-        lowerBounds[AY] = 0;
-        upperBounds[AY] = 0;
-        lowerBounds[AZ] = 0;
-        upperBounds[AZ] = 0;
+      // avoid decimation
+      lowerBounds[SX] = 0.1;
+      lowerBounds[SY] = 0.1;
+      lowerBounds[SZ] = 0.1;
 
-        // stay at angle 0
-        lowerBounds[THETA] = 0;
-        upperBounds[THETA] = 0;
+      if( this->settings.noRotation == true ) {
+
+        // leave angles at 0
+        lowerBounds[ALPHA] = 0;
+        upperBounds[ALPHA] = 0;
+
+        lowerBounds[BETA] = 0;
+        upperBounds[BETA] = 0;
+
+        lowerBounds[GAMMA] = 0;
+        upperBounds[GAMMA] = 0;
+
       }
 
-      if( this->settings.noTranslation ) {
+      if( this->settings.noTranslation == true ) {
+
+        // leave translation at 0
         lowerBounds[TX] = 0;
         upperBounds[TX] = 0;
         lowerBounds[TY] = 0;
         upperBounds[TY] = 0;
         lowerBounds[TZ] = 0;
         upperBounds[TZ] = 0;
+
+      }
+
+      if( this->settings.noScaling == true ) {
+
+        // leave scaling at 1
+        lowerBounds[SX] = 1;
+        upperBounds[SX] = 1;
+
+        lowerBounds[SY] = 1;
+        upperBounds[SY] = 1;
+
+        lowerBounds[SZ] = 1;
+        upperBounds[SZ] = 1;
       }
 
 

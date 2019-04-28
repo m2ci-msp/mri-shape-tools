@@ -5,7 +5,10 @@
 #include "image/segmentation/Threshold.h"
 #include "image/segmentation/Otsu.h"
 #include "image/segmentation/IteratedOtsu.h"
+#include "image/segmentation/WeightedOtsu.h"
 #include "image/segmentation/LandmarkSegmentation.h"
+#include "image/segmentation/ChanVese.h"
+#include "image/segmentation/chanvese/ChanVeseSettings.h"
 
 class ImageSegmentation{
 
@@ -29,6 +32,24 @@ public:
   void with_landmarks(const std::vector<arma::vec>& landmarks) {
 
     LandmarkSegmentation(this->imageData, landmarks).apply();
+
+  }
+
+  void chan_vese(
+                 ImageData& levelSetData,
+                 const ChanVeseSettings& settings
+                 ) {
+
+    ChanVese(this->imageData, levelSetData, settings).apply();
+
+  }
+
+  void weighted_otsu(
+                     const double& weightInside,
+                     const double& weightOutside
+                     ) const {
+
+    WeightedOtsu(this->imageData, weightInside, weightOutside).apply();
 
   }
 

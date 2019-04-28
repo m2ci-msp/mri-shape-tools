@@ -19,29 +19,29 @@ public:
     ny(diffusionTensors.ny),
     nz(diffusionTensors.nz),
     // stencil access
-    X0Y0Z0(ImageAccess(X0Y0Z0Data)),
+    X0Y0Z0(this->X0Y0Z0Data),
 
-    XMYMZ0(ImageAccess(XMYMZ0Data)),
-    XMYPZ0(ImageAccess(XMYPZ0Data)),
-    XPYMZ0(ImageAccess(XPYMZ0Data)),
-    XPYPZ0(ImageAccess(XPYPZ0Data)),
+    XMYMZ0(this->XMYMZ0Data),
+    XMYPZ0(this->XMYPZ0Data),
+    XPYMZ0(this->XPYMZ0Data),
+    XPYPZ0(this->XPYPZ0Data),
 
-    XMY0ZM(ImageAccess(XMY0ZMData)),
-    XMY0ZP(ImageAccess(XMY0ZPData)),
-    XPY0ZM(ImageAccess(XPY0ZMData)),
-    XPY0ZP(ImageAccess(XPY0ZPData)),
+    XMY0ZM(this->XMY0ZMData),
+    XMY0ZP(this->XMY0ZPData),
+    XPY0ZM(this->XPY0ZMData),
+    XPY0ZP(this->XPY0ZPData),
 
-    X0YMZM(X0YMZMData),
-    X0YMZP(X0YMZPData),
-    X0YPZM(X0YPZMData),
-    X0YPZP(X0YPZPData),
+    X0YMZM(this->X0YMZMData),
+    X0YMZP(this->X0YMZPData),
+    X0YPZM(this->X0YPZMData),
+    X0YPZP(this->X0YPZPData),
 
-    XMY0Z0(ImageAccess(XMY0Z0Data)),
-    XPY0Z0(ImageAccess(XPY0Z0Data)),
-    X0YMZ0(ImageAccess(X0YMZ0Data)),
-    X0YPZ0(ImageAccess(X0YPZ0Data)),
-    X0Y0ZM(ImageAccess(X0Y0ZMData)),
-    X0Y0ZP(ImageAccess(X0Y0ZPData)),
+    XMY0Z0(this->XMY0Z0Data),
+    XPY0Z0(this->XPY0Z0Data),
+    X0YMZ0(this->X0YMZ0Data),
+    X0YPZ0(this->X0YPZ0Data),
+    X0Y0ZM(this->X0Y0ZMData),
+    X0Y0ZP(this->X0Y0ZPData),
     // diffusion tensors
     field(diffusionTensors)
 
@@ -54,6 +54,22 @@ public:
   /*--------------------------------------------------------------------------*/
 
   void update() {
+
+    const double& hx = this->field.hx;
+    const double& hy = this->field.hy;
+    const double& hz = this->field.hz;
+
+    const int& nx = this->field.nx;
+    const int& ny = this->field.ny;
+    const int& nz = this->field.nz;
+
+    // for computing derivatives
+    const double rxx = 1. / ( 2. * hx * hx );
+    const double ryy = 1. / ( 2. * hy * hy );
+    const double rzz = 1. / ( 2. * hz * hz );
+    const double rxy = 1. / ( 2. * hx * hy );
+    const double rxz = 1. / ( 2. * hx * hz );
+    const double ryz = 1. / ( 2. * hy * hz );
 
     for(int k = 0; k < nz; ++k) {
 
@@ -72,30 +88,30 @@ public:
           const int ym = ( j != 0      )? 1: 0;
 
           /* weights from mixed x-y derivatives */
-          const double XMYMZ0 = xm * ym *  0.25 * ( field.D12.at_grid(i-xm, j, k) + field.D12.at_grid(i, j-ym, k) );
-          const double XMYPZ0 = xm * yp * -0.25 * ( field.D12.at_grid(i-xm, j, k) + field.D12.at_grid(i, j+yp, k) );
-          const double XPYPZ0 = xp * yp *  0.25 * ( field.D12.at_grid(i+xp, j, k) + field.D12.at_grid(i, j+yp, k) );
-          const double XPYMZ0 = xp * ym * -0.25 * ( field.D12.at_grid(i+xp, j, k) + field.D12.at_grid(i, j-ym, k) );
+          const double XMYMZ0 = xm * ym *  0.5 * rxy * ( field.D12.at_grid(i-xm, j, k) + field.D12.at_grid(i, j-ym, k) );
+          const double XMYPZ0 = xm * yp * -0.5 * rxy * ( field.D12.at_grid(i-xm, j, k) + field.D12.at_grid(i, j+yp, k) );
+          const double XPYPZ0 = xp * yp *  0.5 * rxy * ( field.D12.at_grid(i+xp, j, k) + field.D12.at_grid(i, j+yp, k) );
+          const double XPYMZ0 = xp * ym * -0.5 * rxy * ( field.D12.at_grid(i+xp, j, k) + field.D12.at_grid(i, j-ym, k) );
 
           /* weights from mixed x-z derivatives */
-          const double XMY0ZM = xm * zm *  0.25 * ( field.D13.at_grid(i-xm, j, k) + field.D13.at_grid(i, j, k-zm) );
-          const double XMY0ZP = xm * zp * -0.25 * ( field.D13.at_grid(i-xm, j, k) + field.D13.at_grid(i, j, k+zp) );
-          const double XPY0ZP = xp * zp *  0.25 * ( field.D13.at_grid(i+xp, j, k) + field.D13.at_grid(i, j, k+zp) );
-          const double XPY0ZM = xp * zm * -0.25 * ( field.D13.at_grid(i+xp, j, k) + field.D13.at_grid(i, j, k-zm) );
+          const double XMY0ZM = xm * zm *  0.5 * rxz * ( field.D13.at_grid(i-xm, j, k) + field.D13.at_grid(i, j, k-zm) );
+          const double XMY0ZP = xm * zp * -0.5 * rxz * ( field.D13.at_grid(i-xm, j, k) + field.D13.at_grid(i, j, k+zp) );
+          const double XPY0ZP = xp * zp *  0.5 * rxz * ( field.D13.at_grid(i+xp, j, k) + field.D13.at_grid(i, j, k+zp) );
+          const double XPY0ZM = xp * zm * -0.5 * rxz * ( field.D13.at_grid(i+xp, j, k) + field.D13.at_grid(i, j, k-zm) );
 
           /* weights from mixed y-z derivatives */
-          const double X0YMZM = ym * zm *  0.25 * ( field.D23.at_grid(i, j-ym, k) + field.D23.at_grid(i, j, k-zm) );
-          const double X0YMZP = ym * zp * -0.25 * ( field.D23.at_grid(i, j-ym, k) + field.D23.at_grid(i, j, k+zp) );
-          const double X0YPZP = yp * zp *  0.25 * ( field.D23.at_grid(i, j+yp, k) + field.D23.at_grid(i, j, k+zp) );
-          const double X0YPZM = yp * zm * -0.25 * ( field.D23.at_grid(i, j+yp, k) + field.D23.at_grid(i, j, k-zm) );
+          const double X0YMZM = ym * zm *  0.5 * ryz * ( field.D23.at_grid(i, j-ym, k) + field.D23.at_grid(i, j, k-zm) );
+          const double X0YMZP = ym * zp * -0.5 * ryz * ( field.D23.at_grid(i, j-ym, k) + field.D23.at_grid(i, j, k+zp) );
+          const double X0YPZP = yp * zp *  0.5 * ryz * ( field.D23.at_grid(i, j+yp, k) + field.D23.at_grid(i, j, k+zp) );
+          const double X0YPZM = yp * zm * -0.5 * ryz * ( field.D23.at_grid(i, j+yp, k) + field.D23.at_grid(i, j, k-zm) );
 
           /* weights from homogeneous derivatives */
-          const double XPY0Z0 = xp * 0.5 * ( field.D11.at_grid(i+zp, j, k) + field.D11.at_grid(i, j, k) );
-          const double XMY0Z0 = xm * 0.5 * ( field.D11.at_grid(i-zm, j, k) + field.D11.at_grid(i, j, k) );
-          const double X0YPZ0 = yp * 0.5 * ( field.D22.at_grid(i, j+yp, k) + field.D22.at_grid(i, j, k) );
-          const double X0YMZ0 = ym * 0.5 * ( field.D22.at_grid(i, j-ym, k) + field.D22.at_grid(i, j, k) );
-          const double X0Y0ZP = zp * 0.5 * ( field.D33.at_grid(i, j, k+zp) + field.D33.at_grid(i, j, k) );
-          const double X0Y0ZM = zm * 0.5 * ( field.D33.at_grid(i, j, k-zm) + field.D33.at_grid(i, j, k) );
+          const double XPY0Z0 = xp * rxx * ( field.D11.at_grid(i+xp, j, k) + field.D11.at_grid(i, j, k) );
+          const double XMY0Z0 = xm * rxx * ( field.D11.at_grid(i-xm, j, k) + field.D11.at_grid(i, j, k) );
+          const double X0YPZ0 = yp * ryy * ( field.D22.at_grid(i, j+yp, k) + field.D22.at_grid(i, j, k) );
+          const double X0YMZ0 = ym * ryy * ( field.D22.at_grid(i, j-ym, k) + field.D22.at_grid(i, j, k) );
+          const double X0Y0ZP = zp * rzz * ( field.D33.at_grid(i, j, k+zp) + field.D33.at_grid(i, j, k) );
+          const double X0Y0ZM = zm * rzz * ( field.D33.at_grid(i, j, k-zm) + field.D33.at_grid(i, j, k) );
 
           /* central weight */
           const double X0Y0Z0 =

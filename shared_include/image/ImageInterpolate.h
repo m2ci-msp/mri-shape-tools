@@ -16,7 +16,7 @@ public:
   // constructor that initializes ImageAccess object
   ImageInterpolate(ImageData& imageData) :
     imageData(imageData),
-    imageAccess(ImageAccess(imageData)) {
+    imageAccess(imageData) {
   }
 
   double at_coordinate(

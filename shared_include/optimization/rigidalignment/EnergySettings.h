@@ -11,6 +11,7 @@ namespace rigidAlignment{
 
     EnergySettings() {
       this->weights["dataTerm"] = 1;
+      this->weights["landmarkTerm"] = 0;
     }
 
     // should source points be projected onto the normal plane of the
